@@ -63,7 +63,12 @@ function add_airports($conn){
    } catch (PDOException ){
         echo "tables already added\n";
    }
+   
 }
+
+
+
+
 
 
 
@@ -90,6 +95,7 @@ try{
 
     //  For development only
     // include 'db_drop_tables.php';
+    // drop_tables();
 } catch (PDOException $e){
     echo "Database connection failed" . $e;
 }

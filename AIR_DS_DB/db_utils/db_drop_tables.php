@@ -1,9 +1,12 @@
 <?php
+
+function drop_tables(){
 $host = "localhost";
 $dbname = "air_ds";
 $dsn = "mysql:host={$host};dbname={$dbname}";
 $username = "root";
 $password = "";
+
 
 // create PDO instance
 try{
@@ -20,6 +23,7 @@ DROP TABLE IF EXISTS users;
 } catch(PDOException $e){
     echo "FAiled to delete tables";
     echo $e;
+}
 }
 
 ?>
