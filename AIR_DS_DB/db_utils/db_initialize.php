@@ -1,9 +1,35 @@
 <?php
-$host = "localhost";
-$dbname = "air_ds";
-$dsn = "mysql:host={$host};dbname={$dbname}";
-$username = "root";
-$password = "";
+// *****************************************************************************************************************************************
+// INITIALIZE DATABASE
+require_once 'db_connect.php';
+
+// create db
+try{
+    $conn = db_connect_server();
+    // create db
+    $db_config = db_get_config();
+    $conn->exec("CREATE DATABASE IF NOT EXISTS {$db_config['db_name']}");    
+} catch (PDOException $e){
+    echo "Database creation failed " . $e->getMessage(); 
+}
+
+//connect to db
+try{
+    $conn = db_connect(); 
+
+    insert_tables($conn);
+    add_airports(conn: $conn);
+
+    //  For development only
+    include 'db_drop_tables.php';
+    drop_tables();
+
+} catch (PDOException $e){
+    echo "Database connection failed" . $e;
+} 
+// *****************************************************************************************************************************************
+
+
 
 
 function insert_tables($conn){
@@ -63,41 +89,5 @@ function add_airports($conn){
    } catch (PDOException ){
         echo "tables already added\n";
    }
-   
 }
-
-
-
-
-
-
-// *****************************************************************************************************************************************
-// INITIALIZE DATABASE
-// create db
-try{
-    // create PDO instance
-    $conn = new PDO("mysql:host={$host}", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // create db
-    $conn->exec("CREATE DATABASE IF NOT EXISTS {$dbname}");    
-} catch (PDOException $e){
-    echo "Database creation failed " . $e->getMessage(); 
-}
-
-//connect to db
-$conn = NULL;
-try{
-    $conn = new PDO($dsn, $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    insert_tables($conn);
-    add_airports(conn: $conn);
-
-    //  For development only
-    // include 'db_drop_tables.php';
-    // drop_tables();
-} catch (PDOException $e){
-    echo "Database connection failed" . $e;
-}
-// *****************************************************************************************************************************************
 ?>
