@@ -13,16 +13,15 @@ try{
     echo "Database creation failed " . $e->getMessage(); 
 }
 
-//connect to db
+//connect to db, add tables
 try{
     $conn = db_connect(); 
-
     insert_tables($conn);
     add_airports(conn: $conn);
 
     //  For development only
-    include 'db_drop_tables.php';
-    drop_tables();
+    // include 'db_drop_tables.php';
+    // drop_tables();
 
 } catch (PDOException $e){
     echo "Database connection failed" . $e;
@@ -30,8 +29,8 @@ try{
 // *****************************************************************************************************************************************
 
 
-
-
+// -----------------------------------------------------------------------------------------------------------------------------------------
+// HELPER FUNCTIONS
 function insert_tables($conn){
     //create table airports
     $conn->exec("
@@ -90,4 +89,6 @@ function add_airports($conn){
         echo "tables already added\n";
    }
 }
+// -----------------------------------------------------------------------------------------------------------------------------------------
+
 ?>

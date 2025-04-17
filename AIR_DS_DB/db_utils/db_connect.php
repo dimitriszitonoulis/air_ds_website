@@ -1,7 +1,8 @@
 <?php
 // Get array with the config of the database
-// The config variables could be made global, however whenever this file is inlcuded in another file
-// they would be available in that other file.
+// The config variables could be made global.
+// However when this file is inlcuded in another file the variables would be available in that other file.
+// They would also be able to be modified in that other file.
 // They don't need to do that.
 function db_get_config() {
     $host = 'localhost';
