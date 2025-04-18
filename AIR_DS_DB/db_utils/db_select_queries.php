@@ -9,4 +9,5 @@ function db_get_airports(){
     //Only one row is return so it does not matter if FETCH_NUM is used
     return $stmt->fetchall(PDO::FETCH_NUM);
 }
+
 ?>
