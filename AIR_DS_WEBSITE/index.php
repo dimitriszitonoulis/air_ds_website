@@ -7,6 +7,7 @@
 // require_once '..\server\database\services\db_select_queries.php';
 require_once '.\server\database\db_utils\db_initialize.php';
 require_once '.\server\database\services\db_select_queries.php';
+db_initialize();
 ?>
 <?php
 $airplane_codes = db_get_airports();
@@ -23,8 +24,6 @@ $airplane_codes = db_get_airports();
                         .then(response => response.json())
                         .then(data => console.log(decodeURIComponent(data)))
                         .catch(console.log("problem"));
-    
-
   </script>
 </head>
 

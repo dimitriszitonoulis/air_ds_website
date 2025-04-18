@@ -1,35 +1,38 @@
 <?php
 // *****************************************************************************************************************************************
 // INITIALIZE DATABASE
-require_once 'C:\xampp\htdocs\WEB_ZITONOULIS_DIMITRIOS_E22054\AIR_DS_WEBSITE\server\database\db_utils\db_connect.php';
+function db_initialize() {
+    require_once 'C:\xampp\htdocs\WEB_ZITONOULIS_DIMITRIOS_E22054\AIR_DS_WEBSITE\server\database\db_utils\db_connect.php';
 
-// create db
-try{
-    // get the connection to the mySQL server
-    $conn = db_connect_server();
-    // get the config of the database in order to access its name
-    $db_config = db_get_config();
-    $conn->exec("CREATE DATABASE IF NOT EXISTS {$db_config['db_name']}");    
-} catch (PDOException $e){
-    die("Database creation failed.\nCould not connect to server\n" . $e->getMessage());
+    // create db
+    try{
+        // get the connection to the mySQL server
+        $conn = db_connect_server();
+        // get the config of the database in order to access its name
+        $db_config = db_get_config();
+        $conn->exec("CREATE DATABASE IF NOT EXISTS {$db_config['db_name']}");    
+    } catch (PDOException $e){
+        die("Database creation failed.\nCould not connect to server\n" . $e->getMessage());
+    }
+    
+    //connect to db, add tables
+    try{
+        // get the connection to the mySQL server
+        $conn = db_connect(); 
+        insert_tables($conn);
+        add_airports(conn: $conn);
+
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //  For development only
+        // include 'db_drop_tables.php';
+        // drop_tables();
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    } catch (PDOException $e){
+    die("Database connection failed\n" . $e); 
+    }  
 }
 
-//connect to db, add tables
-try{
-    // get the connection to the mySQL server
-    $conn = db_connect(); 
-    insert_tables($conn);
-    add_airports(conn: $conn);
-
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //  For development only
-    // include 'db_drop_tables.php';
-    // drop_tables();
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-} catch (PDOException $e){
-   die("Database connection failed\n" . $e); 
-} 
 // *****************************************************************************************************************************************
 
 
