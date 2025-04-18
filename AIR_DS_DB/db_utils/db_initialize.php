@@ -5,28 +5,35 @@ require_once 'db_connect.php';
 
 // create db
 try{
+    // get the connection to the mySQL server
     $conn = db_connect_server();
-    // create db
+    // get the config of the database in order to access its name
     $db_config = db_get_config();
     $conn->exec("CREATE DATABASE IF NOT EXISTS {$db_config['db_name']}");    
 } catch (PDOException $e){
-    echo "Database creation failed " . $e->getMessage(); 
+    die("Database creation failed.\nCould not connect to server\n" . $e->getMessage());
 }
 
 //connect to db, add tables
 try{
+    // get the connection to the mySQL server
     $conn = db_connect(); 
     insert_tables($conn);
     add_airports(conn: $conn);
 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //  For development only
     // include 'db_drop_tables.php';
     // drop_tables();
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 } catch (PDOException $e){
-    echo "Database connection failed" . $e;
+   die("Database connection failed\n" . $e); 
 } 
 // *****************************************************************************************************************************************
+
+
+
 
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
@@ -61,10 +68,12 @@ function insert_tables($conn){
         );
 
     // create table reservations
+    // TODO maybe add CURENT_TIMESTAMP as default value to departure_date
     $conn->exec("
     CREATE TABLE IF NOT EXISTS reservations (
-    id INT AUTO_INCREMENT PRIMARY KEY , 
+    id INT AUTO_INCREMENT PRIMARY KEY, 
     seat VARCHAR(3) NOT NULL,
+    departure_date DATETIME NOT NULL,
     airportID VARCHAR(3) NOT NULL,
     user_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (airportID) REFERENCES airports(code), 
