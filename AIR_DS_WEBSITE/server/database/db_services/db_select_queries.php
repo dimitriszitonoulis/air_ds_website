@@ -1,5 +1,5 @@
 <?php
-require_once 'db_connect.php';
+require_once '..\db_utils\db_connect.php';
 
 function db_get_airports(){
     $conn = db_connect();
