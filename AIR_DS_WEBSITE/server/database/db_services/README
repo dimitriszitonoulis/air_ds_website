@@ -1,0 +1,4 @@
+This foolder contains all the services provided by the database
+ex. 
+- insert queries when a user is registered
+- select queries to get information like the codes of the ariports etc

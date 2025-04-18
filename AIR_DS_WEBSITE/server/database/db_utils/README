@@ -1,0 +1,4 @@
+This folder contains files eccential to the database
+ex
+- The file that initializes tha database, which creates the databse and adds the tables to it
+- The file containing the configuration of the database (host, db_name, user and password) as well as functions that make the connection to the database
