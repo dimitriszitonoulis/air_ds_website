@@ -1,7 +1,6 @@
 <?php
 require_once 'C:\xampp\htdocs\WEB_ZITONOULIS_DIMITRIOS_E22054\AIR_DS_WEBSITE\server\database\db_utils\db_connect.php';
 
-
 $conn = db_connect();
 // get all the codes of the airports in the database
 $stmt = $conn->prepare("SELECT code FROM airports");
