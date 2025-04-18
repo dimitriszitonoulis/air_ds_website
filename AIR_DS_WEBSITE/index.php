@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <?php
-const db_path = '..\AIR_DS_DB\db_utils\\'; 
-require_once db_path . '\db_initialize.php';
-require_once db_path . 'db_select_queries.php';
-// require_once '..\AIR_DS_DB\db_utils\db_initialize.php';
-// require_once '..\AIR_DS_DB\db_utils\db_select_queries.php'; 
+// const db_path = '..\AIR_DS_DB\db_utils\\'; 
+// require_once db_path . '\db_initialize.php';
+// require_once db_path . 'db_select_queries.php';
+// require_once '..\server\database\db_utils\db_initialize.php';
+// require_once '..\server\database\services\db_select_queries.php';
+require_once '.\server\database\db_utils\db_initialize.php';
+require_once '.\server\database\services\db_select_queries.php';
 ?>
 <?php
 $airplane_codes = db_get_airports();
@@ -13,7 +15,17 @@ $airplane_codes = db_get_airports();
 <html>
 
 <head>
+  <script>
+      
+      // const uri = "AIR_DS_WEBSITE/server/database/services/get_airport_codes.php";
+      const uri = "AIR_DS_WEBSITE/server/database/services/get_airport_codes.php";
+      $airport_codes = fetch(uri)
+                        .then(response => response.json())
+                        .then(data => console.log(decodeURIComponent(data)))
+                        .catch(console.log("problem"));
+    
 
+  </script>
 </head>
 
 <body>
