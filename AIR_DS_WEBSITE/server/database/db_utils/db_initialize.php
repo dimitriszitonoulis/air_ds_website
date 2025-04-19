@@ -29,7 +29,7 @@ function db_initialize() {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     } catch (PDOException $e){
-    die("Database connection failed\n" . $e); 
+        die("Database connection failed\n" . $e); 
     }  
 }
 
@@ -98,7 +98,7 @@ function add_airports($conn){
         ('Brussels Airport', 'BRU', 50.9002, 4.4859, 200);
         ");
    } catch (PDOException ){
-        echo "tables already added\n";
+        // no operation
    }
 }
 // -----------------------------------------------------------------------------------------------------------------------------------------
