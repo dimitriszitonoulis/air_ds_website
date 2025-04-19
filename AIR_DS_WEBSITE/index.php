@@ -24,11 +24,11 @@ db_initialize();
   <footer>
     <form>
       <fieldset>
-        <select class="airport_code_selection" name="departure_airport"></select>
+        <select class="airport-code-selection" name="departure_airport"></select>
       </fieldset>
       
       <fieldset>
-        <select class="airport-code-selection" name="return-airport"></select>
+        <select class="airport-code-selection" name="destination-airport"></select>
       </fieldset>
       
       <fieldset>
@@ -37,13 +37,13 @@ db_initialize();
       </fieldset> 
 
       <fieldset>
-        <label for="number-of-people">Choose the nnumber of tickets you want</label>
+        <label for="number-of-tickets">Choose the nnumber of tickets you want</label>
         <!-- TODO add check that the number of tickets is >= 0 -->
-        <input type="number" id="number-of-people" name="number-of-people" value="0">
+        <input type="number" id="number-of-tickets" name="number-of-tickets" value="0">
       </fieldset>
 
       <fieldset id="buy-tickes-button-fieldset">
-        <input type="buy-tickets-button" id="buy-tickets-button" name="submit-button" value="Buy tickets">
+        <input type="buy-tickets-button" id="buy-tickets-button" name="buy-tickets-button" value="Buy tickets">
       </fieldset>
     </form>
   </footer>
