@@ -97,7 +97,7 @@ function add_airports($conn){
         ('Larnaka International Airport', 'LCA', 34.8715, 33.6077, 150),
         ('Brussels Airport', 'BRU', 50.9002, 4.4859, 200);
         ");
-   } catch (PDOException ){
+   } catch (PDOException $e){
         // no operation
    }
 }
