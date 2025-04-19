@@ -24,10 +24,12 @@ db_initialize();
   <footer>
     <form>
       <fieldset>
-        <select class="airport-code-selection" name="departure_airport"></select>
+        <label class="airport-code-label" for="airport-code-selection">Select the departure airport</label>
+        <select class="airport-code-selection" name="departure-airport"></select>
       </fieldset>
       
       <fieldset>
+        <label id="airport-code-label" for="airport-code-selection">Select the destination airport</label>
         <select class="airport-code-selection" name="destination-airport"></select>
       </fieldset>
       
@@ -37,9 +39,8 @@ db_initialize();
       </fieldset> 
 
       <fieldset>
-        <label for="number-of-tickets">Choose the nnumber of tickets you want</label>
-        <!-- TODO add check that the number of tickets is >= 0 -->
-        <input type="number" id="number-of-tickets" name="number-of-tickets" value="0">
+        <label id="number-of-tickets-label" for="number-of-tickets">Choose the nnumber of tickets you want</label>
+        <input type="number" id="number-of-tickets" name="number-of-tickets" value="1" min="1">
       </fieldset>
 
       <fieldset id="buy-tickes-button-fieldset">
