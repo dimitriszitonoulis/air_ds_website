@@ -7,6 +7,7 @@ $stmt = $conn->prepare("SELECT code FROM airports");
 $stmt->execute();
 //Only one row is return so it does not matter if FETCH_NUM is used
 $result = $stmt->fetchall(PDO::FETCH_NUM);
-
+// make sure that the return object is treated as json and not text
+header('Content-Type: application/json');
 echo json_encode($result);
 ?>
