@@ -2,21 +2,22 @@
 // const buyTicketBtn = document.addEventListener('click', errorChecking());
 
 function errorChecking() {
-    checkTicketNumber()
+    checkTicketNumber();
+    areAirportsSame();
 }
 
 // checks if the number of tickets is valid (>= 1)
-function checkTicketNumber(){
+function checkTicketNumber() {
     const numberOfTicketsElement = document.getElementById('number-of-tickets');
     const numberOfTicketsLabel = document.getElementById('number-of-tickets-label');
     const numberOfTicketsLabelText = numberOfTicketsLabel.innerText;
 
     numberOfTicketsElement.addEventListener('change', (e) => {
         let ticketNumber = numberOfTicketsElement.value;
-        
-        if(!isNumber(ticketNumber))
+
+        if (!isNumber(ticketNumber))
             numberOfTicketsLabel.innerText = numberOfTicketsLabelText + " (you must enter a number)";
-        else if (ticketNumber < 1){
+        else if (ticketNumber < 1) {
             numberOfTicketsLabel.innerText = numberOfTicketsLabelText + " (you must by at least 1 ticket)";
         }
         else {
@@ -27,21 +28,35 @@ function checkTicketNumber(){
     })
 }
 
+
+
 function areAirportsSame() {
     const airportElements = document.getElementsByClassName('airport-code-selection');
-  
+    const aiportElementsLength = airportElements.length;
     const airportLabels = document.getElementsByClassName('airport-code-label');
-    console.log(airportLabels[0].innerText);
-    
-    for(let i = 0; i < 2; i++){
-        airportElements[i].addEventListener('change', (e) =>{
-            if (airportElements[i].value === airportElements[(i+1) % 2].value) {
-                // get the field set of the current select item
-                let fieldset = airportElements[i].parentElement;
-                let label = fieldset.getElementsByClassName('airport-code-label');
-                console.log('label = ' + label);
-                console.log(airportLabels[i].innerText);
-                label.innerText = airportLabels[i].innerText + "the departure and the destination airport must be different";
+    const airportLabelsText = [
+        airportLabels[0].innerText,
+        airportLabels[1].innerText
+    ];
+
+    for (let i = 0; i < aiportElementsLength; i++) {
+        airportElements[i].addEventListener('change', (e) => {
+            // get the parent of the current select Element (fieldset)
+            let fieldset = airportLabels[i].parentElement;
+            
+            // get the label inside the current fieldset
+            // even though there is only one label inside the fieldset and HTMLCollection is returned.
+            // In order to access the label's inner text the first element [0] of the HTMLCollection must be accessed
+            let label = fieldset.getElementsByClassName('airport-code-label')[0];
+            console.log(label);
+
+            if (airportElements[i].value === airportElements[(i + 1) % aiportElementsLength].value) {
+                // add the warning inside the label
+                // TODO maybe place the warning in a new div
+                label.innerText = airportLabelsText[i] + " (the departure and the destination airport must be different)";
+            }
+            else {
+                label.innerText = airportLabelsText[i]
             }
 
         })
@@ -49,9 +64,9 @@ function areAirportsSame() {
     }
 }
 
-function isNumber(i){
+
+function isNumber(i) {
     const regex = /^-?[0-9]+$/; //match all integers
-    return i.match(regex);     
+    return i.match(regex);
 }
 
-areAirportsSame();

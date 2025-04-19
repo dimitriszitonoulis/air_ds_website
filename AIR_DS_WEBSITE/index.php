@@ -25,11 +25,13 @@ db_initialize();
     <form>
       <fieldset>
         <label class="airport-code-label" for="airport-code-selection">Select the departure airport</label>
+        <br>
         <select class="airport-code-selection" name="departure-airport"></select>
       </fieldset>
       
       <fieldset>
-        <label id="airport-code-label" for="airport-code-selection">Select the destination airport</label>
+        <label class="airport-code-label" for="airport-code-selection">Select the destination airport</label>
+        <br>
         <select class="airport-code-selection" name="destination-airport"></select>
       </fieldset>
       
