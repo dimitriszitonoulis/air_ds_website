@@ -1,20 +1,10 @@
 <!DOCTYPE html>
 <?php
-// const db_path = '..\AIR_DS_DB\db_utils\\'; 
-// require_once db_path . '\db_initialize.php';
-// require_once db_path . 'db_select_queries.php';
-// require_once '..\server\database\db_utils\db_initialize.php';
-// require_once '..\server\database\services\db_select_queries.php';
 require_once '.\server\database\db_utils\db_initialize.php';
-require_once '.\server\database\services\db_select_queries.php';
 db_initialize();
-?>
-<?php
-$airplane_codes = db_get_airports();
 ?>
 
 <html>
-
 <head>
   
 </head>
@@ -28,7 +18,6 @@ $airplane_codes = db_get_airports();
       <a>Logout</a>
     </nav>
   </header>
-
 
   <section>
   </section>
@@ -60,6 +49,5 @@ $airplane_codes = db_get_airports();
   </footer>
 
   <script src=".\client\scripts\getAirportCodes.js"></script>
-
 </body>
 </html>
