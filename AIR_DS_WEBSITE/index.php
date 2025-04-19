@@ -17,13 +17,40 @@ $airplane_codes = db_get_airports();
 
 <head>
   <script>
+    /*
+      Async call is used. What will happen if the html page loads 
+      before the script return  the code of the airports?
+      TODO try using await
+     */
+    async function getAirportCodes(){
+      const uri = "./server/database/services/get_airport_codes.php";
+      airportCodes = await fetch(uri)
+                        .then(response => {
+                          if(!response.ok) {
+                            throw new Error("HTTP error " + response.status);
+                          }
+                          return response.json();
+                        })
+                        .then(data => decodeURIComponent(data))
+                        .catch(error => console.log(error));
+    
+      // console.log("the airport codes are " + airport_codes);
+
+      const select = document.getElementsByClassName('airport_code_selection');
       
-      // const uri = "AIR_DS_WEBSITE/server/database/services/get_airport_codes.php";
-      const uri = "AIR_DS_WEBSITE/server/database/services/get_airport_codes.php";
-      $airport_codes = fetch(uri)
-                        .then(response => response.json())
-                        .then(data => console.log(decodeURIComponent(data)))
-                        .catch(console.log("problem"));
+      // add the airport codes to the select elements
+      for(airportCode of airportCodes){
+        // create the option element
+        let option = document.createElement('option');
+        option.value = airportCode;
+        option.innerHTML = airportCode;
+        // append it to the select elements
+        select[0].appendChild(option);
+      }
+      
+    }
+    getAirportCodes();
+
   </script>
 </head>
 
@@ -43,17 +70,17 @@ $airplane_codes = db_get_airports();
   <footer>
     <form>
       <fieldset>
-        <select id="departure_airport" name="departure_airport">
+        <select class="airport_code_selection" name="departure_airport">
           <!-- TODO maybe add check that the array is not empty -->
-          <?php foreach ($airplane_codes as $airplane_code): ?>
+          <!-- <?php foreach ($airplane_codes as $airplane_code): ?>
             <option value="<?= $airplane_code[0] ?>"><?= $airplane_code[0] ?></option>
-          <?php endforeach; ?>
+          <?php endforeach; ?> -->
         </select>
       </fieldset>
       
       <fieldset>
         <!-- TODO add check that departure and return airports are not same -->
-        <select id="return_airport" name="return_airport">
+        <select class="airport_code_selection" name="return_airport">
           <!-- TODO maybe add check that the array is not empty
                 On client side us js
                 Ons server side compare the values sent from the form,
