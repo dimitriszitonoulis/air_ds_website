@@ -12,7 +12,7 @@ async function getAirportCodes() {
         return airportCodes;
     }
     // get the select elements for the departure and destination airports
-    const selectElements = document.getElementsByClassName('airport_code_selection');
+    const selectElements = document.getElementsByClassName('airport-code-selection');
     
     // add the airport codes to the select elements
     for (airportCode of airportCodes) {
