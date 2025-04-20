@@ -40,12 +40,12 @@ db_initialize();
       </fieldset>
 
       <fieldset>
-        <label id="number-of-tickets-label" for="number-of-tickets">Choose the nnumber of tickets you want</label>
+        <label id="number-of-tickets-label" for="number-of-tickets">Choose the number of tickets you want</label>
         <input type="number" id="number-of-tickets" name="number-of-tickets" value="1" min="1">
       </fieldset>
 
       <fieldset id="buy-tickes-button-fieldset">
-        <input type="buy-tickets-button" id="buy-tickets-button" name="buy-tickets-button" value="Buy tickets">
+        <input type="submit" id="buy-tickets-button" name="buy-tickets-button" value="Purchase">
       </fieldset>
     </form>
     </footer>
