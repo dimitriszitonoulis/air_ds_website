@@ -7,17 +7,18 @@ db_initialize();
 <html>
 
 <head>
-
+ 
 </head>
 
+
+
 <body>
+
+  <!-- <div id="header-placeholder">Header...</div> -->
+  <?php include_once '.\client\includes\header.php'?>
+
   <header>
-    <nav>
-      <a>Home</a>
-      <a>My Trips</a>
-      <a>Login</a>
-      <a>Logout</a>
-    </nav>
+
   </header>
 
   <section>
@@ -48,16 +49,15 @@ db_initialize();
         <input type="submit" id="buy-tickets-button" name="buy-tickets-button" value="Purchase">
       </fieldset>
     </form>
-    </footer>
+
+  </section>
+
+  <!-- <div i="footer-placeholder">Footer...</div> -->
+  
+  <?php include_once '.\client\includes\footer.php'?>
 
     <script src=".\client\scripts\getAirportCodes.js"></script>
     <script src=".\client\scripts\errorChecking.js"></script>
-  </section>
-
-  <footer>
-
-  </footer>
-
 </body>
 
 </html>
