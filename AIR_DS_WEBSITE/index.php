@@ -5,8 +5,9 @@ db_initialize();
 ?>
 
 <html>
+
 <head>
-  
+
 </head>
 
 <body>
@@ -20,25 +21,23 @@ db_initialize();
   </header>
 
   <section>
-  </section>
-  <footer>
     <form>
       <fieldset>
         <label class="airport-code-label" for="airport-code-selection">Select the departure airport</label>
         <br>
         <select class="airport-code-selection" name="departure-airport"></select>
       </fieldset>
-      
+
       <fieldset>
         <label class="airport-code-label" for="airport-code-selection">Select the destination airport</label>
         <br>
         <select class="airport-code-selection" name="destination-airport"></select>
       </fieldset>
-      
+
       <fieldset>
         <label for="departure-date">Select Departure Date</label>
         <input type="date" id="departure-date" name="departure-date">
-      </fieldset> 
+      </fieldset>
 
       <fieldset>
         <label id="number-of-tickets-label" for="number-of-tickets">Choose the nnumber of tickets you want</label>
@@ -49,9 +48,16 @@ db_initialize();
         <input type="buy-tickets-button" id="buy-tickets-button" name="buy-tickets-button" value="Buy tickets">
       </fieldset>
     </form>
+    </footer>
+
+    <script src=".\client\scripts\getAirportCodes.js"></script>
+    <script src=".\client\scripts\errorChecking.js"></script>
+  </section>
+
+  <footer>
+
   </footer>
 
-  <script src=".\client\scripts\getAirportCodes.js"></script>
-  <script src=".\client\scripts\errorChecking.js"></script>
 </body>
+
 </html>
