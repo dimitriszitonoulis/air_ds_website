@@ -10,11 +10,8 @@ db_initialize();
  
 </head>
 
-
-
 <body>
 
-  <!-- <div id="header-placeholder">Header...</div> -->
   <?php include_once '.\client\includes\header.php'?>
 
   <header>
@@ -26,23 +23,29 @@ db_initialize();
       <fieldset>
         <label class="airport-code-label" for="airport-code-selection">Select the departure airport</label>
         <br>
+        <!-- gest filled with js -->
         <select class="airport-code-selection" name="departure-airport"></select>
+        <div id="departure-aiport-error-message" class="error-message"><div>
       </fieldset>
 
       <fieldset>
         <label class="airport-code-label" for="airport-code-selection">Select the destination airport</label>
         <br>
+        <!-- getsfilled with js -->
         <select class="airport-code-selection" name="destination-airport"></select>
+        <div id="destination-aiport-error-message" class="error-message"><div>
       </fieldset>
 
       <fieldset>
         <label for="departure-date">Select Departure Date</label>
         <input type="date" id="departure-date" name="departure-date">
+        <div id="departure-date-error-message" class="error-message"><div>
       </fieldset>
 
       <fieldset>
-        <label id="number-of-tickets-label" for="number-of-tickets">Choose the number of tickets you want</label>
-        <input type="number" id="number-of-tickets" name="number-of-tickets" value="1" min="1">
+        <label id="ticket-number-label" for="ticket-number">Choose the number of tickets you want</label>
+        <input type="number" id="ticket-number" name="ticket-number" value="1" min="1">
+        <div id="ticket-number-error-message" class="error-message"></div>
       </fieldset>
 
       <fieldset id="buy-tickes-button-fieldset">
@@ -52,8 +55,6 @@ db_initialize();
 
   </section>
 
-  <!-- <div i="footer-placeholder">Footer...</div> -->
-  
   <?php include_once '.\client\includes\footer.php'?>
 
     <script src=".\client\scripts\getAirportCodes.js"></script>
