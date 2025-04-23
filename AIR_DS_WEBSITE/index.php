@@ -14,9 +14,6 @@ db_initialize();
 
   <?php include_once '.\client\includes\header.php'?>
 
-  <header>
-
-  </header>
 
   <section>
     <form>
@@ -25,7 +22,7 @@ db_initialize();
         <br>
         <!-- gest filled with js -->
         <select class="airport-code-selection" name="departure-airport"></select>
-        <div id="departure-aiport-error-message" class="error-message"><div>
+        <div id="departure-aiport-error-message" class="error-message"></div>
       </fieldset>
 
       <fieldset>
@@ -33,19 +30,20 @@ db_initialize();
         <br>
         <!-- getsfilled with js -->
         <select class="airport-code-selection" name="destination-airport"></select>
-        <div id="destination-aiport-error-message" class="error-message"><div>
+        <div id="destination-aiport-error-message" class="error-message"></div>
       </fieldset>
 
       <fieldset>
         <label for="departure-date">Select Departure Date</label>
         <input type="date" id="departure-date" name="departure-date">
-        <div id="departure-date-error-message" class="error-message"><div>
+        <div id="departure-date-error-message" class="error-message"></div>
       </fieldset>
 
       <fieldset>
         <label id="ticket-number-label" for="ticket-number">Choose the number of tickets you want</label>
-        <input type="number" id="ticket-number" name="ticket-number" value="1" min="1">
-        <div id="ticket-number-error-message" class="error-message"></div>
+        <input type="text" id="ticket-number" name="ticket-number" >
+        <!-- <input type="number" id="ticket-number" name="ticket-number" value="1" min="1"> -->
+        <div id="ticket-number-error-message" ></div>
       </fieldset>
 
       <fieldset id="buy-tickes-button-fieldset">
@@ -55,10 +53,11 @@ db_initialize();
 
   </section>
 
-  <?php include_once '.\client\includes\footer.php'?>
+  <?php //include_once '.\client\includes\footer.php'?>
 
-    <script src=".\client\scripts\getAirportCodes.js"></script>
-    <script src=".\client\scripts\errorChecking.js"></script>
+  <script src=".\client\scripts\getAirportCodes.js"></script>
+  <script src=".\client\scripts\errorChecking.js"></script>
+
 </body>
 
 </html>
