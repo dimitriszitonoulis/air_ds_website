@@ -1,3 +1,4 @@
+console.log("hello");
 
 // const buyTicketBtn = document.addEventListener('click', errorChecking());
 
@@ -8,22 +9,35 @@ function errorChecking() {
 
 // checks if the number of tickets is valid (>= 1)
 function checkTicketNumber() {
-    const numberOfTicketsElement = document.getElementById('number-of-tickets');
-    const numberOfTicketsLabel = document.getElementById('number-of-tickets-label');
-    const numberOfTicketsLabelText = numberOfTicketsLabel.innerText;
+    console.log("HELELOE")
+    const numberOfTicketsElement = document.getElementById('ticket-number');
+    // const numberOfTicketsLabel = document.getElementById('ticket-number-label');
+    // const numberOfTicketsLabelText = numberOfTicketsLabel.innerText;
+
+    const errMessageDiv = document.getElementById("ticket-number-error-message");
+    errMessageDiv.hidden = false;
+    errMessageDiv.style.color = "red";
+    errMessageDiv.style.fontStyle = "italic";
 
     numberOfTicketsElement.addEventListener('change', (e) => {
         let ticketNumber = numberOfTicketsElement.value;
 
-        if (!isNumber(ticketNumber))
-            numberOfTicketsLabel.innerText = numberOfTicketsLabelText + " (you must enter a number)";
+        if (!isNumber(ticketNumber)) {
+            errMessageDiv.innerText = "you must enter a number";
+            errMessageDiv.hidden = false;
+            // numberOfTicketsLabel.innerText = numberOfTicketsLabelText + " (you must enter a number)";
+        }
         else if (ticketNumber < 1) {
-            numberOfTicketsLabel.innerText = numberOfTicketsLabelText + " (you must by at least 1 ticket)";
+            errMessageDiv.innerText = "you must buy at least 1 ticket";
+            errMessageDiv.hidden = false;
+            // numberOfTicketsLabel.innerText = numberOfTicketsLabelText + " (you must buy at least 1 ticket)";
         }
         else {
             // in case user first enters text and then number
             // change the innerText to the initial value
-            numberOfTicketsLabel.innerText = numberOfTicketsLabelText;
+            errMessageDiv.hidden = true;
+            // numberOfTicketsLabel.innerText = numberOfTicketsLabelText;
+
         }
     })
 }
@@ -43,7 +57,7 @@ function checkAirportCodes() {
         airportElements[i].addEventListener('change', (e) => {
             // get the parent of the current select Element (fieldset)
             let fieldset = airportLabels[i].parentElement;
-            
+
             // get the label inside the current fieldset
             // even though there is only one label inside the fieldset and HTMLCollection is returned.
             // In order to access the label's inner text the first element [0] of the HTMLCollection must be accessed
@@ -71,3 +85,6 @@ function isNumber(i) {
     return i.match(regex);
 }
 
+
+checkTicketNumber();
+// checkAirportCodes();
