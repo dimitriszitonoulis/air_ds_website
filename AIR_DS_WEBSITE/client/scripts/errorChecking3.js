@@ -9,6 +9,34 @@ function errorChecking() {
     checkAirportCodes();
 }
 
+function checkDate(){
+    const tripDate = document.getElementById('departure-date');
+    const errMessageDiv = document.getElementById('departure-date-error-message');
+
+    tripDate.addEventListener('change', (e) => {
+        // every time a change is made calculate the current time and the time given by the element 
+        let currentDate = new Date();
+        let tripDateValue = new Date(tripDate.value);
+        // get the difference of the 2 dates in milliseconds
+        // the order of the 2 dates in the subtraction MATTERS
+        difference = tripDateValue.getTime() - currentDate.getTime();
+
+        // console.log(tripDateValue.getTime() +  " - " + currentDate.getTime() + " = " + difference);
+
+        const minuteInMilliseconds = 60000;
+
+        // if there is less than 1 minute between the departure time and now
+        if (difference < minuteInMilliseconds) {
+            errMessageDiv.innerText = "You can not buy tickets 1 min before the designated takeoff";
+            errMessageDiv.style.visibility = "visible";
+        }
+        else{
+            errMessageDiv.style.visibility = "hidden";
+        }
+    })
+
+}
+
 // checks if the number of tickets is valid (>= 1)
 function checkTicketNumber() {
     const numberOfTicketsElement = document.getElementById('ticket-number');
@@ -38,7 +66,7 @@ function checkTicketNumber() {
 
 // Checks that the codes of the departure and the destination airport are different
 function checkAirportCodes() {
-    const airportElements = document.getElementsByClassName('airport-code-selection');
+    const airportElements = document.getElementsByClassName('airport-selection');
     const aiportElementsLength = airportElements.length;
     const errMessageDivs =  [
         document.getElementById('departure-airport-error-message'),
@@ -112,6 +140,7 @@ function isNumber(i) {
 
 checkTicketNumber();
 checkAirportCodes();
+checkDate();
 
 
 

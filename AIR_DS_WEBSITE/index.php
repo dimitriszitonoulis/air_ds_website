@@ -14,7 +14,6 @@ db_initialize();
 
   <?php include_once '.\client\includes\header.php'?>
 
-
   <section>
     <!-- <form action="" method="post">  -->
       <form id="form">
@@ -36,7 +35,7 @@ db_initialize();
 
       <fieldset>
         <label for="departure-date">Select Departure Date</label>
-        <input type="date" id="departure-date" name="departure-date">
+        <input type="datetime-local" id="departure-date" name="departure-date">
         <div id="departure-date-error-message" class="error-message">dfsgsdgf</div>
       </fieldset>
 
