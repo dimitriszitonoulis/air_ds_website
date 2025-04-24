@@ -1,12 +1,15 @@
 
-const buyTicketBtn = document.addEventListener('click', (e) => {
-    errorChecking()
-    // document.getElementById('form').requestSubmit();
+const buyTicketBtn = document.getElementById('buy-tickets-button');
+
+buyTicketBtn.addEventListener('click', (e) => {
+    errorChecking();
+    document.getElementById('form').requestSubmit();
 });
 
 function errorChecking() {
     checkTicketNumber();
     checkAirportCodes();
+    checkDate();
 }
 
 function checkDate(){
@@ -19,7 +22,7 @@ function checkDate(){
         let tripDateValue = new Date(tripDate.value);
         // get the difference of the 2 dates in milliseconds
         // the order of the 2 dates in the subtraction MATTERS
-        difference = tripDateValue.getTime() - currentDate.getTime();
+        let difference = tripDateValue.getTime() - currentDate.getTime();
 
         // console.log(tripDateValue.getTime() +  " - " + currentDate.getTime() + " = " + difference);
 
@@ -27,14 +30,15 @@ function checkDate(){
 
         // if there is less than 1 minute between the departure time and now
         if (difference < minuteInMilliseconds) {
-            errMessageDiv.innerText = "You can not buy tickets 1 min before the designated takeoff";
-            errMessageDiv.style.visibility = "visible";
+            showError(errMessageDiv,"You can not buy tickets 1 min before the designated takeoff")
+            // errMessageDiv.innerText = "You can not buy tickets 1 min before the designated takeoff";
+            // errMessageDiv.style.visibility = "visible";
         }
         else{
-            errMessageDiv.style.visibility = "hidden";
+            clearError(errMessageDiv,"hidden");
+            // errMessageDiv.style.visibility = "hidden";
         }
     })
-
 }
 
 // checks if the number of tickets is valid (>= 1)
@@ -45,20 +49,23 @@ function checkTicketNumber() {
     numberOfTicketsElement.addEventListener('change', (e) => {
         let ticketNumber = numberOfTicketsElement.value;
         if (!isNumber(ticketNumber)) {
-            errMessageDiv.innerText = "you must enter a number";
-            // errMessageDiv.hidden = false;
-            errMessageDiv.style.visibility = "visible";
+            showError(errMessageDiv, "you must enter a number")
+            // errMessageDiv.innerText = "you must enter a number";
+            // // errMessageDiv.hidden = false;
+            // errMessageDiv.style.visibility = "visible";
         }
         else if (ticketNumber < 1) {
-            errMessageDiv.innerText = "you must buy at least 1 ticket";
-            // errMessageDiv.hidden = false;
-            errMessageDiv.style.visibility = "visible";
+           showError(errMessageDiv, "you must buy at least 1 ticket")
+            // errMessageDiv.innerText = "you must buy at least 1 ticket";
+            // // errMessageDiv.hidden = false;
+            // errMessageDiv.style.visibility = "visible";
         }
         else {
             // in case user first enters text and then number
             // change the innerText to the initial value
             // errMessageDiv.hidden = true;
-            errMessageDiv.style.visibility = "hidden";
+            clearError(errMessageDiv);
+            // errMessageDiv.style.visibility = "hidden";
         }
     })
 }
@@ -73,8 +80,8 @@ function checkAirportCodes() {
         document.getElementById('destination-aiport-error-message')
     ]
 
+    // add event listeners on both airport selectio elements
     for (let i = 0; i < aiportElementsLength; i++) {
-    
         airportElements[i].addEventListener('change', (e) => {
             // get the parent of the current <select> Element (fieldset)
             let fieldset = airportElements[i].parentElement;
@@ -85,13 +92,15 @@ function checkAirportCodes() {
             if (airportElements[i].value === airportElements[(i + 1) % aiportElementsLength].value) {
                 // add the warning inside the div
                 for(let j = 0; j < errMessageDivs.length; j++){
-                    errMessageDivs[j].innerText = "the departure and the destination airport must be different";
-                    errMessageDivs[j].style.visibility = "visible";
+                    showError(errMessageDivs[j], "the departure and the destination airport must be different")
+                    // errMessageDivs[j].innerText = "the departure and the destination airport must be different";
+                    // errMessageDivs[j].style.visibility = "visible";
                 }
             }
             else {
                 for(let j = 0; j < errMessageDivs.length; j++){
-                    errMessageDivs[j].style.visibility = "hidden";
+                    clearError(errMessageDivs[j])
+                    // errMessageDivs[j].style.visibility = "hidden";
                 }
             }
         })
@@ -129,6 +138,15 @@ function checkAirportCodes() {
         //     }
         // })
     }
+}
+
+function showError(element, message) {
+    element.innetText = message;
+    element.style.visibility = "visible";
+}
+
+function clearError(element, message) {
+    element.style.visibility = "hidden";
 }
 
 
