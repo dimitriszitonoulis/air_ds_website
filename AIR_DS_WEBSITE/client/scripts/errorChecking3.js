@@ -31,12 +31,9 @@ function checkDate(){
         // if there is less than 1 minute between the departure time and now
         if (difference < minuteInMilliseconds) {
             showError(errMessageDiv,"You can not buy tickets 1 min before the designated takeoff")
-            // errMessageDiv.innerText = "You can not buy tickets 1 min before the designated takeoff";
-            // errMessageDiv.style.visibility = "visible";
         }
         else{
             clearError(errMessageDiv,"hidden");
-            // errMessageDiv.style.visibility = "hidden";
         }
     })
 }
@@ -48,24 +45,15 @@ function checkTicketNumber() {
 
     numberOfTicketsElement.addEventListener('change', (e) => {
         let ticketNumber = numberOfTicketsElement.value;
-        if (!isNumber(ticketNumber)) {
+        if (!isNumber(ticketNumber))
             showError(errMessageDiv, "you must enter a number")
-            // errMessageDiv.innerText = "you must enter a number";
-            // // errMessageDiv.hidden = false;
-            // errMessageDiv.style.visibility = "visible";
-        }
-        else if (ticketNumber < 1) {
+        else if (ticketNumber < 1)
            showError(errMessageDiv, "you must buy at least 1 ticket")
-            // errMessageDiv.innerText = "you must buy at least 1 ticket";
-            // // errMessageDiv.hidden = false;
-            // errMessageDiv.style.visibility = "visible";
-        }
+        
         else {
             // in case user first enters text and then number
             // change the innerText to the initial value
-            // errMessageDiv.hidden = true;
             clearError(errMessageDiv);
-            // errMessageDiv.style.visibility = "hidden";
         }
     })
 }
@@ -91,52 +79,14 @@ function checkAirportCodes() {
             // if i = 1, then (i + 1) % aiportElementsLength = (1 + 1) % 2 = 0
             if (airportElements[i].value === airportElements[(i + 1) % aiportElementsLength].value) {
                 // add the warning inside the div
-                for(let j = 0; j < errMessageDivs.length; j++){
+                for(let j = 0; j < errMessageDivs.length; j++)
                     showError(errMessageDivs[j], "the departure and the destination airport must be different")
-                    // errMessageDivs[j].innerText = "the departure and the destination airport must be different";
-                    // errMessageDivs[j].style.visibility = "visible";
-                }
             }
             else {
-                for(let j = 0; j < errMessageDivs.length; j++){
+                for(let j = 0; j < errMessageDivs.length; j++)
                     clearError(errMessageDivs[j])
-                    // errMessageDivs[j].style.visibility = "hidden";
-                }
             }
-        })
-    
-    //     const airportElements = document.getElementsByClassName('airport-code-selection');
-    // const aiportElementsLength = airportElements.length;
-    // const airportLabels = document.getElementsByClassName('airport-code-label');
-    // const airportLabelsText = [
-    //     airportLabels[0].innerText,
-    //     airportLabels[1].innerText
-    // ];
-        // airportElements[i].addEventListener('change', (e) => {
-        //     // get the parent of the current <select> Element (fieldset)
-        //     let fieldset = airportLabels[i].parentElement;
-
-        //     let errMessageDiv = fieldset.getElementsByClassName('error-message')[0];
-        //     // get the label inside the current fieldset
-        //     // even though there is only one label inside the fieldset an HTMLCollection is returned.
-        //     // In order to access the label's inner text the first element [0] of the HTMLCollection must be accessed
-        //     let label = fieldset.getElementsByClassName('airport-code-label')[0];
-        //     // console.log(label);
-
-        //     // there are 2 selection element for the airport codes
-        //     // if i = 0, then (i + 1) % aiportElementsLength = (0 + 1) % 2 = 1
-        //     // if i = 1, then (i + 1) % aiportElementsLength = (1 + 1) % 2 = 0
-        //     if (airportElements[i].value === airportElements[(i + 1) % aiportElementsLength].value) {
-        //         // add the warning inside the label
-        //         // label.innerText = airportLabelsText[i] + " (the departure and the destination airport must be different)";
-        //         errMessageDiv.innerText = "the departure and the destination airport must be different";
-        //         errMessageDiv.style.visibility = "visible";
-        //     }
-        //     else {
-        //         // label.innerText = airportLabelsText[i]
-        //         errMessageDiv.style.visibility = "hidden";
-        //     }
-        // })
+        });
     }
 }
 
