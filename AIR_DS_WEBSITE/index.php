@@ -7,9 +7,7 @@ db_initialize();
 <html>
 
 <head>
-  <!-- <script> console.log("hello")</script> -->
-  <!-- <script src=".\client\scripts\errorChecking.js" defer ></script> -->
-
+  <link rel="stylesheet" href="./client/styles/style.css"> 
 </head>
 
 <body>
@@ -18,7 +16,8 @@ db_initialize();
 
 
   <section>
-    <form action="" method="post"> 
+    <!-- <form action="" method="post">  -->
+      <form id="form">
       <fieldset>
         <label class="airport-code-label" for="airport-code-selection">Select the departure airport</label>
         <br>
@@ -38,27 +37,27 @@ db_initialize();
       <fieldset>
         <label for="departure-date">Select Departure Date</label>
         <input type="date" id="departure-date" name="departure-date">
-        <div id="departure-date-error-message" class="error-message"></div>
+        <div id="departure-date-error-message" class="error-message">dfsgsdgf</div>
       </fieldset>
 
       <fieldset>
         <label id="ticket-number-label" for="ticket-number">Choose the number of tickets you want</label>
-        <input type="text" id="ticket-number" name="ticket-number" >
+        <input type="number" id="ticket-number" name="ticket-number" value="1" required>
         <!-- <input type="number" id="ticket-number" name="ticket-number" value="1" min="1"> -->
-        <div id="ticket-number-error-message"></div>
+        <div id="ticket-number-error-message" class="error-message">asdfasdf</div>
       </fieldset>
 
       <fieldset id="buy-tickes-button-fieldset">
-        <!-- <input type="submit" id="buy-tickets-button" name="buy-tickets-button" value="Purchase"> -->
+        <input type="submit" id="buy-tickets-button" name="buy-tickets-button" value="Purchase">
       </fieldset>
     </form>
 
   </section>
 
-  <?php //include_once '.\client\includes\footer.php'?>
+  <?php include_once '.\client\includes\footer.php'?>
 
   <script src="./client/scripts/getAirportCodes.js"></script>
-  <script src="./client/scripts/errorChecking1.js"></script>
+  <script src="./client/scripts/errorChecking3.js"></script>
 </body>
 
 </html>

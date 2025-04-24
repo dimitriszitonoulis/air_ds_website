@@ -1,0 +1,12 @@
+.error-message {
+    color: red;
+    font-style: italic;
+    /* 
+    item still takes up space.
+    If it must be removed use
+    display:none
+    Similar to element-name.hidden = true in js
+    */
+    visibility: hidden;
+
+}
