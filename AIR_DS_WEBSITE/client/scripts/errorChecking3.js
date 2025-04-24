@@ -141,7 +141,7 @@ function checkAirportCodes() {
 }
 
 function showError(element, message) {
-    element.innetText = message;
+    element.innerText = message;
     element.style.visibility = "visible";
 }
 
