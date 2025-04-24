@@ -19,18 +19,18 @@ db_initialize();
     <!-- <form action="" method="post">  -->
       <form id="form">
       <fieldset>
-        <label class="airport-code-label" for="airport-code-selection">Select the departure airport</label>
+        <label class="airport-label" for="airport-selection">Select the departure airport</label>
         <br>
         <!-- gets filled with js -->
-        <select class="airport-code-selection" name="departure-airport"></select>
+        <select class="airport-selection" name="departure-airport"></select>
         <div id="departure-airport-error-message" class="error-message"></div>
       </fieldset>
 
       <fieldset>
-        <label class="airport-code-label" for="airport-code-selection">Select the destination airport</label>
+        <label class="airport-label" for="airport-selection">Select the destination airport</label>
         <br>
         <!-- gets filled with js -->
-        <select class="airport-code-selection" name="destination-airport"></select>
+        <select class="airport-selection" name="destination-airport"></select>
         <div id="destination-aiport-error-message" class="error-message"></div>
       </fieldset>
 
@@ -56,7 +56,7 @@ db_initialize();
 
   <?php include_once '.\client\includes\footer.php'?>
 
-  <script src="./client/scripts/getAirportCodes.js"></script>
+  <script src="./client/scripts/getAirports.js"></script>
   <script src="./client/scripts/errorChecking3.js"></script>
 </body>
 
