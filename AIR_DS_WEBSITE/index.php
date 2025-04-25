@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
-require_once '.\server\database\db_utils\db_initialize.php';
+require_once __DIR__ . "/config/config.php";
+require_once BASE_PATH . '.\server\database\db_utils\db_initialize.php';
 db_initialize();
 ?>
 
@@ -15,8 +16,8 @@ db_initialize();
   <?php include_once '.\client\includes\header.php'?>
 
   <section>
-    <!-- <form action="" method="post">  -->
-      <form id="form">
+    <form action="" method="post"> 
+      <!-- <form id="form"> -->
       <fieldset>
         <label class="airport-label" for="airport-selection">Select the departure airport</label>
         <br>
