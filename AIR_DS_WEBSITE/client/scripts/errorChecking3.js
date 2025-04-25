@@ -1,9 +1,17 @@
 
-const buyTicketBtn = document.getElementById('buy-tickets-button');
+checkTicketNumber();
+checkAirportCodes();
+checkDate();
 
+const buyTicketBtn = document.getElementById('buy-tickets-button');
 buyTicketBtn.addEventListener('click', (e) => {
-    errorChecking();
-    document.getElementById('form').requestSubmit();
+    // only submit if all the tests pass
+    if(checkTicketNumber() && checkAirportCodes() && checkDate()){
+        document.getElementById('form').requestSubmit();
+        return
+    }
+    // do not submit when pressed
+    e.preventDefault();
 });
 
 function errorChecking() {
@@ -172,15 +180,10 @@ function clearError(element) {
 
 function isNumber(i) {
     const regex = /^-?[0-9]+$/; //match all integers
-    console.log(i.match(regex));
     //returns the an array containing i if it matches else null 
     return i.match(regex);
 }
 
-
-checkTicketNumber();
-checkAirportCodes();
-checkDate();
 
 
 
