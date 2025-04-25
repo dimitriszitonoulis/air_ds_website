@@ -103,7 +103,8 @@ function checkAirportCodes() {
  * 
  * @param {object} airportElements 
  * @param {number} currentAirportIndex - The index of the current aiport <select> element
- * @param {*} otherAirportIndex - The index of the other aiport <select> element 
+ * @param {number} otherAirportIndex - The index of the other aiport <select> element 
+ * @param {HTMLCollection} errMessageDivs - Collection of the divs used to display error messages for the airports
  * @returns {boolean} - true if the 2 <select> elements have different values, otherwise false
  */
 function areAirportsValid(airportElements, currentAirportIndex, otherAirportIndex, errMessageDivs) {
@@ -115,11 +116,8 @@ function areAirportsValid(airportElements, currentAirportIndex, otherAirportInde
     let fieldset = airportElements[currentAirportIndex].parentElement;
     
     //check if the strings are empty
-    if (!currentAirport || !otherAirport) {
-        console.log("currentAiport = " + currentAirport);
-        console.log("otherAirport = " + otherAirport);
+    if (!currentAirport || !otherAirport)
         return false;
-    }
 
     // compare the value of the 2 aiport <select> elements
     // if they are the same show error message ON BOTH
@@ -127,14 +125,12 @@ function areAirportsValid(airportElements, currentAirportIndex, otherAirportInde
         // add the warning inside the div
         for (let j = 0; j < errMessageDivs.length; j++)
             showError(errMessageDivs[j], "the departure and the destination airport must be different");
-        // isValid = false;    // the choice of aiports is not valid
         return false;
     } 
 
-    // airport elements are different
+    // airport elements are different => clear error messages
     for (let j = 0; j < errMessageDivs.length; j++)
         clearError(errMessageDivs[j]);
-
     return true;
 }
 
