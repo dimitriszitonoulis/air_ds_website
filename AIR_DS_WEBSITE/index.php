@@ -41,7 +41,7 @@ db_initialize();
 
       <fieldset>
         <label id="ticket-number-label" for="ticket-number">Choose the number of tickets you want</label>
-        <input type="number" id="ticket-number" name="ticket-number" value="1" required>
+        <input type="text" id="ticket-number" name="ticket-number" value="1" required>
         <!-- <input type="number" id="ticket-number" name="ticket-number" value="1" min="1"> -->
         <div id="ticket-number-error-message" class="error-message">asdfasdf</div>
       </fieldset>

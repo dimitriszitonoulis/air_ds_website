@@ -44,20 +44,36 @@ function checkTicketNumber() {
     const errMessageDiv = document.getElementById("ticket-number-error-message");
 
     numberOfTicketsElement.addEventListener('change', (e) => {
-        let ticketNumber = numberOfTicketsElement.value;
-        if (!isNumber(ticketNumber))
-            showError(errMessageDiv, "you must enter a number")
-        else if (ticketNumber < 1)
-            showError(errMessageDiv, "you must buy at least 1 ticket")
-
-        else {
-            // in case user first enters text and then number
-            // change the innerText to the initial value
-            clearError(errMessageDiv);
-        }
-    })
+        // for real time validation
+        isTicketNumberValid(numberOfTicketsElement, errMessageDiv);
+    }) 
+    // for submit time validation
+    return isTicketNumberValid(numberOfTicketsElement, errMessageDiv);
 }
 
+function isTicketNumberValid(numberOfTicketsElement, errMessageDiv) {
+    let ticketNumber = numberOfTicketsElement.value;
+    // is input empty
+    if (!ticketNumber) {
+        return false;
+    }
+  
+    // IN ORDER FOR THIS TO WORK THE INPUT TYPE IN THE ELEMENT MUST BE TEXT!
+    // is input number?
+    if (!isNumber(ticketNumber)) {
+        showError(errMessageDiv, "you must enter a number")
+        return false;
+    }
+    // is number >= 1
+    if (ticketNumber < 1) {
+        showError(errMessageDiv, "you must buy at least 1 ticket")
+        return false;
+    }
+
+    // all is good
+    clearError(errMessageDiv);
+    return true;
+}
 
 function checkAirportCodes() {
     const airportElements = document.getElementsByClassName('airport-selection');
@@ -74,7 +90,7 @@ function checkAirportCodes() {
         // if currentAiport = 1, then (currentAiport + 1) % aiportElementsLength = (1 + 1) % 2 = 0
         let otherAirport = (currentAirport + 1) % aiportElementsLength
         
-        // For real time evaluation
+        // for real time evaluation
         airportElements[currentAirport].addEventListener('change', (e) => {
             areAirportsValid(airportElements, currentAirport, otherAirport, errMessageDivs);
         });
@@ -146,6 +162,8 @@ function clearError(element, message) {
 
 function isNumber(i) {
     const regex = /^-?[0-9]+$/; //match all integers
+    console.log(i.match(regex));
+    //returns the an array containing i if it matches else null 
     return i.match(regex);
 }
 
