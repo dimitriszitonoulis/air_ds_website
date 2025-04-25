@@ -2,7 +2,8 @@
 // *****************************************************************************************************************************************
 // INITIALIZE DATABASE
 function db_initialize() {
-    require_once 'C:\xampp\htdocs\WEB_ZITONOULIS_DIMITRIOS_E22054\AIR_DS_WEBSITE\server\database\db_utils\db_connect.php';
+    // ASSUMES THAT db_initialize AND db_connect.php ARE IN THE SAME FOLDER
+    require_once 'db_connect.php';
 
     // create db
     try{
