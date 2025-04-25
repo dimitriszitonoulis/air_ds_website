@@ -17,26 +17,35 @@ function checkDate() {
     const errMessageDiv = document.getElementById('departure-date-error-message');
 
     tripDate.addEventListener('change', (e) => {
-        // every time a change is made calculate the current time and the time given by the element 
-        let currentDate = new Date();
-        let tripDateValue = new Date(tripDate.value);
-        // get the difference of the 2 dates in milliseconds
-        // the order of the 2 dates in the subtraction MATTERS
-        let difference = tripDateValue.getTime() - currentDate.getTime();
-
-        // console.log(tripDateValue.getTime() +  " - " + currentDate.getTime() + " = " + difference);
-
-        const minuteInMilliseconds = 60000;
-
-        // if there is less than 1 minute between the departure time and now
-        if (difference < minuteInMilliseconds) {
-            showError(errMessageDiv, "You can not buy tickets 1 min before the designated takeoff")
-        }
-        else {
-            clearError(errMessageDiv, "hidden");
-        }
+        // for real time evaluation
+        isDateValid(tripDate, errMessageDiv);
     })
+
+    // for submit time evalution
+    return isDateValid(tripDate, errMessageDiv);
 }
+
+function isDateValid(tripDate, errMessageDiv) {
+    // every time a change is made calculate the current time and the time given by the element 
+    let currentDate = new Date();
+    let tripDateValue = new Date(tripDate.value);
+
+    // get the difference of the 2 dates in milliseconds
+    // the order of the 2 dates in the subtraction MATTERS
+    let difference = tripDateValue.getTime() - currentDate.getTime();
+    const minuteInMilliseconds = 60000;
+
+    // if there is less than 1 minute between the departure time and now
+    if (difference < minuteInMilliseconds) {
+        showError(errMessageDiv, "You can not buy tickets 1 min before the designated takeoff")
+        return false;
+    }
+    
+    // all is good
+    clearError(errMessageDiv);
+    return true;
+}
+
 
 // checks if the number of tickets is valid (>= 1)
 function checkTicketNumber() {
@@ -59,6 +68,7 @@ function isTicketNumberValid(numberOfTicketsElement, errMessageDiv) {
     }
   
     // IN ORDER FOR THIS TO WORK THE INPUT TYPE IN THE ELEMENT MUST BE TEXT!
+
     // is input number?
     if (!isNumber(ticketNumber)) {
         showError(errMessageDiv, "you must enter a number")
@@ -155,7 +165,7 @@ function showError(element, message) {
     element.style.visibility = "visible";
 }
 
-function clearError(element, message) {
+function clearError(element) {
     element.style.visibility = "hidden";
 }
 
