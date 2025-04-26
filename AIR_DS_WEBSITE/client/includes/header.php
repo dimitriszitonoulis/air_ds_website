@@ -1,4 +1,4 @@
-<header>
+<header id="header">
   <nav>
   <a>Home</a>
   <a>My Trips</a>
