@@ -6,7 +6,7 @@ checkDate();
 const buyTicketBtn = document.getElementById('buy-tickets-button');
 buyTicketBtn.addEventListener('click', (e) => {
     // only submit if all the tests pass
-    if(checkTicketNumber() && checkAirportCodes() && checkDate()){
+    if (checkTicketNumber() && checkAirportCodes() && checkDate()) {
         document.getElementById('form').requestSubmit();
         return
     }
@@ -48,7 +48,7 @@ function isDateValid(tripDate, errMessageDiv) {
         showError(errMessageDiv, "You can not buy tickets 1 min before the designated takeoff")
         return false;
     }
-    
+
     // all is good
     clearError(errMessageDiv);
     return true;
@@ -63,7 +63,7 @@ function checkTicketNumber() {
     numberOfTicketsElement.addEventListener('change', (e) => {
         // for real time validation
         isTicketNumberValid(numberOfTicketsElement, errMessageDiv);
-    }) 
+    })
     // for submit time validation
     return isTicketNumberValid(numberOfTicketsElement, errMessageDiv);
 }
@@ -74,7 +74,7 @@ function isTicketNumberValid(numberOfTicketsElement, errMessageDiv) {
     if (!ticketNumber) {
         return false;
     }
-  
+
     // IN ORDER FOR THIS TO WORK THE INPUT TYPE IN THE ELEMENT MUST BE TEXT!
 
     // is input number?
@@ -107,13 +107,13 @@ function checkAirportCodes() {
         // if currentAiport = 0, then (currentAiport + 1) % aiportElementsLength = (0 + 1) % 2 = 1
         // if currentAiport = 1, then (currentAiport + 1) % aiportElementsLength = (1 + 1) % 2 = 0
         let otherAirport = (currentAirport + 1) % aiportElementsLength
-        
+
         // for real time evaluation
         airportElements[currentAirport].addEventListener('change', (e) => {
             areAirportsValid(airportElements, currentAirport, otherAirport, errMessageDivs);
         });
     }
-    
+
     // for submit time evaluation
     return areAirportsValid(airportElements, 0, 1, errMessageDivs);
 }
@@ -130,9 +130,9 @@ function checkAirportCodes() {
  * ATTENTION:
  * The order of the 2 index parameters does not matter.
  * ex:
- * The result for:
+ * The result of:
  *      currentAirportIndex = 0 and otherAirportIndex = 1
- * is the same as:
+ * is the same of:
  *      currentAirportIndex = 1 and otherAirportIndex = 0
  * 
  * @param {object} airportElements 
@@ -148,19 +148,32 @@ function areAirportsValid(airportElements, currentAirportIndex, otherAirportInde
 
     // get the parent of the current <select> Element (fieldset)
     let fieldset = airportElements[currentAirportIndex].parentElement;
-    
+
     //check if the strings are empty
-    if (!currentAirport || !otherAirport)
+    if (!currentAirport || !otherAirport) {
+        for (airport of airportElements) {
+            airport.title = "You must choose an airport";
+        }
         return false;
+    }
+
+    // check that the aiports are not: "-"
+    if (currentAirport === '-' || otherAirport === "-") {
+        for (airport of airportElements) {
+            airport.title = "You must choose an airport";
+        }
+        return false;
+    }
 
     // compare the value of the 2 aiport <select> elements
     // if they are the same show error message ON BOTH
     if (currentAirport === otherAirport) {
         // add the warning inside the div
-        for (let j = 0; j < errMessageDivs.length; j++)
-            showError(errMessageDivs[j], "the departure and the destination airport must be different");
+        for (let errMessageDiv of errMessageDivs) {
+            showError(errMessageDiv, "the departure and the destination airport must be different")
+        }
         return false;
-    } 
+    }
 
     // airport elements are different => clear error messages
     for (let j = 0; j < errMessageDivs.length; j++)
@@ -183,7 +196,3 @@ function isNumber(i) {
     //returns the an array containing i if it matches else null 
     return i.match(regex);
 }
-
-
-
-
