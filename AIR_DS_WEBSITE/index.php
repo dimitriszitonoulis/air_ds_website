@@ -9,12 +9,14 @@ db_initialize();
 <html>
 
 <head>
-  <link rel="stylesheet" href="./client/styles/style.css"> 
+  <!-- <link rel="stylesheet" href="./client/styles/style.css">  -->
+  <link rel="stylesheet" href="<?= BASE_URL ?>styles/style.css"> 
+
 </head>
 
 <body>
 
-  <?php include_once '.\client\includes\header.php'?>
+  <?php include_once BASE_PATH . '\client\includes\header.php'?>
 
   <section>
     <form action="" method="post"> 
@@ -55,7 +57,7 @@ db_initialize();
 
   </section>
 
-  <?php include_once '.\client\includes\footer.php'?>
+  <?php include_once BASE_PATH . '\client\includes\footer.php'?>
 
   <script src="./client/scripts/getAirports.js"></script>
   <script src="./client/scripts/errorChecking.js"></script>
