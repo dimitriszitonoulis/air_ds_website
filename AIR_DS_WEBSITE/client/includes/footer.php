@@ -1,8 +1,5 @@
-<!DOCTYPE html>
+<footer>
+  We wish you a happy trip!
+</footer>
 
-<html>
-  <footer>
-    this is the footer
-  </footer>
-</html>
 
