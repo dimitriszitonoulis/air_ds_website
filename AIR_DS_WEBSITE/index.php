@@ -58,7 +58,7 @@ db_initialize();
   <?php include_once '.\client\includes\footer.php'?>
 
   <script src="./client/scripts/getAirports.js"></script>
-  <script src="./client/scripts/errorChecking3.js"></script>
+  <script src="./client/scripts/errorChecking.js"></script>
 </body>
 
 </html>
