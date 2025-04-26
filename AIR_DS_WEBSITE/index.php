@@ -2,6 +2,7 @@
 <?php
 require_once __DIR__ . "/config/config.php";
 require_once BASE_PATH . '.\server\database\db_utils\db_initialize.php';
+
 db_initialize();
 ?>
 
@@ -23,7 +24,7 @@ db_initialize();
         <br>
         <!-- gets filled with js -->
         <select class="airport-selection" name="departure-airport"></select>
-        <div id="departure-airport-error-message" class="error-message"></div>
+        <div id="departure-airport-error-message" class="error-message">Empty</div>
       </fieldset>
 
       <fieldset>
@@ -31,20 +32,20 @@ db_initialize();
         <br>
         <!-- gets filled with js -->
         <select class="airport-selection" name="destination-airport"></select>
-        <div id="destination-aiport-error-message" class="error-message"></div>
+        <div id="destination-aiport-error-message" class="error-message">Empty</div>
       </fieldset>
 
       <fieldset>
         <label for="departure-date">Select Departure Date</label>
         <input type="datetime-local" id="departure-date" name="departure-date">
-        <div id="departure-date-error-message" class="error-message">dfsgsdgf</div>
+        <div id="departure-date-error-message" class="error-message">Empty</div>
       </fieldset>
 
       <fieldset>
         <label id="ticket-number-label" for="ticket-number">Choose the number of tickets you want</label>
         <input type="text" id="ticket-number" name="ticket-number" value="1" required>
         <!-- <input type="number" id="ticket-number" name="ticket-number" value="1" min="1"> -->
-        <div id="ticket-number-error-message" class="error-message">asdfasdf</div>
+        <div id="ticket-number-error-message" class="error-message">Empty</div>
       </fieldset>
 
       <fieldset id="buy-tickes-button-fieldset">
