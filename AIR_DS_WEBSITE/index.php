@@ -18,6 +18,9 @@ db_initialize();
 
   <?php include_once BASE_PATH . '\client\includes\header.php'?>
 
+
+  <!-- TODO maybe delete the ids from the labels -->
+
   <form action="" method="post"> 
     <!-- <form id="form"> -->
     <fieldset>
@@ -49,7 +52,7 @@ db_initialize();
       <div id="ticket-number-error-message" class="error-message">Empty</div>
     </fieldset>
 
-    <fieldset id="buy-tickes-button-fieldset">
+    <fieldset id="buy-tickets-button-fieldset">
       <input type="submit" id="buy-tickets-button" name="buy-tickets-button" value="Purchase">
     </fieldset>
   </form>
