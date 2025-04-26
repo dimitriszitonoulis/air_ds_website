@@ -14,12 +14,6 @@ buyTicketBtn.addEventListener('click', (e) => {
     e.preventDefault();
 });
 
-function errorChecking() {
-    checkTicketNumber();
-    checkAirportCodes();
-    checkDate();
-}
-
 function checkDate() {
     const tripDate = document.getElementById('departure-date');
     const errMessageDiv = document.getElementById('departure-date-error-message');
