@@ -7,7 +7,7 @@ $conn = db_connect();
 $stmt = $conn->prepare("SELECT name, code FROM airports");
 $stmt->execute();
 $result = $stmt->fetchall(PDO::FETCH_ASSOC);
-// make sure that the return object is treated as json and not text
+// tell that browser that the returned object must be treated as json and not text
 header('Content-Type: application/json');
 echo json_encode($result);
 ?>
