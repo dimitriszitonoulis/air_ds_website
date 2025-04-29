@@ -46,8 +46,10 @@
     <fieldset id="register-button-fieldset">
       <input type="submit" id="register-button" name="register-button" value="Purchase">
     </fieldset>
-
   </form>
+
+  <script> const BASE_URL = "<?= BASE_URL ?>";</script>
+  <script src="<?= BASE_URL ?>/client/scripts/test.js"></script>
 </body>
 
 </html>
