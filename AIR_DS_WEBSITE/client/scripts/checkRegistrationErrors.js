@@ -27,13 +27,12 @@
 
 
 
-
+checkUsername()
 
 
 
 /**
- * Function that evaluates if the username entered by the user is alright.
- * 
+ * Function responsible for evaluating the entered username 
  * This function performs:
  *  Real time evaluation, by adding an event listener on the username input element
  *  Submit time evaluation, by returning true (username is alright) or false (otherwise)
@@ -56,6 +55,7 @@ function checkUsername() {
  * Function that checks if the username in the userame input field is valid.
  * 
  * If the username is not valid then an error message is shown in the page and false is returned.
+ * Otherwise, the error message (if it appeared) gets cleared and true is returned
  * 
  * LOGIC:
  *  - checks if the username is empty
