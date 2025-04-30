@@ -46,6 +46,7 @@ function checkUsername() {
     usernameInput.addEventListener('change', (e) => {
         // for real time evaluation
         isUsernameValid(usernameInput, errMessageDiv);
+        console.log(isUsernameValid(usernameInput, errMessageDiv))
     });  
     // for submit time evaluation
     return isUsernameValid(usernameInput, errMessageDiv);
@@ -111,10 +112,11 @@ async function isUsernameAvailable(username) {
 
     let usernames = "";
     let data = "";
+
     try{
         // get all the usernames that match username 
         // (are the same as username or have the pattern: <username><other_characters>)
-        const response = fetch(url, {
+        let response = await fetch(url, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
