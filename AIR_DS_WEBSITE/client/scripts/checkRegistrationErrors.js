@@ -27,7 +27,8 @@
 
 
 
-checkUsername()
+checkUsername();
+checkPassword();
 
 
 
@@ -44,7 +45,7 @@ function checkUsername() {
     const errMessageDiv = document.getElementById('username-input-error-message');
 
     /*
-     * The function that checks the validity of is async
+     * The function that checks the validity of the username is async
      * This happens because it awaits the result of another function that fetches the database 
      */
     usernameInput.addEventListener('change', async (e) => {
@@ -155,6 +156,61 @@ async function isUsernameAvailable(username) {
         return false;
 }
 
+/**
+ * funtion responsible for evaluating the entered password
+ * This function performs:
+ *  Real time evaluation, by adding an event listener on the username input element
+ *  Submit time evaluation, by returning true (username is alright) or false (otherwise)
+ * 
+ * @returns {boolean} - true if the password is alright, false otherwise
+ */
+function checkPassword() {
+    const passwordInput = document.getElementById('password-input');
+    const errMessageDiv = document.getElementById("password-input-error-message");
+
+    passwordInput.addEventListener('change', (e) => {
+        // for real time evaluation
+        isPasswordValid(passwordInput, errMessageDiv);
+    })
+    // for submit time evaluation
+    return isPasswordValid(passwordInput, errMessageDiv);
+}
+
+/**
+ * function that ensures the validity of the password <input> field
+ * A valid password is one that:
+ *      - Is not empty
+ *      - Has at least one number
+ *      - Has 4 to 10 digits
+ *  
+ * @param {object} passwordInput - the <input> element containing the password
+ * @param {object} errMessageDiv - the <div> containing the error message for the password
+ * @returns 
+ */
+function isPasswordValid(passwordInput, errMessageDiv) {
+    let password = passwordInput.value;
+
+    // check if the password is empty
+    if (!password)
+        return false;
+
+    // check password contains at least one digit
+    if(!constainsNumber(password)) {
+        showError(errMessageDiv, "Password must contain at least one digit.");
+        return false;
+    }
+
+    // check password is 4 - 10 digits
+    if (password.length < 4 || password.length > 10) {
+        showError(errMessageDiv, "Password must have between 4 and 10 digits");
+        return false;
+    }
+
+    // all good
+    clearError(errMessageDiv);
+    return true;
+}
+
 
 function showError(element, message) {
     element.innerText = message;
@@ -167,5 +223,10 @@ function clearError(element) {
 
 function isAlphanumeric(text) {
     const regex = /^[a-zA-Z0-9]+$/;
+    return text.match(regex);
+}
+
+function constainsNumber(text) {
+    const regex = /\d/;
     return text.match(regex);
 }
