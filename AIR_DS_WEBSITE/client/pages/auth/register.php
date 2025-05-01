@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 
+<?php
+require_once __DIR__ . "/../../../config/config.php";
+?>
+
 <html>
 
 <head>
-  <!-- <link rel="stylesheet" href = "<?= BASE_URL ?> . styles/style.css"> -->
+  <link rel="stylesheet" href = "<?= BASE_URL ?>/client/styles/style.css">
 </head>
 
 <body>
@@ -26,7 +30,7 @@
     <fieldset>
       <label for="username-input">Username</label>
       <input type="text" id="username-input" name="username-input" required>
-      <div id="" class="error-message">Empty</div>
+      <div id="username-input-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <!-- password field -->
@@ -49,7 +53,7 @@
   </form>
 
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
-  <script src="<?= BASE_URL ?>/client/scripts/test.js"></script>
+  <script src="<?= BASE_URL ?>/client/scripts/checkRegistrationErrors.js"></script>
 </body>
 
 </html>
