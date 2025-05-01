@@ -5,11 +5,11 @@
  * Surname:
  *  Only characters
  * Username:
- *  Letters or numbers
+ *  Letters or numbers => DONE
  *  Unique => DONE
  * Password:
- *  At least one number
- *  Length: 4 to 10 characters
+ *  At least one number => DONE
+ *  Length: 4 to 10 characters => DONE
  * Email:
  *  Must contain @ character
  *  Must be unique => no other user with that username
@@ -29,11 +29,14 @@
 
 checkUsername();
 checkPassword();
+checkEmail();
+
 
 
 
 /**
  * Function responsible for evaluating the entered username 
+ * 
  * This function performs:
  *  Real time evaluation, by adding an event listener on the username input element
  *  Submit time evaluation, by returning true (username is alright) or false (otherwise)
@@ -158,9 +161,10 @@ async function isUsernameAvailable(username) {
 
 /**
  * funtion responsible for evaluating the entered password
+ * 
  * This function performs:
- *  Real time evaluation, by adding an event listener on the username input element
- *  Submit time evaluation, by returning true (username is alright) or false (otherwise)
+ *  Real time evaluation, by adding an event listener on the password <input> element
+ *  Submit time evaluation, by returning true (password is alright) or false (otherwise)
  * 
  * @returns {boolean} - true if the password is alright, false otherwise
  */
@@ -211,6 +215,54 @@ function isPasswordValid(passwordInput, errMessageDiv) {
     return true;
 }
 
+/**
+ * function responsible for evaluating the entered email
+ * 
+ * This function performs:
+ *  Real time evaluation, by adding an event listener on the email <input> element
+ *  Submit time evaluation, by returning true (email is alright) or false (otherwise)
+ * 
+ * @returns {boolean} - true if the email is alright, false otherwise
+ */
+function checkEmail() {
+    const emailInput = document.getElementById('email-input');
+    const errMessageDiv = document.getElementById('email-input-error-message');
+
+    emailInput.addEventListener('change', (e) => {
+    // for real time evaluation
+        isEmailValid(emailInput, errMessageDiv);
+    })
+    // for submit time evaluation
+    return isEmailValid(emailInput, errMessageDiv);
+}
+
+/**
+ * function that ensures the validity of the email <input> field
+ * A valid email is one that:
+ *      - Is not empty
+ *      - Contains the '@' character
+ *  
+ * @param {object} emailInput - the <input> element containing the email 
+ * @param {object} errMessageDiv - the <div> containing the error message for the email
+ * @returns 
+ */
+function isEmailValid(emailInput, errMessageDiv) {
+    const email = emailInput.value;
+
+    // check if the email is empty
+    if(!email)
+        return false;
+
+    // check if the email contains the @ character
+    if(!containsAtCharacter(email)) {
+        showError(errMessageDiv, 'The email must contain the "@" character');
+        return false;
+    }
+
+    // all good
+    clearError(errMessageDiv);
+    return true;
+}
 
 function showError(element, message) {
     element.innerText = message;
@@ -223,10 +275,15 @@ function clearError(element) {
 
 function isAlphanumeric(text) {
     const regex = /^[a-zA-Z0-9]+$/;
-    return text.match(regex);
+    return text.match(regex) !== null;
 }
 
 function constainsNumber(text) {
     const regex = /\d/;
-    return text.match(regex);
+    return text.match(regex)!== null;
+}
+
+function containsAtCharacter(text) {
+    const regex = /@/;
+    return text.match(regex) !== null;
 }
