@@ -76,6 +76,10 @@ async function isUsernameValid(usernameInput, errMessageDiv) {
     if (!username) 
         return false;
 
+    if (!isAlphanumeric(username)) {
+        showError(errMessageDiv, "The username must only contain letters and numbers");
+        return false;
+    }
 
     // isUsernameAvailable() is an async function that returns true if the username is available, else false
     // await for its response 
@@ -159,4 +163,9 @@ function showError(element, message) {
 
 function clearError(element) {
     element.style.visibility = "hidden";
+}
+
+function isAlphanumeric(text) {
+    const regex = /^[a-zA-Z0-9]+$/;
+    return text.match(regex);
 }
