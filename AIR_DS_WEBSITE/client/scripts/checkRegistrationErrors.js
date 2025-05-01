@@ -1,19 +1,8 @@
 /*
  * Checks to be made:
- * Name:
- *  Only characters
- * Surname:
- *  Only characters
- * Username:
- *  Letters or numbers => DONE
- *  Unique => DONE
- * Password:
- *  At least one number => DONE
- *  Length: 4 to 10 characters => DONE
  * Email:
  *  Must contain @ character
  *  Must be unique => no other user with that username
- * 
  * 
  * ATTENTION:
  *  - When user registers they must be redirected to login form/page
@@ -23,6 +12,12 @@
  *    But rather only what is needed for the check (if the username has been seen in the db)
  *    Maybe for the specific example the server can return the name of 
  *
+ *  MAYBE perform the check for the email availability only after the user has registered for security reasons
+ * Why should it fail? 
+ * The system should say "Thank you! A verification link will be sent to this address, 
+ * we hope you enjoy our site." 
+ * The system will send an account activation link to the email address if it doesn't exist, 
+ * and a warning/re-activation link if it does. 
  */
 
 
