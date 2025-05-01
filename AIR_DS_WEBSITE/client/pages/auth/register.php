@@ -16,14 +16,14 @@ require_once __DIR__ . "/../../../config/config.php";
     <fieldset>
       <label for="name-input">Name</label>
       <input type="text" id="name-input" name="name-input" required>
-      <div id="" class="error-message">Empty</div>
+      <div id="name-input-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <!-- surname field -->
     <fieldset>
       <label for="surname-input">Surname</label>
       <input type="text" id="surname-input" name="surname-input" required>
-      <div id="" class="error-message">Empty</div>
+      <div id="surname-input-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <!-- username field -->
@@ -36,15 +36,15 @@ require_once __DIR__ . "/../../../config/config.php";
     <!-- password field -->
     <fieldset>
       <label for="password-input">Password</label>
-      <input type="password" id="password-input" name="password-input" required>
-      <div id="" class="error-message">Empty</div>
+      <input type="text" id="password-input" name="password-input" required>
+      <div id="password-input-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <!-- email field -->
     <fieldset>
       <label for="email-input">Email</label>
       <input type="email" id="email-input" name="email-input" required>
-      <div id="" class="error-message">Empty</div>
+      <div id="email-input-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <fieldset id="register-button-fieldset">
