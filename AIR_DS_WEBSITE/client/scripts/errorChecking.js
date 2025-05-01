@@ -7,7 +7,7 @@ const buyTicketBtn = document.getElementById('buy-tickets-button');
 buyTicketBtn.addEventListener('click', (e) => {
     // only submit if all the tests pass
     if (checkTicketNumber() && checkAirportCodes() && checkDate()) {
-        document.getElementById('form').requestSubmit();
+        document.getElementById('purchase-tickets-form').requestSubmit();
         return
     }
     // do not submit when pressed

@@ -21,7 +21,7 @@ db_initialize();
 
   <!-- TODO maybe delete the ids from the labels -->
 
-  <form action="" method="post"> 
+  <form id="purchase-tickets-form" action="" method="post"> 
     <!-- <form id="form"> -->
     <fieldset>
       <label class="airport-label" for="airport-selection">Select the departure airport</label>
