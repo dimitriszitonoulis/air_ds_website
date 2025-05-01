@@ -30,8 +30,6 @@ let checkName = setUpValidation({
     isAsync: false
 });
 
-console.log(checkName);
-
 let checkSurname = setUpValidation({
     inputId: 'surname-input',
     errorId: 'surname-input-error-message',
@@ -66,6 +64,72 @@ let checkEmail = setUpValidation({
 
 
 
+
+// get the submit button
+const registerBtn = document.getElementById('register-button');
+
+registerBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    const fields = [
+        {
+            inputId: 'name-input',
+            errorId: 'name-input-error-message',
+            validatorFunction: isNameValid,
+            isAsync: false
+        },
+        {
+            inputId: 'surname-input',
+            errorId: 'surname-input-error-message',
+            validatorFunction: isNameValid,
+            isAsync: false
+        },
+        {
+            inputId: 'username-input',
+            errorId: 'username-input-error-message',
+            validatorFunction: isUsernameValid,
+            isAsync: true
+        },
+        {
+            inputId: 'password-input',
+            errorId: 'password-input-error-message',
+            validatorFunction: isPasswordValid,
+            isAsync: false
+        },
+        {
+            inputId: 'email-input',
+            errorId: 'email-input-error-message',
+            validatorFunction: isEmailValid,
+            isAsync: false
+        }
+    ]
+
+    let isAllValid = true;
+
+    // loop through all the fields and check if they are valid
+    for (const field of fields) {
+        const inputElement = document.getElementById(field.inputId)
+        const errorElement = document.getElementById(field.errorId);
+        const isAsync = field.isAsync;
+        let isValid = true;
+
+        if (isAsync) // if the function is async await its response
+            isValid = await field.validatorFunction(inputElement, errorElement);
+        else
+            isValid = field.validatorFunction(inputElement, errorElement);
+
+        // if the field is not valid then set that not all fields are valid
+        if (!isValid)
+            isAllValid = false;
+    }
+
+    // only if all the fields are valid submit the form
+    if (isAllValid) {
+        document.getElementById('registration-form').requestSubmit();
+    }
+});
+
+
 /**
 * function responsible for the adding validation checks on the <input> field with id = inputId
 * 
@@ -80,12 +144,13 @@ let checkEmail = setUpValidation({
 * - isAsync: {boolean} true if the validator function is asynchronous false otherwise
 * @returns {boolean} - true if the password is alright, false otherwise
 */
-function setUpValidation({inputId, errorId, event, validatorFunction, isAsync}) {
+function setUpValidation({ inputId, errorId, event, validatorFunction, isAsync }) {
+
     const inputElement = document.getElementById(inputId);
     const errorElement = document.getElementById(errorId);
 
     inputElement.addEventListener(event, async (e) => {
-        if(isAsync) // if the function is asynchronous wait for it to finish
+        if (isAsync) // if the function is asynchronous wait for it to finish
             await validatorFunction(inputElement, errorElement);
         else
             validatorFunction(inputElement, errorElement);
@@ -95,8 +160,6 @@ function setUpValidation({inputId, errorId, event, validatorFunction, isAsync}) 
     // MIGHT NEED TO BE AWAITED LATER
     return validatorFunction(inputElement, errorElement);
 }
-
-
 
 /**
  * Function responsible for evaluating the entered username 
@@ -139,9 +202,9 @@ function isNameValid(nameInput, errMessageDiv) {
     // if input empty
     if (!name)
         return false;
-    
+
     // if name contains something other than letters
-    if(!isOnlyLetters(name)){
+    if (!isOnlyLetters(name)) {
         showError(errMessageDiv, 'This field must only contain letters');
         return false;
     }
@@ -167,10 +230,12 @@ function isNameValid(nameInput, errMessageDiv) {
  * @returns {boolean} - true if the username is valid, false otherwise
  */
 async function isUsernameValid(usernameInput, errMessageDiv) {
+    console.log("enmter is Usenaar valid");
+    
     let username = usernameInput.value;
 
     // if input empty
-    if (!username) 
+    if (!username)
         return false;
 
     if (!isAlphanumeric(username)) {
@@ -221,10 +286,10 @@ async function isUsernameAvailable(username) {
 
     let usernames = "";
     let data = "";
-    
+
     // get all the usernames that match username 
     // (are the same as username or have the pattern: <username><other_characters>)
-    try{
+    try {
         // fetch the usernames by sending a POST request where
         // _POST['username'] = username entered by user
         let response = await fetch(url, {
@@ -232,19 +297,19 @@ async function isUsernameAvailable(username) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({'username': `${username}`}) 
-            });
-            if(!response.ok){
-                throw new Error("HTTP error " + response.status);
-            }
+            body: JSON.stringify({ 'username': `${username}` })
+        });
+        if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+        }
         data = await response.json();
-    } catch(error) {
+    } catch (error) {
         console.error(error);
         return false;
     }
 
     usernames = data.map(user => user.username)
-    
+
     // if no usernames are returned the username is availble
     if (usernames[0] === undefined)
         return true;
@@ -265,13 +330,13 @@ async function isUsernameAvailable(username) {
  */
 function isPasswordValid(passwordInput, errMessageDiv) {
     let password = passwordInput.value;
-    
+
     // check if the password is empty
     if (!password)
         return false;
 
     // check password contains at least one digit
-    if(!constainsNumber(password)) {
+    if (!constainsNumber(password)) {
         showError(errMessageDiv, "Password must contain at least one digit.");
         return false;
     }
@@ -301,11 +366,11 @@ function isEmailValid(emailInput, errMessageDiv) {
     const email = emailInput.value;
 
     // check if the email is empty
-    if(!email)
+    if (!email)
         return false;
 
     // check if the email contains the @ character
-    if(!containsATCharacter(email)) {
+    if (!containsATCharacter(email)) {
         showError(errMessageDiv, 'The email must contain the "@" character');
         return false;
     }
@@ -331,7 +396,7 @@ function isAlphanumeric(text) {
 
 function constainsNumber(text) {
     const regex = /\d/;
-    return text.match(regex)!== null;
+    return text.match(regex) !== null;
 }
 
 function containsATCharacter(text) {
@@ -344,3 +409,6 @@ function isOnlyLetters(text) {
     // const regex1 = /^[\p{L}]+$/u; // allows letters from all alphabets
     return text.match(regex) !== null;
 }
+
+
+
