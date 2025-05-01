@@ -22,47 +22,78 @@
 
 
 
-let checkName = setUpValidation({
-    inputId: 'name-input',
-    errorId: 'name-input-error-message',
-    event: 'change',
-    validatorFunction: isNameValid,
-    isAsync: false
-});
 
-let checkSurname = setUpValidation({
-    inputId: 'surname-input',
-    errorId: 'surname-input-error-message',
-    event: 'change',
-    validatorFunction: isNameValid,
-    isAsync: false
-});
+const fields = [
+    {
+        inputId: 'name-input',
+        errorId: 'name-input-error-message',
+        event: 'change',
+        validatorFunction: isNameValid,
+        isAsync: false
+    },
+    {
+        inputId: 'surname-input',
+        errorId: 'surname-input-error-message',
+        event: 'change',
+        validatorFunction: isNameValid,
+        isAsync: false
+    },
+    {
+        inputId: 'username-input',
+        errorId: 'username-input-error-message',
+        event: 'change',
+        validatorFunction: isUsernameValid,
+        isAsync: true
+    },
+    {
+        inputId: 'password-input',
+        errorId: 'password-input-error-message',
+        event: 'change',
+        validatorFunction: isPasswordValid,
+        isAsync: false
+    },
+    {
+        inputId: 'email-input',
+        errorId: 'email-input-error-message',
+        event: 'change',
+        validatorFunction: isEmailValid,
+        isAsync: false
+    }
+]
 
-let checkUsername = setUpValidation({
-    inputId: 'username-input',
-    errorId: 'username-input-error-message',
-    event: 'change',
-    validatorFunction: isUsernameValid,
-    isAsync: true
-});
 
-let checkPassword = setUpValidation({
-    inputId: 'password-input',
-    errorId: 'password-input-error-message',
-    event: 'change',
-    validatorFunction: isPasswordValid,
-    isAsync: false
-});
+/**
+* function responsible for the adding validation checks on the <input> field with id = inputId
+* 
+* This function performs:
+*  Real time evaluation, by adding an event listener on the <input> element
+*  Submit time evaluation, by returning true or false
+*  @param {JSON} - A JSON containing:
+* - inputId: {string} the id of the <input> element on which the validation is applied
+* - errorId: {string} the id of the <div> element containing the error message for the <input> element
+* - event: {string} the event to pass on to the eventListener
+* - validatorFunction: {function} the function that performs the validation checks
+* - isAsync: {boolean} true if the validator function is asynchronous false otherwise
+* @returns {boolean} - true if the password is alright, false otherwise
+*/
+function setUpValidation() {
+    for(const field of fields) {
+        const inputElement = document.getElementById(field.inputId);
+        const errorElement = document.getElementById(field.errorId);
 
-let checkEmail = setUpValidation({
-    inputId: 'email-input',
-    errorId: 'email-input-error-message',
-    event: 'change',
-    validatorFunction: isEmailValid,
-    isAsync: false
-});
+        inputElement.addEventListener(field.event, async (e) => {
+            if(field.isAsync)
+                await field.validatorFunction(inputElement, errorElement);
+            else
+                field.validatorFunction(inputElement, errorElement);
+        });
+    }
+}
 
 
+// TODO CHANGE LATER TO NOT MAKE CALL
+// Call the function
+setUpValidation();
 
 
 // get the submit button
@@ -70,39 +101,6 @@ const registerBtn = document.getElementById('register-button');
 
 registerBtn.addEventListener('click', async (e) => {
     e.preventDefault();
-
-    const fields = [
-        {
-            inputId: 'name-input',
-            errorId: 'name-input-error-message',
-            validatorFunction: isNameValid,
-            isAsync: false
-        },
-        {
-            inputId: 'surname-input',
-            errorId: 'surname-input-error-message',
-            validatorFunction: isNameValid,
-            isAsync: false
-        },
-        {
-            inputId: 'username-input',
-            errorId: 'username-input-error-message',
-            validatorFunction: isUsernameValid,
-            isAsync: true
-        },
-        {
-            inputId: 'password-input',
-            errorId: 'password-input-error-message',
-            validatorFunction: isPasswordValid,
-            isAsync: false
-        },
-        {
-            inputId: 'email-input',
-            errorId: 'email-input-error-message',
-            validatorFunction: isEmailValid,
-            isAsync: false
-        }
-    ]
 
     let isAllValid = true;
 
@@ -129,62 +127,6 @@ registerBtn.addEventListener('click', async (e) => {
     }
 });
 
-
-/**
-* function responsible for the adding validation checks on the <input> field with id = inputId
-* 
-* This function performs:
-*  Real time evaluation, by adding an event listener on the <input> element
-*  Submit time evaluation, by returning true or false
-*  @param {JSON} - A JSON containing:
-* - inputId: {string} the id of the <input> element on which the validation is applied
-* - errorId: {string} the id of the <div> element containing the error message for the <input> element
-* - event: {string} the event to pass on to the eventListener
-* - validatorFunction: {function} the function that performs the validation checks
-* - isAsync: {boolean} true if the validator function is asynchronous false otherwise
-* @returns {boolean} - true if the password is alright, false otherwise
-*/
-function setUpValidation({ inputId, errorId, event, validatorFunction, isAsync }) {
-
-    const inputElement = document.getElementById(inputId);
-    const errorElement = document.getElementById(errorId);
-
-    inputElement.addEventListener(event, async (e) => {
-        if (isAsync) // if the function is asynchronous wait for it to finish
-            await validatorFunction(inputElement, errorElement);
-        else
-            validatorFunction(inputElement, errorElement);
-    });
-
-    // for submit time validation
-    // MIGHT NEED TO BE AWAITED LATER
-    return validatorFunction(inputElement, errorElement);
-}
-
-/**
- * Function responsible for evaluating the entered username 
- * 
- * This function performs:
- *  Real time evaluation, by adding an event listener on the username input element
- *  Submit time evaluation, by returning true (username is alright) or false (otherwise)
- * 
- * @returns {boolean} - true if the username is alright, false otherwise
- */
-// function checkUsername() {
-//     const usernameInput = document.getElementById('username-input');
-//     const errMessageDiv = document.getElementById('username-input-error-message');
-
-//     /*
-//      * The function that checks the validity of the username is async
-//      * This happens because it awaits the result of another function that fetches the database 
-//      */
-//     usernameInput.addEventListener('change', async (e) => {
-//         // for real time evaluation
-//         isUsernameValid(usernameInput, errMessageDiv);
-//     });  
-//     // for submit time evaluation
-//     return isUsernameValid(usernameInput, errMessageDiv);
-// }
 
 /**
  *  function that checks the validity of the value in the password <input> field
@@ -230,8 +172,6 @@ function isNameValid(nameInput, errMessageDiv) {
  * @returns {boolean} - true if the username is valid, false otherwise
  */
 async function isUsernameValid(usernameInput, errMessageDiv) {
-    console.log("enmter is Usenaar valid");
-    
     let username = usernameInput.value;
 
     // if input empty
