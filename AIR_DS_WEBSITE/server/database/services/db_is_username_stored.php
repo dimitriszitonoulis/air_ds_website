@@ -12,23 +12,19 @@ function db_is_username_stored() {
         echo json_encode(["error" => "Database connection failed"]);
         exit;
     }
-
-    // How to do that using js?
-    // Maybe only do it on servers side ont on the client side
-    // So only after the form is submited the client can see that the username already exists
-
-    // received from post 
-    // TODO replace string later
-    // $username = 'D';
     
     // client has sent a JSON string using POST which must be decoded
     $data = json_decode(file_get_contents('php://input'), true);
     // $username = $_POST['username'];
     $username = $data['username'];
 
+    // query to be run
+    // BINARY is used because the username is stored with collation utf8mb4_general_ci 
+    // which is case insensitive
+    // either use BINARY or use collation utf8mb4_bin when creating the db
     $query = "  SELECT username 
                 FROM users 
-                WHERE username 
+                WHERE BINARY username 
                 LIKE :username 
                 ORDER BY CHAR_LENGTH(username);
             ";
