@@ -27,10 +27,79 @@
 
 
 
-checkUsername();
-checkPassword();
-checkEmail();
+let checkName = setUpValidation({
+    inputId: 'name-input',
+    errorId: 'name-input-error-message',
+    event: 'change',
+    validatorFunction: isNameValid,
+    isAsync: false
+});
 
+console.log(checkName);
+
+let checkSurname = setUpValidation({
+    inputId: 'surname-input',
+    errorId: 'surname-input-error-message',
+    event: 'change',
+    validatorFunction: isNameValid,
+    isAsync: false
+});
+
+let checkUsername = setUpValidation({
+    inputId: 'username-input',
+    errorId: 'username-input-error-message',
+    event: 'change',
+    validatorFunction: isUsernameValid,
+    isAsync: true
+});
+
+let checkPassword = setUpValidation({
+    inputId: 'password-input',
+    errorId: 'password-input-error-message',
+    event: 'change',
+    validatorFunction: isPasswordValid,
+    isAsync: false
+});
+
+let checkEmail = setUpValidation({
+    inputId: 'email-input',
+    errorId: 'email-input-error-message',
+    event: 'change',
+    validatorFunction: isEmailValid,
+    isAsync: false
+});
+
+
+
+/**
+* function responsible for the adding validation checks on the <input> field with id = inputId
+* 
+* This function performs:
+*  Real time evaluation, by adding an event listener on the <input> element
+*  Submit time evaluation, by returning true or false
+*  @param {JSON} - A JSON containing:
+* - inputId: {string} the id of the <input> element on which the validation is applied
+* - errorId: {string} the id of the <div> element containing the error message for the <input> element
+* - event: {string} the event to pass on to the eventListener
+* - validatorFunction: {function} the function that performs the validation checks
+* - isAsync: {boolean} true if the validator function is asynchronous false otherwise
+* @returns {boolean} - true if the password is alright, false otherwise
+*/
+function setUpValidation({inputId, errorId, event, validatorFunction, isAsync}) {
+    const inputElement = document.getElementById(inputId);
+    const errorElement = document.getElementById(errorId);
+
+    inputElement.addEventListener(event, async (e) => {
+        if(isAsync) // if the function is asynchronous wait for it to finish
+            await validatorFunction(inputElement, errorElement);
+        else
+            validatorFunction(inputElement, errorElement);
+    });
+
+    // for submit time validation
+    // MIGHT NEED TO BE AWAITED LATER
+    return validatorFunction(inputElement, errorElement);
+}
 
 
 
@@ -43,21 +112,50 @@ checkEmail();
  * 
  * @returns {boolean} - true if the username is alright, false otherwise
  */
-function checkUsername() {
-    const usernameInput = document.getElementById('username-input');
-    const errMessageDiv = document.getElementById('username-input-error-message');
+// function checkUsername() {
+//     const usernameInput = document.getElementById('username-input');
+//     const errMessageDiv = document.getElementById('username-input-error-message');
 
-    /*
-     * The function that checks the validity of the username is async
-     * This happens because it awaits the result of another function that fetches the database 
-     */
-    usernameInput.addEventListener('change', async (e) => {
-        // for real time evaluation
-        isUsernameValid(usernameInput, errMessageDiv);
-    });  
-    // for submit time evaluation
-    return isUsernameValid(usernameInput, errMessageDiv);
+//     /*
+//      * The function that checks the validity of the username is async
+//      * This happens because it awaits the result of another function that fetches the database 
+//      */
+//     usernameInput.addEventListener('change', async (e) => {
+//         // for real time evaluation
+//         isUsernameValid(usernameInput, errMessageDiv);
+//     });  
+//     // for submit time evaluation
+//     return isUsernameValid(usernameInput, errMessageDiv);
+// }
+
+/**
+ *  function that checks the validity of the value in the password <input> field
+ * 
+ * ATTENTION:
+ *      This function is used BOTH for the name as well as the surname input field (since they have the same requirements)
+ * 
+ * @param {object} nameInput - the input element for the name 
+ * @param {object} errMessageDiv - The div used to display error messages for the name 
+ * @returns {boolean} - true if the name is valid, false otherwise
+ */
+function isNameValid(nameInput, errMessageDiv) {
+    const name = nameInput.value;
+
+    // if input empty
+    if (!name)
+        return false;
+    
+    // if name contains something other than letters
+    if(!isOnlyLetters(name)){
+        showError(errMessageDiv, 'This field must only contain letters');
+        return false;
+    }
+
+    // all good
+    clearError(errMessageDiv);
+    return true;
 }
+
 
 /**
  * Function that checks if the username in the userame input field is valid.
@@ -110,10 +208,10 @@ async function isUsernameValid(usernameInput, errMessageDiv) {
  *  This functions fetches the server to see if the username is available.
  *  The server returns as a response an array. Each element of the array is a json, like: {username: "<username_value>"}.
  *      
- *      e.x.
- *          [ {username: "D"},
- *            {username: "Da"},  
- *            {username: "Db"} ] 
+ *  @example
+ *      [ {username: "D"},
+ *        {username: "Da"},  
+ *        {username: "Db"} ] 
  * 
  *  If the array is undefined, then the server did not find the username in the database.
  *  If the array is not undefined, then it contains all the matching usernames in ascending order,
@@ -160,27 +258,6 @@ async function isUsernameAvailable(username) {
 }
 
 /**
- * funtion responsible for evaluating the entered password
- * 
- * This function performs:
- *  Real time evaluation, by adding an event listener on the password <input> element
- *  Submit time evaluation, by returning true (password is alright) or false (otherwise)
- * 
- * @returns {boolean} - true if the password is alright, false otherwise
- */
-function checkPassword() {
-    const passwordInput = document.getElementById('password-input');
-    const errMessageDiv = document.getElementById("password-input-error-message");
-
-    passwordInput.addEventListener('change', (e) => {
-        // for real time evaluation
-        isPasswordValid(passwordInput, errMessageDiv);
-    })
-    // for submit time evaluation
-    return isPasswordValid(passwordInput, errMessageDiv);
-}
-
-/**
  * function that ensures the validity of the password <input> field
  * A valid password is one that:
  *      - Is not empty
@@ -193,7 +270,7 @@ function checkPassword() {
  */
 function isPasswordValid(passwordInput, errMessageDiv) {
     let password = passwordInput.value;
-
+    
     // check if the password is empty
     if (!password)
         return false;
@@ -216,27 +293,6 @@ function isPasswordValid(passwordInput, errMessageDiv) {
 }
 
 /**
- * function responsible for evaluating the entered email
- * 
- * This function performs:
- *  Real time evaluation, by adding an event listener on the email <input> element
- *  Submit time evaluation, by returning true (email is alright) or false (otherwise)
- * 
- * @returns {boolean} - true if the email is alright, false otherwise
- */
-function checkEmail() {
-    const emailInput = document.getElementById('email-input');
-    const errMessageDiv = document.getElementById('email-input-error-message');
-
-    emailInput.addEventListener('change', (e) => {
-    // for real time evaluation
-        isEmailValid(emailInput, errMessageDiv);
-    })
-    // for submit time evaluation
-    return isEmailValid(emailInput, errMessageDiv);
-}
-
-/**
  * function that ensures the validity of the email <input> field
  * A valid email is one that:
  *      - Is not empty
@@ -254,7 +310,7 @@ function isEmailValid(emailInput, errMessageDiv) {
         return false;
 
     // check if the email contains the @ character
-    if(!containsAtCharacter(email)) {
+    if(!containsATCharacter(email)) {
         showError(errMessageDiv, 'The email must contain the "@" character');
         return false;
     }
@@ -283,7 +339,13 @@ function constainsNumber(text) {
     return text.match(regex)!== null;
 }
 
-function containsAtCharacter(text) {
+function containsATCharacter(text) {
     const regex = /@/;
+    return text.match(regex) !== null;
+}
+
+function isOnlyLetters(text) {
+    const regex = /^[a-zA-Z]+$/;
+    // const regex1 = /^[\p{L}]+$/u; // allows letters from all alphabets
     return text.match(regex) !== null;
 }
