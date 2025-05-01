@@ -6,7 +6,7 @@
  *  Only characters
  * Username:
  *  Letters or numbers
- *  Unique
+ *  Unique => DONE
  * Password:
  *  At least one number
  *  Length: 4 to 10 characters
@@ -43,10 +43,13 @@ function checkUsername() {
     const usernameInput = document.getElementById('username-input');
     const errMessageDiv = document.getElementById('username-input-error-message');
 
-    usernameInput.addEventListener('change', (e) => {
+    /*
+     * The function that checks the validity of is async
+     * This happens because it awaits the result of another function that fetches the database 
+     */
+    usernameInput.addEventListener('change', async (e) => {
         // for real time evaluation
         isUsernameValid(usernameInput, errMessageDiv);
-        console.log(isUsernameValid(usernameInput, errMessageDiv))
     });  
     // for submit time evaluation
     return isUsernameValid(usernameInput, errMessageDiv);
@@ -66,16 +69,21 @@ function checkUsername() {
  * @param {object} errMessageDiv - The div used to display error messages for the username
  * @returns {boolean} - true if the username is valid, false otherwise
  */
-function isUsernameValid(usernameInput, errMessageDiv) {
+async function isUsernameValid(usernameInput, errMessageDiv) {
     let username = usernameInput.value;
 
     // if input empty
     if (!username) 
         return false;
 
+
+    // isUsernameAvailable() is an async function that returns true if the username is available, else false
+    // await for its response 
+    const isAvailable = await isUsernameAvailable(username);
+
     // if the username is not available
-    if (!isUsernameAvailable(username)) {
-        showError(errMessageDiv, "username is taken.");
+    if (!isAvailable) {
+        showError(errMessageDiv, "Username is not available.");
         return false;
     }
 
@@ -112,10 +120,12 @@ async function isUsernameAvailable(username) {
 
     let usernames = "";
     let data = "";
-
+    
+    // get all the usernames that match username 
+    // (are the same as username or have the pattern: <username><other_characters>)
     try{
-        // get all the usernames that match username 
-        // (are the same as username or have the pattern: <username><other_characters>)
+        // fetch the usernames by sending a POST request where
+        // _POST['username'] = username entered by user
         let response = await fetch(url, {
             method: "POST",
             headers: {
@@ -142,11 +152,11 @@ async function isUsernameAvailable(username) {
 }
 
 
-function showError(errMessageDiv, message) {
-    errMessageDiv.innerText = message;
-    errMessageDiv.style.visibility = "visible";
+function showError(element, message) {
+    element.innerText = message;
+    element.style.visibility = "visible";
 }
 
-function clearError(errMessageDiv) {
-    errMessageDiv.style.visibility = "hidden";
+function clearError(element) {
+    element.style.visibility = "hidden";
 }
