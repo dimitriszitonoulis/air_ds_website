@@ -82,10 +82,8 @@ function setUpValidation() {
         const errorElement = document.getElementById(field.errorId);
 
         inputElement.addEventListener(field.event, async (e) => {
-            if(field.isAsync)
-                await field.validatorFunction(inputElement, errorElement);
-            else
-                field.validatorFunction(inputElement, errorElement);
+            if(field.isAsync) await field.validatorFunction(inputElement, errorElement);
+            else field.validatorFunction(inputElement, errorElement);
         });
     }
 }
@@ -222,7 +220,7 @@ async function isUsernameValid(usernameInput, errMessageDiv) {
  */
 async function isUsernameAvailable(username) {
     // fetch from db
-    const url = `${BASE_URL}/server/database/services/db_is_username_stored.php`;
+    const url = `${BASE_URL}/server/database/services/auth/db_is_username_stored.php`;
 
     let usernames = "";
     let data = "";
