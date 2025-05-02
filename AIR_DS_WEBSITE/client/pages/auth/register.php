@@ -11,7 +11,7 @@ require_once __DIR__ . "/../../../config/config.php";
 </head>
 
 <body>
-  <form>
+  <form id="registration-form" action="">
     <!-- name field -->
     <fieldset>
       <label for="name-input">Name</label>
