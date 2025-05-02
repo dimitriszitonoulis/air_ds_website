@@ -1,6 +1,6 @@
 async function getAirportCodes() {
     // fetch airport codes from db
-    const url = `${BASE_URL}/server/database/services/get_airports.php`;
+    const url = `${BASE_URL}/server/services/get_airports.php`;
     let airports = "";
     try {
         const response = await fetch(url, {
