@@ -22,6 +22,12 @@
 
 
 
+/**
+ * certain necessary fields for the form validation
+ * these are passed on to:
+ *      - @function setUpValidation() => real time validation
+ *      - @eventLister for the register button => submit time validation
+ */
 
 const fields = [
     {
@@ -94,12 +100,17 @@ function setUpValidation() {
 setUpValidation();
 
 
-// get the submit button
+// get the register  button
 const registerBtn = document.getElementById('register-button');
 
+// add event listener to the register button to validate the values of the form fields
+// if by chance any field has an invalid value do not register
+// else submit form and register
 registerBtn.addEventListener('click', async (e) => {
+    // if the button is clicked without any field being checked do nothing
     e.preventDefault();
 
+    // assume that all fields are valid ( for now ;) )
     let isAllValid = true;
 
     // loop through all the fields and check if they are valid
