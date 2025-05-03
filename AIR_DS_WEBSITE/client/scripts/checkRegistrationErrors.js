@@ -231,7 +231,8 @@ async function isUsernameValid(usernameInput, errMessageDiv) {
  */
 async function isUsernameAvailable(username) {
     // fetch from db
-    const url = `${BASE_URL}/server/database/services/auth/db_is_username_stored.php`;
+    // const url = `${BASE_URL}/server/database/services/auth/db_is_username_stored.php`;
+    const url = `${BASE_URL}/server/services/auth/check_username.php`
 
     let usernames = "";
     let data = "";
