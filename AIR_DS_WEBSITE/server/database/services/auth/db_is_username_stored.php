@@ -1,5 +1,4 @@
 <?php 
-require_once __DIR__ . "/../../../../config/config.php";
 
 // checks if the given username is stored in the database
 function db_is_username_stored($conn, $username) {
