@@ -9,8 +9,7 @@ function db_is_username_stored($conn, $username) {
     // either use BINARY or use collation utf8mb4_bin when creating the db
     $query = "  SELECT username 
                 FROM users 
-                WHERE BINARY username 
-                LIKE :username 
+                WHERE BINARY username LIKE :username 
                 ORDER BY CHAR_LENGTH(username);
             ";
     
@@ -29,8 +28,6 @@ function db_is_username_stored($conn, $username) {
     // get the all the usernames that match 
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    return $result
+    return $result;
 }
-
-// db_is_username_stored();
 ?>
