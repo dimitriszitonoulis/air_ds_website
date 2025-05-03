@@ -3,10 +3,10 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/db_utils/db_connect.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_username_stored.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_email_stored.php";
+require_once BASE_PATH . "server/database/services/auth/db_insert_user.php";
 
-
-error_reporting(0);
-ini_set('display_errors', 0);
+// error_reporting(0);
+// ini_set('display_errors', 0);
 
 
 check_registration_errors();
@@ -54,7 +54,9 @@ function check_registration_errors() {
     $is_password = is_password_valid($decoded_content["password"]);
     $is_email = is_email_valid($conn, $decoded_content["email"]);
 
-    if($is_name && $is_surname && $is_username && $is_password && $is_email){
+    // if every check is passed insertuser to database
+    if ($is_name && $is_surname && $is_username && $is_password && $is_email) {
+        db_insert_user($conn, $decoded_content);
         header('Content-Type: application/json');
         echo json_encode(["response" => "user registered"]);
         exit;
