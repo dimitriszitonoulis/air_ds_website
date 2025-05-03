@@ -27,7 +27,7 @@ function db_is_username_stored($conn, $username) {
 
     // get the all the usernames that match 
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+   
     return $result;
 }
 ?>
