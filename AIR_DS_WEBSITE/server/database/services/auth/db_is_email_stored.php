@@ -23,11 +23,11 @@ function db_is_email_stored($conn, $email) {
     $stmt->execute();
 
     // if the email already exists then fetchAll() returns it so $result = <returned_username>
-    // otherwise $result = NULL
+    // otherwise $result = empty array (0 elements)
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-   if(!isset($result) || empty($result)) return false;
+    if(count($result) !== 0) return true;
 
-   return true;
+   return false;
 }
 ?>
