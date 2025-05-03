@@ -1,7 +1,7 @@
 <?php 
-require_once __DIR__ . "/../../../../config/config.php";
+require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/db_utils/db_connect.php";
-require_once BASE_PATH . "server/database/services/auth/db_is_username_stored.php"
+require_once BASE_PATH . "server/database/services/auth/db_is_username_stored.php";
 
 
 /**
@@ -11,14 +11,15 @@ require_once BASE_PATH . "server/database/services/auth/db_is_username_stored.ph
  * 
  */
 
+ db_check_username_exists();
 
 function db_check_username_exists() {
     $conn = NULL;
     try {
         $conn = db_connect();
     } catch (PDOException $e) {
-        http_response_code(500);
         header('Content-type: application/json');
+        http_response_code(500);
         echo json_encode(["error" => "Database connection falied"]);
     }
 
@@ -28,6 +29,7 @@ function db_check_username_exists() {
     
     // if for some reason no data comes from the client (indiviadual array fields MUST be checked later)
     if(!isset($decoded_content) || empty($decoded_content)) {
+        header('Content-type: application/json');
         http_response_code(400);
         echo json_encode(["error" => "Missing 'username' in JSON"]);
         exit;
