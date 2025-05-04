@@ -39,7 +39,7 @@ require_once __DIR__ . "/../../../config/config.php";
   </form>
 
   <!-- Redirects to registration form -->
-  <p>Need an account? <a href="./register.html">Register</a> </p>
+  <p>Need an account? <a href="./register.php">Register</a> </p>
 
 <?php include_once BASE_PATH . "client/includes/footer.php"; ?>
 
