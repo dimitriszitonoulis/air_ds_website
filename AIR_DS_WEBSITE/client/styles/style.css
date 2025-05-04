@@ -1,3 +1,10 @@
+body {
+    background-color: #2f2f2f;
+    color:whitesmoke;
+}
+
+
+
 .error-message {
     color: red;
     font-style: italic;
