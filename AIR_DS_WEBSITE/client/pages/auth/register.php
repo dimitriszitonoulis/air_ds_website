@@ -50,7 +50,7 @@ realpath(BASE_URL);
     </fieldset>
 
     <fieldset id="register-button-fieldset">
-      <input type="submit" id="register-button" name="register-button" value="Purchase">
+      <input type="submit" id="register-button" name="register-button" value="Register">
     </fieldset>
   </form>
 
