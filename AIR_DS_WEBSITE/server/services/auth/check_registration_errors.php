@@ -54,6 +54,34 @@ function check_registration_errors() {
     $is_password = is_password_valid($decoded_content["password"]);
     $is_email = is_email_valid($conn, $decoded_content["email"]);
 
+
+    if (!$is_name) {
+        header('Content-Type: application/json');
+        echo json_encode(["response" => "invalid name"]);
+        exit;
+    }
+    
+    if (!$is_surname) {
+        header('Content-Type: application/json');
+        echo json_encode(["response" => "invalid surname"]);
+        exit;
+    }
+    if (!$is_username) {
+        header('Content-Type: application/json');
+        echo json_encode(["response" => "invalid username"]);
+        exit;
+    }
+    if (!$is_password) {
+        header('Content-Type: application/json');
+        echo json_encode(["response" => "invalid password"]);
+        exit;
+    }
+    if (!$is_email) {
+        header('Content-Type: application/json');
+        echo json_encode(["response" => "invalid email"]);
+        exit;
+    }
+
     // if every check is passed insertuser to database
     if ($is_name && $is_surname && $is_username && $is_password && $is_email) {
         db_insert_user($conn, $decoded_content);
@@ -67,7 +95,6 @@ function check_registration_errors() {
     exit;
 }
 
-
 function is_name_valid ($name) {
 
     if(!isset($name) || empty($name))
@@ -80,7 +107,6 @@ function is_name_valid ($name) {
 
     return true;
 }
-
 
 function is_username_valid ($conn, $username) {
     if (!isset($username) || empty($username)) return false;
@@ -107,9 +133,6 @@ function is_email_valid ($conn, $email) {
     if (db_is_email_stored($conn, $email)) return false;
     return true;
 }
-
-
-
 function is_only_letters ($txt) {
     $regex = "/^[a-zA-Z]+$/";
     return preg_match($regex, $txt) === 1;
@@ -125,8 +148,4 @@ function contains_number ($txt) {
     return preg_match($regex, $txt) === 1;
 }
 
-function contains_at_character ($txt) {
-    $regex = "/@/";
-    return preg_match($regex, $txt) === 1;
-}
 ?>
