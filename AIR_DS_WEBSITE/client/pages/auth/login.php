@@ -1,6 +1,6 @@
 <?php 
 require_once __DIR__ . "/../../../config/config.php";
-// require_once BASE_PATH . "client/" 
+require_once BASE_PATH . "client/includes/start_session.php"
 
 ?>
 
@@ -9,14 +9,17 @@ require_once __DIR__ . "/../../../config/config.php";
 <html>
 
 <head>
+  <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/style.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/header.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/footer.css">
 </head>
 
-<?php include_once BASE_PATH . "client/includes/header.php"; ?>
+
 
 <body>
 
+  <?php include_once BASE_PATH . "client/includes/header.php"; ?>
+  
   <h2>Login/Register</h2>
 
 
