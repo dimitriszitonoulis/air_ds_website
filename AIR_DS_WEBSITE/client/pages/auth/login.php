@@ -41,6 +41,10 @@ require_once BASE_PATH . "client/includes/start_session.php"
       <input type="text" id="password-input" name="password" required>
       <div id="password-input-error-message" class="error-message">Empty</div>
     </fieldset>
+
+    <fieldset id="login-button-fieldset">
+      <input type="submit" id="login-button" name="login-button" value="Login">
+    </fieldset>
   </form>
 
   <!-- Redirects to registration form -->
