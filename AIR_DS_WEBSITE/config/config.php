@@ -8,6 +8,7 @@
 // BASE_PATH = AIR_DS_WEBSITE folder
 define('BASE_PATH', __DIR__ . '/../');
 
-    
+// A url starts from the server root (for xampp /htdocs)
+// By using BASE_URL every url start from a folder/file in AIR_DS_WEBSITE 
 define('BASE_URL', '/WEB_ZITONOULIS_DIMITRIOS_E22054/AIR_DS_WEBSITE');
 ?>
