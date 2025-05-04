@@ -1,28 +1,11 @@
 import { registerUser } from "./registerUser.js";
 
-/*
- * Checks to be made:
- * Email:
- *  Must be unique => no other user with that username
- * 
- * ATTENTION:
- *  - When user registers they must be redirected to login form/page
- * 
- *  - For UX when fetching the database (ex to check that the username is unique) the server must not send
- *    all of the stored data (the usernames of all users)
- *    But rather only what is needed for the check (if the username has been seen in the db)
- *    Maybe for the specific example the server can return the name of 
- *
- *  MAYBE perform the check for the email availability only after the user has registered for security reasons
- * Why should it fail? 
- * The system should say "Thank you! A verification link will be sent to this address, 
- * we hope you enjoy our site." 
- * The system will send an account activation link to the email address if it doesn't exist, 
- * and a warning/re-activation link if it does. 
- */
-
-
-
+/**
+ * TODO
+ * - For username availability maybe just return if any where found instead of getting the all the similar usernames 
+ * - DO something when the server responsds that a user could not be registered
+ * - checng e validataion function so that it does not call itself
+ */ 
 
 
 
@@ -31,7 +14,7 @@ import { registerUser } from "./registerUser.js";
  * certain necessary fields for the form validation
  * these are passed on to:
  *      - @function setUpValidation() => real time validation
- *      - @eventLister for the register button => submit time validation
+ *      - @eventListener for the register button => submit time validation
  */
 const fields = [
     {
@@ -72,38 +55,6 @@ const fields = [
 ]
 
 
-/**
-* function responsible for the adding validation checks on the <input> field with id = inputId
-* 
-* This function performs:
-*  Real time evaluation, by adding an event listener on the <input> element
-*  Submit time evaluation, by returning true or false
-*  @param {JSON} - A JSON containing:
-* - inputId: {string} the id of the <input> element on which the validation is applied
-* - errorId: {string} the id of the <div> element containing the error message for the <input> element
-* - event: {string} the event to pass on to the eventListener
-* - validatorFunction: {function} the function that performs the validation checks
-* - isAsync: {boolean} true if the validator function is asynchronous false otherwise
-* @returns {boolean} - true if the password is alright, false otherwise
-*/
-function setUpValidation() {
-    for(const field of fields) {
-        const inputElement = document.getElementById(field.inputId);
-        const errorElement = document.getElementById(field.errorId);
-
-        inputElement.addEventListener(field.event, async (e) => {
-            if(field.isAsync) await field.validatorFunction(inputElement, errorElement);
-            else field.validatorFunction(inputElement, errorElement);
-        });
-    }
-}
-
-
-// TODO CHANGE LATER TO NOT MAKE CALL
-// Call the function
-setUpValidation();
-
-
 // get the register  button
 const registerBtn = document.getElementById('register-button');
 
@@ -111,7 +62,7 @@ const registerBtn = document.getElementById('register-button');
 // if by chance any field has an invalid value do not register
 // else submit form and register
 registerBtn.addEventListener('click', async (e) => {
-    // // if the button is clicked without any field being checked do nothing
+    // if the button is clicked without any field being checked do nothing
     e.preventDefault();
 
     // assume that all fields are valid ( for now ;) )
@@ -149,8 +100,43 @@ registerBtn.addEventListener('click', async (e) => {
 
         // change later to have correct fields not strings
         // registerUser("dfgh", "dfgh", "sdfg", "s1sdsd", "asdf@sdf.com");
+
+        // redirect to login page
+        window.location.replace(`${BASE_URL}/client/pages/auth/login.php`)
     }
 });
+
+
+/**
+* function responsible for the adding validation checks on the <input> field with id = inputId
+* 
+* This function performs:
+*  Real time evaluation, by adding an event listener on the <input> element
+*  Submit time evaluation, by returning true or false
+*  @param {JSON} - A JSON containing:
+* - inputId: {string} the id of the <input> element on which the validation is applied
+* - errorId: {string} the id of the <div> element containing the error message for the <input> element
+* - event: {string} the event to pass on to the eventListener
+* - validatorFunction: {function} the function that performs the validation checks
+* - isAsync: {boolean} true if the validator function is asynchronous false otherwise
+* @returns {boolean} - true if the password is alright, false otherwise
+*/
+function setUpValidation() {
+    for(const field of fields) {
+        const inputElement = document.getElementById(field.inputId);
+        const errorElement = document.getElementById(field.errorId);
+
+        inputElement.addEventListener(field.event, async (e) => {
+            if(field.isAsync) await field.validatorFunction(inputElement, errorElement);
+            else field.validatorFunction(inputElement, errorElement);
+        });
+    }
+}
+
+
+// TODO CHANGE LATER TO NOT MAKE CALL
+// Call the function
+setUpValidation();
 
 
 /**
