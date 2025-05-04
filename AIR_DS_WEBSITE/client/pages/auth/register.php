@@ -7,7 +7,7 @@ require_once __DIR__ . "/../../../config/config.php";
 <html>
 
 <head>
-  <link rel="stylesheet" href = "<?= BASE_URL ?>/client/styles/style.css">
+  <link rel="stylesheet" href = "<?= BASE_URL ?>client/styles/style.css">
 </head>
 
 <body>
@@ -54,7 +54,7 @@ require_once __DIR__ . "/../../../config/config.php";
   </form>
 
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
-  <script type="module" src="<?= BASE_URL ?>/client/scripts/auth/checkRegistrationErrors.js"></script>
+  <script type="module" src="<?= BASE_URL ?>client/scripts/auth/checkRegistrationErrors.js"></script>
 </body>
 
 </html>

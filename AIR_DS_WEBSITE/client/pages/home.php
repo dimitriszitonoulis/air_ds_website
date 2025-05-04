@@ -10,14 +10,12 @@ db_initialize();
 
 <head>
   <!-- <link rel="stylesheet" href="./client/styles/style.css">  -->
-  <link rel="stylesheet" href="<?= BASE_URL ?>/client/styles/style.css"> 
-
+  <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/style.css"> 
 </head>
 
 <body>
 
-  <?php include_once BASE_PATH . '/client/includes/header.php'?>
-
+  <?php include_once BASE_PATH . 'client/includes/header.php'?>
 
   <!-- TODO maybe delete the ids from the labels -->
 
@@ -57,11 +55,11 @@ db_initialize();
     </fieldset>
   </form>
 
-  <?php include_once BASE_PATH . '\client\includes\footer.php'?>
+  <?php include_once BASE_PATH . 'client/includes/footer.php'?>
 
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
-  <script src="<?= BASE_URL ?>/client/scripts/getAirports.js"></script>
-  <script src="<?= BASE_URL ?>/client/scripts/errorChecking.js"></script>
+  <script src="<?= BASE_URL ?>client/scripts/getAirports.js"></script>
+  <script src="<?= BASE_URL ?>client/scripts/errorChecking.js"></script>
 </body>
 
 </html>

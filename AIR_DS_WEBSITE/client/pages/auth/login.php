@@ -1,5 +1,7 @@
 <?php 
 require_once __DIR__ . "/../../../config/config.php";
+// require_once BASE_PATH . "client/" 
+
 ?>
 
 <!DOCTYPE html>
@@ -7,8 +9,8 @@ require_once __DIR__ . "/../../../config/config.php";
 <html>
 
 <head>
-  <link rel="stylesheet" href="<?= BASE_URL ?>/client/styles/header.css">
-  <link rel="stylesheet" href="<?= BASE_URL ?>/client/styles/footer.css">
+  <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/header.css">
+  <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/footer.css">
 </head>
 
 <?php include_once BASE_PATH . "client/includes/header.php"; ?>
