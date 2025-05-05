@@ -38,7 +38,7 @@ function check_registration_errors() {
     $response = null;
     $response = validate_fields($conn, $decoded_content, $fields);
   
-    if (!$response['result']) {
+    if (!$response["result"]) {
         header('Content-Type: application/json');
         http_response_code(400);
         echo json_encode($response);
