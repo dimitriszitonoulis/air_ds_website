@@ -1,5 +1,5 @@
 export async function registerUser (values, BASE_URL) {
-    const url = `${BASE_URL}server/services/auth/check_registration_errors.php`;
+    const url = `${BASE_URL}server/api/auth/check_registration_errors.php`;
     try {
         const response = await fetch(url, {
             method: "POST",
