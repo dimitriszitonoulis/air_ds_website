@@ -7,12 +7,13 @@ export async function registerUser (values, BASE_URL) {
             body: JSON.stringify(values)
         });
 
+        const data = await response.json();
+
         if (!response.ok) {
             console.error("Server returned error", data);
             throw new Error("HTTP error " + response.status);
         }
 
-        const data = await response.json();
         console.log("Fetch succesful return data:", data)
 
         if (data['response'] !== "user registered")
