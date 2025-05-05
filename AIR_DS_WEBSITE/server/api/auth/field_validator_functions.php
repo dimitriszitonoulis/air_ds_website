@@ -19,10 +19,13 @@ function is_username_valid ($conn, $username) {
     return true;
 }
 
-function is_password_valid ($password) {
+function is_password_valid ($conn, $username, $password, $for_login=false) {
     if (!isset($password) || empty($password)) return false;
     if (!contains_number($password)) return false;
     if (strlen($password) < 4 || strlen($password) > 10)  return false;
+    // if checking for login add another check for the password
+    if ($for_login) 
+        $fields["password"] = db_is_password_correct($conn, $username, $password);
     return true;
 }
 function is_email_valid ($conn, $email) {
