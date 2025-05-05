@@ -15,9 +15,9 @@ function check_registration_errors() {
     try {
         $conn = db_connect();
     } catch (PDOException $e) {
-        header('Content-type: application/json');
+        header('Content-Type: application/json');
         http_response_code(500);
-        echo json_encode(["error" => "Database connection failed"]);
+        echo json_encode(["result" => false, "message" => "Database connection failed"]);
         exit;
     }
 
@@ -34,14 +34,14 @@ function check_registration_errors() {
         "email" => false
     ];
 
-    // validation = ["result" => boolean, "message" => string]
-    $validation = null;
-    $validation = validate_fields($conn, $decoded_content, $fields);
+    // response = ["result" => boolean, "message" => string]
+    $response = null;
+    $response = validate_fields($conn, $decoded_content, $fields);
   
-    if (!$validation['result']) {
-        header('Content-type: application/json');
+    if (!$response['result']) {
+        header('Content-Type: application/json');
         http_response_code(400);
-        echo json_encode($validation);
+        echo json_encode($response);
         exit;
     }
 
@@ -59,10 +59,10 @@ function check_registration_errors() {
     // if this point is reached all the fields are valid
     db_insert_user($conn, $decoded_content);
 
-    $validation["result"] = true;
-    $validation["message"] = "user registered";
+    $response["result"] = true;
+    $response["message"] = "user registered";
     header('Content-Type: application/json');
-    echo json_encode($validation);
+    echo json_encode($response);
     exit;  
 }
 ?>
