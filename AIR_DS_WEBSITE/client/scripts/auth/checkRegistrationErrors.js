@@ -18,7 +18,7 @@ import { validateSubmitTime, validateRealTime} from "./validatorManager.js";
  *      - @function setUpValidation() => real time validation
  *      - @eventListener for the register button => submit time validation
  */
-const fields = [
+const registerFields = [
     {
         inputId: 'name-input',
         errorId: 'name-input-error-message',
@@ -66,18 +66,18 @@ registerBtn.addEventListener('click', async (e) => {
     // if the button is clicked without any field being checked do nothing
     e.preventDefault();
    
-    let isAllValid = await validateSubmitTime(fields);
+    let isAllValid = await validateSubmitTime(registerFields);
 
     // if a field is invalid do nothing
     if (!isAllValid) return;
   
     // document.getElementById('registration-form').requestSubmit();
     const values = {};
-    for(const field of fields) {
+    for(const field of registerFields) {
         const element = document.getElementById(field.inputId);
         values[element.name] = element.value;
     }
-    
+   
     const isRegistered = await registerUser(values, BASE_URL);
 
     if(isRegistered) {
@@ -92,5 +92,4 @@ registerBtn.addEventListener('click', async (e) => {
 
 });
 
-// Call the function
-validateRealTime(fields);
+validateRealTime(registerFields);
