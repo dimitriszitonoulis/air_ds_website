@@ -49,8 +49,8 @@ function check_registration_errors() {
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *                                  ATTENTION
  * 
- *  On client side the fetch script checks the following response
- *  If any response other than "user registered" is fetched,
+ *  On client side the fetch script checks the response
+ *  If response["result"] is not true,
  *  then the client cannot go from the register page to the login page
  * 
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
