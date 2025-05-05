@@ -5,6 +5,7 @@ require_once BASE_PATH . "server/services/auth/field_validator_functions.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_email_stored.php";
 require_once BASE_PATH . "server/database/services/auth/db_insert_user.php";
 
+
 // error_reporting(0);
 // ini_set('display_errors', 0);
 
@@ -18,22 +19,13 @@ function check_registration_errors() {
     } catch (PDOException $e) {
         header('Content-type: application/json');
         http_response_code(500);
-        echo json_encode(["error" => "Database connection falied"]);
+        echo json_encode(["error" => "Database connection failed"]);
         exit;
     }
 
     // get the data from js script
     $content = trim(file_get_contents("php://input")); // trim => remove white space from beggining and end
     $decoded_content = json_decode($content, true); // true is used to get associative array
-
-
-    // if for some reason no data comes from the client (indiviadual array fields MUST be checked later)
-    if(!isset($decoded_content) || empty($decoded_content)) {
-        header('Content-type: application/json');
-        http_response_code(400);
-        echo json_encode(["error" => "Missing content"]);
-        exit;
-    }
 
     // Array with: field names => field validity
     $fields = [
@@ -44,27 +36,14 @@ function check_registration_errors() {
         "email" => false
     ];
 
-    foreach ($fields as $field => $isValid) {
-        if (!isset($decoded_content[$field])) {
-            header('Content-type: application/json');
-            http_response_code(400);
-            echo json_encode(["error" => "Missing field: $field"]);
-            exit;
-        }
-    }
+    $validation_response = null;
+    $validation_response = validate_fields($conn, $decoded_content, $fields);
 
-    $fields["name"] = is_name_valid($decoded_content["name"]);
-    $fields["surname"] = is_name_valid($decoded_content["surname"]);
-    $fields["username"] = is_username_valid($conn, $decoded_content["username"]);
-    $fields["password"] = is_password_valid($decoded_content["password"]);
-    $fields["email"] = is_email_valid($conn, $decoded_content["email"]);
-
-    foreach ($fields as $field => $isValid) {
-        if (!$isValid) {
-            header('Content-Type: application/json');
-            echo json_encode(["response" => "invalid $field"]);
-            exit;
-        }
+    if ($validation_response['response'] !== "All fields valid") {
+        header('Content-type: application/json');
+        http_response_code(400);
+        echo json_encode($validation_response);
+        exit;
     }
 
 /**
@@ -83,4 +62,26 @@ function check_registration_errors() {
     exit;  
 }
 
+function validate_fields($conn, $decoded_content, $fields) {
+    // if for some reason no data comes from the client (individual array fields checked later)
+    if(!isset($decoded_content) || empty($decoded_content))
+       return ["error" => "Missing content"];
+
+    foreach ($fields as $field => $isValid) {
+        if (!isset($decoded_content[$field])) 
+            return ["error" => "Missing field: $field"];
+    }
+
+    $fields["name"] = is_name_valid($decoded_content["name"]);
+    $fields["surname"] = is_name_valid($decoded_content["surname"]);
+    $fields["username"] = is_username_valid($conn, $decoded_content["username"]);
+    $fields["password"] = is_password_valid($decoded_content["password"]);
+    $fields["email"] = is_email_valid($conn, $decoded_content["email"]);
+
+    foreach ($fields as $field => $isValid) {
+        if (!$isValid) return ["response" => "invalid $field"];
+    }
+
+    return ["response" => "All fields valid"];
+}
 ?>
