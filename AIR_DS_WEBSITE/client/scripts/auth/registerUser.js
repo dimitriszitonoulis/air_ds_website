@@ -1,19 +1,21 @@
-export function registerUser (values) {
+export async function registerUser (values, BASE_URL) {
     const url = `${BASE_URL}/server/services/auth/check_registration_errors.php`;
-   
-    fetch(url, {
-        method: "POST",
-        headers: { 'Content-Type': "application/json"},
-        body: JSON.stringify(values)
-    })
-    .then(response => {
-        if(!response.ok) {
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { 'Content-Type': "application/json"},
+            body: JSON.stringify(values)
+        });
+
+        if(!response.ok) 
             throw new Error("HTTP error " + response.status);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Fetch succesful return data:", data);
-    })
-    .catch(error => console.error("Error fetching data: ", error));
+
+        const data = await response.json();
+        console.log("Fetch succesful return data:", data)
+
+        return true;
+    } catch (error) {
+        console.error("Error fetching data: ", error);
+        return false;
+    }
 }

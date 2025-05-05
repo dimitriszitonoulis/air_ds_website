@@ -68,20 +68,28 @@ registerBtn.addEventListener('click', async (e) => {
    
     let isAllValid = await validateSubmitTime(fields);
 
-    // only if all the fields are valid submit the form
-    if (isAllValid) {
-        // document.getElementById('registration-form').requestSubmit();
-        const values = {};
-        for(const field of fields) {
-            const element = document.getElementById(field.inputId);
-            values[element.name] = element.value;
-        }
-        
-        registerUser(values);
-
-        // redirect to login page
-        window.location.replace(`${BASE_URL}/client/pages/auth/login.php`)
+    // if a field is invalid do nothing
+    if (!isAllValid) return;
+  
+    // document.getElementById('registration-form').requestSubmit();
+    const values = {};
+    for(const field of fields) {
+        const element = document.getElementById(field.inputId);
+        values[element.name] = element.value;
     }
+    
+    const isRegistered = await registerUser(values, BASE_URL);
+
+    if(isRegistered) {
+        // redirect to login page
+        // window.location.replace(`${BASE_URL}/client/pages/auth/login.php`)
+
+        // DELETE LATER
+        window.location.href = `${BASE_URL}/client/pages/auth/login.php`;  
+    } else {
+        console.error("registration failed")
+    }
+
 });
 
 // Call the function
