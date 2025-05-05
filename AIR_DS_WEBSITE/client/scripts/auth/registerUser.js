@@ -13,6 +13,8 @@ export async function registerUser (values, BASE_URL) {
         const data = await response.json();
         console.log("Fetch succesful return data:", data)
 
+        if (data['response'] !== "user registered")
+            return false;
         return true;
     } catch (error) {
         console.error("Error fetching data: ", error);

@@ -83,6 +83,11 @@ function check_registration_errors() {
     }
 
 
+    // ATTENTION
+    // On client side the fetch script checks this response
+    // IF any response other than "user registered" is fetched,
+    // then the client cannot go from the register page to the login page
+
     // if this point is reached all the fields are valid
     db_insert_user($conn, $decoded_content);
     header('Content-Type: application/json');

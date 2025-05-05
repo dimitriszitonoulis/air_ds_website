@@ -15,8 +15,8 @@ import { validateSubmitTime, validateRealTime} from "./validatorManager.js";
 /**
  * certain necessary fields for the form validation
  * these are passed on to:
- *      - @function setUpValidation() => real time validation
  *      - @eventListener for the register button => submit time validation
+ *      - @function setUpValidation() => real time validation
  */
 const registerFields = [
     {
@@ -85,7 +85,7 @@ registerBtn.addEventListener('click', async (e) => {
         // window.location.replace(`${BASE_URL}/client/pages/auth/login.php`)
 
         // DELETE LATER
-        window.location.href = `${BASE_URL}/client/pages/auth/login.php`;  
+        // window.location.href = `${BASE_URL}/client/pages/auth/login.php`;  
     } else {
         console.error("registration failed")
     }
