@@ -1,5 +1,5 @@
 export async function registerUser (values, BASE_URL) {
-    const url = `${BASE_URL}/server/services/auth/check_registration_errors.php`;
+    const url = `${BASE_URL}server/services/auth/check_registration_errors.php`;
     try {
         const response = await fetch(url, {
             method: "POST",
@@ -16,9 +16,9 @@ export async function registerUser (values, BASE_URL) {
 
         console.log("Fetch succesful return data:", data)
 
-        if (data['response'] !== "user registered")
-            return false;
-        return true;
+        // if the user is registered this is true, otherwise false
+        return data['result'];
+
     } catch (error) {
         console.error("Error fetching data: ", error);
         return false;

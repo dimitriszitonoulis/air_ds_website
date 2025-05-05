@@ -5,8 +5,6 @@ import { validateSubmitTime, validateRealTime} from "./validatorManager.js";
 /**
  * TODO
  * - For username availability maybe just return if any where found instead of getting the all the similar usernames 
- * - DO something when the server responsds that a user could not be registered
- * - checng e validataion function so that it does not call itself
  */ 
 
 
@@ -78,6 +76,8 @@ registerBtn.addEventListener('click', async (e) => {
         values[element.name] = element.value;
     }
    
+    
+    // TODO maybe modify to do something with error message
     const isRegistered = await registerUser(values, BASE_URL);
 
     if(isRegistered) {
@@ -87,7 +87,7 @@ registerBtn.addEventListener('click', async (e) => {
         // DELETE LATER
         // window.location.href = `${BASE_URL}/client/pages/auth/login.php`;  
     } else {
-        console.error("registration failed")
+        // console.error("registration failed")
     }
 });
 

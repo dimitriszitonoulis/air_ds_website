@@ -3,7 +3,7 @@
 // URL IS INCORRECT it must not contain ..
 // this has the absolute path
 // it is incorrect because the url starts from where the html file is located
-const url = `/server/database/services/get_airports.php`;
+const url = `${BASE_URL}/server/database/services/db_is_username_stored.php`;
 
 let result = fetch(url, {
     method: "POST",
@@ -18,5 +18,10 @@ let result = fetch(url, {
     }
     return response.json();
 })
-.then(data => console.log("Success: " + data))
+.then(data => {
+    console.log("Raw data:", data); // <-- Add this line
+    console.log("Raw data type: " + typeof(data[0]));
+    const usernames = data.map(user => user.username);
+    console.log("Success: " + usernames.join(", "));
+})
 .catch(error => console.error('Error: ' + error));
