@@ -1,6 +1,6 @@
 import { registerUser } from "./registerUser.js";
 import { isNameValid, isUsernameValid, isPasswordValid, isEmailValid } from "./fieldValidatorFunctions.js";
-import { validateSubmitTime, validateRealTime} from "./validatorManager.js";
+import { validateSubmitTime, validateRealTime} from "./validationManager.js";
 
 /**
  * TODO
