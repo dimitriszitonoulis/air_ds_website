@@ -3,15 +3,8 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_username_stored.php";
 
 function is_name_valid ($name) {
-
-    if(!isset($name) || empty($name))
-        return false;
-
-    // if(!is_only_letters(strval($name)))
-
-    if(!is_only_letters($name)) 
-        return false;
-
+    if(!isset($name) || empty($name)) return false;
+    if(!is_only_letters($name)) return false;
     return true;
 }
 
@@ -23,7 +16,6 @@ function is_username_valid ($conn, $username) {
     $result = db_is_username_stored($conn, $username);
 
     if (count($result) !== 0) return false;
-
     return true;
 }
 
