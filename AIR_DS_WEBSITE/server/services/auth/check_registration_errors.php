@@ -11,8 +11,6 @@ require_once BASE_PATH . "server/database/services/auth/db_insert_user.php";
 
 check_registration_errors();
 
-
-
 function check_registration_errors() {
     $conn = NULL;
     try {
@@ -37,9 +35,16 @@ function check_registration_errors() {
         exit;
     }
 
-    $fields = ["name", "surname", "username", "password", "email"];
+    // Array with: field names => field validity
+    $fields = [
+        "name" => false,
+        "surname" => false,
+        "username" => false,
+        "password" => false,
+        "email" => false
+    ];
 
-    foreach ($fields as $field) {
+    foreach ($fields as $field => $isValid) {
         if (!isset($decoded_content[$field])) {
             header('Content-type: application/json');
             http_response_code(400);
@@ -48,45 +53,28 @@ function check_registration_errors() {
         }
     }
 
-    $is_name = is_name_valid($decoded_content["name"]);
-    $is_surname = is_name_valid($decoded_content["surname"]);
-    $is_username = is_username_valid($conn, $decoded_content["username"]);
-    $is_password = is_password_valid($decoded_content["password"]);
-    $is_email = is_email_valid($conn, $decoded_content["email"]);
+    $fields["name"] = is_name_valid($decoded_content["name"]);
+    $fields["surname"] = is_name_valid($decoded_content["surname"]);
+    $fields["username"] = is_username_valid($conn, $decoded_content["username"]);
+    $fields["password"] = is_password_valid($decoded_content["password"]);
+    $fields["email"] = is_email_valid($conn, $decoded_content["email"]);
 
-
-    if (!$is_name) {
-        header('Content-Type: application/json');
-        echo json_encode(["response" => "invalid name"]);
-        exit;
-    }
-    
-    if (!$is_surname) {
-        header('Content-Type: application/json');
-        echo json_encode(["response" => "invalid surname"]);
-        exit;
-    }
-    if (!$is_username) {
-        header('Content-Type: application/json');
-        echo json_encode(["response" => "invalid username"]);
-        exit;
-    }
-    if (!$is_password) {
-        header('Content-Type: application/json');
-        echo json_encode(["response" => "invalid password"]);
-        exit;
-    }
-    if (!$is_email) {
-        header('Content-Type: application/json');
-        echo json_encode(["response" => "invalid email"]);
-        exit;
+    foreach ($fields as $field => $isValid) {
+        if (!$isValid) {
+            header('Content-Type: application/json');
+            echo json_encode(["response" => "invalid $field"]);
+            exit;
+        }
     }
 
-
-    // ATTENTION
-    // On client side the fetch script checks this response
-    // IF any response other than "user registered" is fetched,
-    // then the client cannot go from the register page to the login page
+/**
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *                                  ATTENTION
+ *  On client side the fetch script checks the following response
+ *  If any response other than "user registered" is fetched,
+ *  then the client cannot go from the register page to the login page
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ */
 
     // if this point is reached all the fields are valid
     db_insert_user($conn, $decoded_content);
