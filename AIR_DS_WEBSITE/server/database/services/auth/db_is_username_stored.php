@@ -24,6 +24,12 @@ function db_is_username_stored($conn, $username) {
     // execute the statement
     $stmt->execute();
 
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// TODO MAYBE RETURN IF THE USERNAME IS FOUND AND NOT ALL MATCHING USERNAME
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
     // get the all the usernames that match 
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
    
