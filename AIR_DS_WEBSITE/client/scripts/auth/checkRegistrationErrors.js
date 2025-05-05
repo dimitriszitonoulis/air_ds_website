@@ -89,7 +89,6 @@ registerBtn.addEventListener('click', async (e) => {
     } else {
         console.error("registration failed")
     }
-
 });
 
 validateRealTime(registerFields);
