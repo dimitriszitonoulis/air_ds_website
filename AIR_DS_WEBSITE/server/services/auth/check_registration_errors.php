@@ -82,17 +82,12 @@ function check_registration_errors() {
         exit;
     }
 
-    // if every check is passed insertuser to database
-    if ($is_name && $is_surname && $is_username && $is_password && $is_email) {
-        db_insert_user($conn, $decoded_content);
-        header('Content-Type: application/json');
-        echo json_encode(["response" => "user registered"]);
-        exit;
-    }
 
+    // if this point is reached all the fields are valid
+    db_insert_user($conn, $decoded_content);
     header('Content-Type: application/json');
-    echo json_encode(["response" => "failed to register user"]);     
-    exit;
+    echo json_encode(["response" => "user registered"]);
+    exit;  
 }
 
 ?>
