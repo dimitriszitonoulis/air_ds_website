@@ -36,22 +36,25 @@ function check_registration_errors() {
         "email" => false
     ];
 
-    $validation_response = null;
-    $validation_response = validate_fields($conn, $decoded_content, $fields);
-
-    if ($validation_response['response'] !== "All fields valid") {
+    
+    $validation = null;
+    $validation = validate_fields($conn, $decoded_content, $fields);
+  
+    if (!$validation['result']) {
         header('Content-type: application/json');
         http_response_code(400);
-        echo json_encode($validation_response);
+        echo json_encode($validation);
         exit;
     }
 
 /**
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *                                  ATTENTION
+ * 
  *  On client side the fetch script checks the following response
  *  If any response other than "user registered" is fetched,
  *  then the client cannot go from the register page to the login page
+ * 
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 
@@ -65,11 +68,11 @@ function check_registration_errors() {
 function validate_fields($conn, $decoded_content, $fields) {
     // if for some reason no data comes from the client (individual array fields checked later)
     if(!isset($decoded_content) || empty($decoded_content))
-       return ["error" => "Missing content"];
+       return ["result" => false, "message" => "Missing content"];
 
     foreach ($fields as $field => $isValid) {
         if (!isset($decoded_content[$field])) 
-            return ["error" => "Missing field: $field"];
+            return ["result" => false, "message" => "Missing field: $field"];
     }
 
     $fields["name"] = is_name_valid($decoded_content["name"]);
@@ -79,9 +82,9 @@ function validate_fields($conn, $decoded_content, $fields) {
     $fields["email"] = is_email_valid($conn, $decoded_content["email"]);
 
     foreach ($fields as $field => $isValid) {
-        if (!$isValid) return ["response" => "invalid $field"];
+        if (!$isValid) return ["result" => false, "message" => "invalid $field"];
     }
 
-    return ["response" => "All fields valid"];
+    return ["result" => true,"message" => "All fields valid"];
 }
 ?>
