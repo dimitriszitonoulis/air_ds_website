@@ -1,6 +1,6 @@
 import { registerUser } from "./registerUser.js";
 import { isNameValid, isUsernameValid, isPasswordValid, isEmailValid } from "./fieldValidatorFunctions.js";
-import { setUpSubmitTimeValidation, setUpRealTimeValidation} from "./validatorManager.js";
+import { validateSubmitTime, validateRealTime} from "./validatorManager.js";
 
 /**
  * TODO
@@ -57,7 +57,6 @@ const fields = [
 ]
 
 
-// get the register  button
 const registerBtn = document.getElementById('register-button');
 
 // add event listener to the register button to validate the values of the form fields
@@ -67,7 +66,7 @@ registerBtn.addEventListener('click', async (e) => {
     // if the button is clicked without any field being checked do nothing
     e.preventDefault();
    
-    let isAllValid = setUpSubmitTimeValidation(fields);
+    let isAllValid = await validateSubmitTime(fields);
 
     // only if all the fields are valid submit the form
     if (isAllValid) {
@@ -80,13 +79,10 @@ registerBtn.addEventListener('click', async (e) => {
         
         registerUser(values);
 
-        // change later to have correct fields not strings
-        // registerUser("dfgh", "dfgh", "sdfg", "s1sdsd", "asdf@sdf.com");
-
         // redirect to login page
         window.location.replace(`${BASE_URL}/client/pages/auth/login.php`)
     }
 });
 
 // Call the function
-setUpRealTimeValidation(fields);
+validateRealTime(fields);
