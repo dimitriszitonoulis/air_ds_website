@@ -123,8 +123,6 @@ export async function isUsernameValid(usernameInput, errMessageDiv, isLogin=fals
 }
 
 
-
-
 // TODO update comment to reflect the isLogin parameter 
 /**
  * function that ensures the validity of the password <input> field
@@ -214,19 +212,14 @@ export function isEmailValid(emailInput, errMessageDiv, isLogin=false) {
  * @param {string} username - the username entered by the user 
  * @returns {boolean} - true if the username does not exist in the database, false otherwise
  */
-export async function isUsernameAvailable(username) {
+async function isUsernameAvailable(username) {
     // fetch from db
     // const url = `${BASE_URL}/server/database/services/auth/db_is_username_stored.php`;
-    const url = `${BASE_URL}/server/api/auth/check_username.php`;
-
-    let usernames = "";
-    let data = "";
+    const url = `${BASE_URL}server/api/auth/check_username.php`;
 
     // get all the usernames that match username 
     // (are the same as username or have the pattern: <username><other_characters>)
     try {
-        // fetch the usernames by sending a POST request where
-        // _POST['username'] = username entered by user
         let response = await fetch(url, {
             method: "POST",
             headers: {
@@ -234,22 +227,33 @@ export async function isUsernameAvailable(username) {
             },
             body: JSON.stringify({ 'username': `${username}` })
         });
+
+        const data = await response.json();
+
         if (!response.ok) {
+            console.error("Server returned error", data);
             throw new Error("HTTP error " + response.status);
         }
-        data = await response.json();
+
+        console.log("Fetch succesful return data:", data)
+        
+        const is_stored = data['result']; 
+
+        // if there is the same username in the database, this is false
+        return !is_stored;
+
     } catch (error) {
         console.error(error);
         return false;
     }
 
-    usernames = data.map(user => user.username)
+    // username = data.map(user => user.username)
 
-    // if no usernames are returned the username is availble
-    if (usernames[0] === undefined)
-        return true;
-    else
-        return false;
+    // // if no usernames are returned the username is availble
+    // if (username[0] === undefined)
+    //     return true;
+    // else
+    //     return false;
 }
 
 function isAlphanumeric(text) {

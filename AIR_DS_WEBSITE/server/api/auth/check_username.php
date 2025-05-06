@@ -27,8 +27,8 @@ function check_username() {
     $content = trim(file_get_contents("php://input")); // trim => remove white space from beggining and end
     $decoded_content = json_decode($content, true); // true is used to get associative array
     
-    // if for some reason no data comes from the client (indiviadual array fields MUST be checked later)
-    if(!isset($decoded_content) || empty($decoded_content)) {
+    // if for some reason no data comes from the client (individual array fields MUST be checked later)
+    if (!isset($decoded_content) || empty($decoded_content)) {
         header('Content-type: application/json');
         http_response_code(400);
         echo json_encode(["error" => "Missing 'username' in JSON"]);
@@ -37,11 +37,17 @@ function check_username() {
 
     $username = $decoded_content["username"];
 
-    $result = db_is_username_stored($conn, $username);
+    $is_stored = db_is_username_stored($conn, $username);
+    
+    if (!$is_stored) {
+        header('Content-Type: application/json');
+        echo json_encode(value: ["result" => false, "message" => "username is not stored"]);
+        exit;
+    }
     
     header('Content-Type: application/json');
-    echo json_encode($result);
-    
+    echo json_encode(["result" => true, "message" => "username is stored"]);
+    // echo json_encode($result);
     exit;
 }
 ?>
