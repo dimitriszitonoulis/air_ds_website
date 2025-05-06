@@ -16,12 +16,7 @@ function is_username_valid ($conn, $username, $is_login) {
 
     // if there are no usernames like $username in the db then an empty array is returned
     $result = db_is_username_stored($conn, $username);
-
-    $is_available = count($result) !== 0;
-
-    // if ($is_available xor $is_login) return false;
-    // return true;
-
+    $is_username_available = count($result) === 0;
     /**
      * if is available and register => true (user wants to register and the username is available)
      * if not availabel and register => false (user wants to register and the username is not available)
@@ -29,7 +24,7 @@ function is_username_valid ($conn, $username, $is_login) {
      * if not available and login => false (user wants to login and the username is not available)
      */
 
-    return ($is_available xor $is_login);
+    return ($is_username_available xor $is_login);
 }
 
 function is_password_valid ($conn, $username, $password, $is_login=false) {
