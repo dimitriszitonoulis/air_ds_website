@@ -21,10 +21,11 @@ function db_is_password_correct($conn, $username, $password) {
     // execute the statement
     $stmt->execute();
 
-    // get the all the usernames that match 
+    // get the all the passwords that match for the given username 
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
+    
+    // if there are no rows then there is no acount with the given username,
+    // that has the given password
     if (count($result) === 0) return false;
 
     return true;
