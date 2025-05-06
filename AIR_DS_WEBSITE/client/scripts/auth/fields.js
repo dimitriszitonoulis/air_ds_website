@@ -36,4 +36,4 @@ export const fields = {
         validatorFunction: isEmailValid,
         isAsync: false
     }
-}
+};

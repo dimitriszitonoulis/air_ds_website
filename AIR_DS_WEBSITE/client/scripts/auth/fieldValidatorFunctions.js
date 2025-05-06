@@ -30,7 +30,7 @@ import { showError, clearError} from "../errorDisplay.js"
  */
 
 
-
+// TODO update comment to reflect the isLogin parameter 
 /**
  *  function that checks the validity of the value in the name <input> field
  * 
@@ -41,7 +41,7 @@ import { showError, clearError} from "../errorDisplay.js"
  * @param {object} errMessageDiv - The div used to display error messages for the name 
  * @returns {boolean} - true if the name is valid, false otherwise
  */
-export function isNameValid(nameInput, errMessageDiv) {
+export function isNameValid(nameInput, errMessageDiv, isLogin) {
     const name = nameInput.value;
 
     // if input empty
@@ -59,7 +59,7 @@ export function isNameValid(nameInput, errMessageDiv) {
     return true;
 }
 
-
+// TODO update comment to reflect the isLogin parameter 
 /**
  * Function that checks if the username in the userame input field is valid.
  * 
@@ -74,7 +74,7 @@ export function isNameValid(nameInput, errMessageDiv) {
  * @param {object} errMessageDiv - The div used to display error messages for the username
  * @returns {boolean} - true if the username is valid, false otherwise
  */
-export async function isUsernameValid(usernameInput, errMessageDiv) {
+export async function isUsernameValid(usernameInput, errMessageDiv, isLogin=false) {
     let username = usernameInput.value;
 
     // if input empty
@@ -90,12 +90,103 @@ export async function isUsernameValid(usernameInput, errMessageDiv) {
     // await for its response 
     const isAvailable = await isUsernameAvailable(username);
 
-    // if the username is not available
-    if (!isAvailable) {
-        showError(errMessageDiv, "Username is not available.");
+    // if the function is used for login checks
+    if (isLogin) {
+        /**
+         * all the usernames in the db are unique
+         * if the user is trying to login and the username is available
+         * (there was no other username like it in the db),
+         * then the username is incorrect (because it does not exist in the db)
+         */
+        if (isAvailable) {
+            showError(errMessageDiv, "Invalid credentials");
+            return false;
+        }
+    }
+
+    // if the function is used for registration checks
+    if(!isLogin) {
+         /**
+         * all the usernames in the db are unique
+         * if the user is trying to register and the username is not available
+         * (there was another username like it in the db),
+         * then the username is incorrect (because it already exists in the db)
+         */
+        if(!isAvailable) {
+            showError(errMessageDiv, "Username is not available");
+            return false;
+        }
+    }
+
+    clearError(errMessageDiv);
+    return true;
+}
+
+
+
+
+// TODO update comment to reflect the isLogin parameter 
+/**
+ * function that ensures the validity of the password <input> field
+ * A valid password is one that:
+ *      - Is not empty
+ *      - Has at least one number
+ *      - Has 4 to 10 digits
+ *  
+ * @param {object} passwordInput - the <input> element containing the password
+ * @param {object} errMessageDiv - the <div> containing the error message for the password
+ * @returns 
+ */
+export function isPasswordValid(passwordInput, errMessageDiv, isLogin=false) {
+    let password = passwordInput.value;
+
+    // check if the password is empty
+    if (!password)
+        return false;
+
+    // check password contains at least one digit
+    if (!constainsNumber(password)) {
+        showError(errMessageDiv, "Password must contain at least one digit.");
         return false;
     }
 
+    // check password is 4 - 10 digits
+    if (password.length < 4 || password.length > 10) {
+        showError(errMessageDiv, "Password must have between 4 and 10 digits");
+        return false;
+    }
+
+    // all good
+    clearError(errMessageDiv);
+    return true;
+}
+
+
+// TODO update comment to reflect the isLogin parameter 
+/**
+ * function that ensures the validity of the email <input> field
+ * A valid email is one that:
+ *      - Is not empty
+ *      - Contains the '@' character
+ *  
+ * @param {object} emailInput - the <input> element containing the email 
+ * @param {object} errMessageDiv - the <div> containing the error message for the email
+ * @returns 
+ */
+export function isEmailValid(emailInput, errMessageDiv, isLogin=false) {
+    const email = emailInput.value;
+
+    // check if the email is empty
+    if (!email)
+        return false;
+
+    // check if the email contains the @ character
+    if (!containsATCharacter(email)) {
+        showError(errMessageDiv, 'The email must contain the "@" character');
+        return false;
+    }
+
+    // all good
     clearError(errMessageDiv);
     return true;
 }
@@ -159,69 +250,6 @@ export async function isUsernameAvailable(username) {
         return true;
     else
         return false;
-}
-
-/**
- * function that ensures the validity of the password <input> field
- * A valid password is one that:
- *      - Is not empty
- *      - Has at least one number
- *      - Has 4 to 10 digits
- *  
- * @param {object} passwordInput - the <input> element containing the password
- * @param {object} errMessageDiv - the <div> containing the error message for the password
- * @returns 
- */
-export function isPasswordValid(passwordInput, errMessageDiv) {
-    let password = passwordInput.value;
-
-    // check if the password is empty
-    if (!password)
-        return false;
-
-    // check password contains at least one digit
-    if (!constainsNumber(password)) {
-        showError(errMessageDiv, "Password must contain at least one digit.");
-        return false;
-    }
-
-    // check password is 4 - 10 digits
-    if (password.length < 4 || password.length > 10) {
-        showError(errMessageDiv, "Password must have between 4 and 10 digits");
-        return false;
-    }
-
-    // all good
-    clearError(errMessageDiv);
-    return true;
-}
-
-/**
- * function that ensures the validity of the email <input> field
- * A valid email is one that:
- *      - Is not empty
- *      - Contains the '@' character
- *  
- * @param {object} emailInput - the <input> element containing the email 
- * @param {object} errMessageDiv - the <div> containing the error message for the email
- * @returns 
- */
-export function isEmailValid(emailInput, errMessageDiv) {
-    const email = emailInput.value;
-
-    // check if the email is empty
-    if (!email)
-        return false;
-
-    // check if the email contains the @ character
-    if (!containsATCharacter(email)) {
-        showError(errMessageDiv, 'The email must contain the "@" character');
-        return false;
-    }
-
-    // all good
-    clearError(errMessageDiv);
-    return true;
 }
 
 function isAlphanumeric(text) {

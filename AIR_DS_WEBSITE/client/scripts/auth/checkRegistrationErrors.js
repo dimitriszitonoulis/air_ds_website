@@ -1,5 +1,5 @@
+import { fields } from "./fields.js"
 import { registerUser } from "./registerUser.js";
-import { isNameValid, isUsernameValid, isPasswordValid, isEmailValid } from "./fieldValidatorFunctions.js";
 import { validateSubmitTime, validateRealTime} from "./validationManager.js";
 
 /**
@@ -16,44 +16,16 @@ import { validateSubmitTime, validateRealTime} from "./validationManager.js";
  *      - @eventListener for the register button => submit time validation
  *      - @function setUpValidation() => real time validation
  */
-const registerFields = [
-    {
-        inputId: 'name-input',
-        errorId: 'name-input-error-message',
-        event: 'change',
-        validatorFunction: isNameValid,
-        isAsync: false
-    },
-    {
-        inputId: 'surname-input',
-        errorId: 'surname-input-error-message',
-        event: 'change',
-        validatorFunction: isNameValid,
-        isAsync: false
-    },
-    {
-        inputId: 'username-input',
-        errorId: 'username-input-error-message',
-        event: 'change',
-        validatorFunction: isUsernameValid,
-        isAsync: true
-    },
-    {
-        inputId: 'password-input',
-        errorId: 'password-input-error-message',
-        event: 'change',
-        validatorFunction: isPasswordValid,
-        isAsync: false
-    },
-    {
-        inputId: 'email-input',
-        errorId: 'email-input-error-message',
-        event: 'change',
-        validatorFunction: isEmailValid,
-        isAsync: false
-    }
-]
 
+
+
+const registerFields = {
+    "name": fields["name"],
+    "surname": fields["surname"],
+    "username": fields["username"],
+    "password": fields["password"],
+    "email": fields["email"]
+}
 
 const registerBtn = document.getElementById('register-button');
 

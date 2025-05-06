@@ -21,19 +21,38 @@
  */
 export async function validateSubmitTime(fields) {
     // loop through all the fields and check if they are valid
-    for (const field of fields) {
+    for (const key in fields) {
+        const field = fields[key];
         const inputElement = document.getElementById(field.inputId)
         const errorElement = document.getElementById(field.errorId);
         const isAsync = field.isAsync;
         let isValid = true;
 
+        const loginChecks = field.isLogin;
+
         if (isAsync) // if the function is async await its response
-            isValid = await field.validatorFunction(inputElement, errorElement);
+            isValid = await field.validatorFunction(inputElement, errorElement, loginChecks);
         else
-            isValid = field.validatorFunction(inputElement, errorElement);
+            isValid = field.validatorFunction(inputElement, errorElement, loginChecks);
         
         if (!isValid) return false; 
     }
+
+
+
+    // for (const field of fields) {
+    //     const inputElement = document.getElementById(field.inputId)
+    //     const errorElement = document.getElementById(field.errorId);
+    //     const isAsync = field.isAsync;
+    //     let isValid = true;
+
+    //     if (isAsync) // if the function is async await its response
+    //         isValid = await field.validatorFunction(inputElement, errorElement);
+    //     else
+    //         isValid = field.validatorFunction(inputElement, errorElement);
+        
+    //     if (!isValid) return false; 
+    // }
     return true;
 }
 
@@ -52,13 +71,19 @@ export async function validateSubmitTime(fields) {
 * - isAsync: {boolean} true if the validator function is asynchronous false otherwise
 */
 export function validateRealTime(fields) {
-    for(const field of fields) {
+    for (const key in fields) {
+        const field = fields[key];
         const inputElement = document.getElementById(field.inputId);
         const errorElement = document.getElementById(field.errorId);
-
+        
+        // TODO maybe loginChecks = field.isLogin || false 
+        // for readability, functionality is okay beacause of 
+        // extra parameter with default value in validator functions
+        const loginChecks = field.isLogin;
+        
         inputElement.addEventListener(field.event, async (e) => {
-            if(field.isAsync) await field.validatorFunction(inputElement, errorElement);
-            else field.validatorFunction(inputElement, errorElement);
+            if(field.isAsync) await field.validatorFunction(inputElement, errorElement, loginChecks);
+            else field.validatorFunction(inputElement, errorElement, loginChecks);
         });
     }
 }
