@@ -11,9 +11,9 @@ require_once BASE_PATH . "server/database/services/auth/db_is_username_stored.ph
  * 
  */
 
- db_check_username_exists();
+ check_username();
 
-function db_check_username_exists() {
+function check_username() {
     $conn = NULL;
     try {
         $conn = db_connect();
