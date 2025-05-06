@@ -64,7 +64,7 @@ registerBtn.addEventListener('click', async (e) => {
     // if the button is clicked without any field being checked do nothing
     e.preventDefault();
    
-    let isAllValid = await validateSubmitTime(registerFields);
+    const isAllValid = await validateSubmitTime(registerFields);
 
     // if a field is invalid do nothing
     if (!isAllValid) return;
