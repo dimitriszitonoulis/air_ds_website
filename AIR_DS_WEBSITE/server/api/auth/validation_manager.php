@@ -10,7 +10,7 @@ require_once BASE_PATH . "server/api/auth/field_validator_functions.php";
  *                                                  - keys: fields names
  *                                                  - values: field values
  * 
- * @param array{string: boolean} - An Associative are where:
+ * @param array{string: boolean} $fields  - An associative array where:
  *                                  - keys: the names of the fields
  *                                  - values: a boolean, true if the field is valid, else false 
  * @param boolean $is_login - true if the validation is done for login, false if it is done for register
