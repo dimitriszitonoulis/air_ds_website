@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_username_stored.php";
+require_once BASE_PATH . "server/database/services/auth/db_is_password_correct.php";
+require_once BASE_PATH . "server/database/services/auth/db_is_email_stored.php";
 
 function is_name_valid ($name) {
     if(!isset($name) || empty($name)) return false;
@@ -8,23 +10,34 @@ function is_name_valid ($name) {
     return true;
 }
 
-function is_username_valid ($conn, $username) {
+function is_username_valid ($conn, $username, $is_login) {
     if (!isset($username) || empty($username)) return false;
     if (!is_alphanumeric($username)) return false;
 
     // if there are no usernames like $username in the db then an empty array is returned
     $result = db_is_username_stored($conn, $username);
 
-    if (count($result) !== 0) return false;
-    return true;
+    $is_available = count($result) !== 0;
+
+    // if ($is_available xor $is_login) return false;
+    // return true;
+
+    /**
+     * if is available and register => true (user wants to register and the username is available)
+     * if not availabel and register => false (user wants to register and the username is not available)
+     * if available and login => false (user wants to login and the username is available)
+     * if not available and login => false (user wants to login and the username is not available)
+     */
+
+    return ($is_available xor $is_login);
 }
 
-function is_password_valid ($conn, $username, $password, $for_login=false) {
+function is_password_valid ($conn, $username, $password, $is_login=false) {
     if (!isset($password) || empty($password)) return false;
     if (!contains_number($password)) return false;
     if (strlen($password) < 4 || strlen($password) > 10)  return false;
     // if checking for login add another check for the password
-    if ($for_login) 
+    if ($is_login) 
         $fields["password"] = db_is_password_correct($conn, $username, $password);
     return true;
 }

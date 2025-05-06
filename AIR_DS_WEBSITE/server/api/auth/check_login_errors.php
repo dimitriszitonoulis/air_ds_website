@@ -2,8 +2,6 @@
 require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/api/auth/validation_manager.php";
 require_once BASE_PATH. "server/api/auth/login_user.php";
-    
-   
 
 // error_reporting(0);
 // ini_set('display_errors', 0);
@@ -34,7 +32,7 @@ function check_login_errors() {
 
     // response = ["result" => boolean, "message" => string]
     $response = null;
-    $response = validate_fields($conn, $decoded_content, $fields);
+    $response = validate_fields($conn, $decoded_content, $fields, true);
   
     if (!$response['result']) {
         header('Content-type: application/json');
