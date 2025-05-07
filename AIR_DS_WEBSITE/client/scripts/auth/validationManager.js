@@ -37,21 +37,6 @@ export async function validateSubmitTime(fields) {
         if (!isValid) return false; 
     }
 
-
-
-    // for (const field of fields) {
-    //     const inputElement = document.getElementById(field.inputId)
-    //     const errorElement = document.getElementById(field.errorId);
-    //     const isAsync = field.isAsync;
-    //     let isValid = true;
-
-    //     if (isAsync) // if the function is async await its response
-    //         isValid = await field.validatorFunction(inputElement, errorElement);
-    //     else
-    //         isValid = field.validatorFunction(inputElement, errorElement);
-        
-    //     if (!isValid) return false; 
-    // }
     return true;
 }
 
