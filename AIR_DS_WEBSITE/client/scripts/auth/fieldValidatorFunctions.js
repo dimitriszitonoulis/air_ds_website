@@ -221,7 +221,7 @@ export function isEmailValid(emailInput, errMessageDiv, isLogin=false) {
 async function isUsernameStored(username) {
     // fetch from db
     // const url = `${BASE_URL}/server/database/services/auth/db_is_username_stored.php`;
-    const url = `${BASE_URL}server/api/auth/check_username.php`;
+    const url = `${BASE_URL}server/api/auth/is_username_stored.php`;
 
     // get all the usernames that match username 
     // (are the same as username or have the pattern: <username><other_characters>)

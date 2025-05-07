@@ -3,17 +3,9 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/db_utils/db_connect.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_field_stored.php";
 
+is_username_stored();
 
-/**
- * 
- * AJAX
- * END - POINT
- * 
- */
-
- check_username();
-
-function check_username() {
+function is_username_stored() {
     $conn = NULL;
     try {
         $conn = db_connect();
@@ -46,7 +38,6 @@ function check_username() {
     
     header('Content-Type: application/json');
     echo json_encode(["result" => true, "message" => "username is stored"]);
-    // echo json_encode($result);
     exit;
 }
 ?>
