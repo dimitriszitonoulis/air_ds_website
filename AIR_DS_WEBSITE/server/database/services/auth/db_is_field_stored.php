@@ -86,8 +86,8 @@ function db_is_email_stored($conn, $email) {
     // otherwise $result = empty array (0 elements)
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if(count($result) !== 0) return true;
+    if(count($result) === 0) return false;
 
-   return false;
+   return true;
 }
 ?>
