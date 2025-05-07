@@ -237,7 +237,7 @@ async function isUsernameStored(username) {
         const data = await response.json();
 
         if (!response.ok) {
-            console.error("Server returned error", data);
+        console.error("Server returned error", data);
             throw new Error("HTTP error " + response.status);
         }
 
@@ -252,14 +252,6 @@ async function isUsernameStored(username) {
         console.error(error);
         return false;
     }
-
-    // username = data.map(user => user.username)
-
-    // // if no usernames are returned the username is availble
-    // if (username[0] === undefined)
-    //     return true;
-    // else
-    //     return false;
 }
 
 function isAlphanumeric(text) {
