@@ -27,7 +27,6 @@ function check_username() {
     $content = trim(file_get_contents("php://input")); // trim => remove white space from beggining and end
     $decoded_content = json_decode($content, true); // true is used to get associative array
     
-    // if for some reason no data comes from the client (individual array fields MUST be checked later)
     if (!isset($decoded_content) || empty($decoded_content)) {
         header('Content-type: application/json');
         http_response_code(400);
