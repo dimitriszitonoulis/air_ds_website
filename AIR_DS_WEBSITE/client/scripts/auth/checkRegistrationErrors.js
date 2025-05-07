@@ -10,8 +10,8 @@ import { validateSubmitTime, validateRealTime} from "./validationManager.js";
  *      - @function setUpValidation() => real time validation
  */
 
-
-
+// take the necessary fields from fields global variable and add their validator fucntions
+// attention create shallow copy, do not modify the global variable
 const registerFields = {
     "name": {...fields["name"], validatorFunction: isNameValid},
     "surname": {...fields["surname"], validatorFunction: isNameValid},
