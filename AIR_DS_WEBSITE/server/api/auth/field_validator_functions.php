@@ -14,7 +14,7 @@ function is_username_valid ($conn, $username, $is_login) {
     if (!isset($username) || empty($username)) return false;
     if (!is_alphanumeric($username)) return false;
 
-    // FIXME is stored must have opposite value
+    // FIXME is is_username_available has opposite value
     // if there are no usernames like $username in the db then an empty array is returned
     $is_username_available = db_is_username_stored($conn, $username);
 

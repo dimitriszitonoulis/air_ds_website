@@ -43,11 +43,12 @@ registerBtn.addEventListener('click', async (e) => {
   
     // document.getElementById('registration-form').requestSubmit();
     const values = {};
-    for(const field of registerFields) {
+    for (const key in registerFields) {
+        const field = registerFields[key];
         const element = document.getElementById(field.inputId);
         values[element.name] = element.value;
     }
-   
+
     
     // TODO maybe modify to do something with error message
     const isRegistered = await registerUser(values, BASE_URL);
