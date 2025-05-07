@@ -27,7 +27,9 @@ loginBtn.addEventListener('click', async (e) => {
   
     // document.getElementById('registration-form').requestSubmit();
     const values = {};
-    for (const field of loginFields) {
+
+    for (const key in loginFields) {
+        const field = loginFields[key];
         const element = document.getElementById(field.inputId);
         values[element.name] = element.value;
     }
