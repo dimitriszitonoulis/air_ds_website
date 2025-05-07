@@ -86,19 +86,25 @@ export async function isUsernameValid(usernameInput, errMessageDiv, isLogin=fals
         return false;
     }
 
-    // isUsernameAvailable() is an async function that returns true if the username is available, else false
-    // await for its response 
-    const isAvailable = await isUsernameAvailable(username);
+    const isStored = await isUsernameStored(username);
 
+
+    //TODO
+    /**
+     *  TODO when the user tries to login it shows message before the button is pressed
+     * It should not do that
+     * maybe have to different functions one for login and one for registrations
+     * choose each function in loginField (checkLoginErrors.js)
+     * and registerFields (checkRegisterErrord.js)
+     */
     // if the function is used for login checks
     if (isLogin) {
         /**
          * all the usernames in the db are unique
-         * if the user is trying to login and the username is available
-         * (there was no other username like it in the db),
-         * then the username is incorrect (because it does not exist in the db)
+         * if the user is trying to login and the username is not stored 
+         * then the username is incorrect (because there is no user with that username)
          */
-        if (isAvailable) {
+        if (!isStored) {
             showError(errMessageDiv, "Invalid credentials");
             return false;
         }
@@ -108,11 +114,11 @@ export async function isUsernameValid(usernameInput, errMessageDiv, isLogin=fals
     if(!isLogin) {
          /**
          * all the usernames in the db are unique
-         * if the user is trying to register and the username is not available
+         * if the user is trying to register and the username is is stored
          * (there was another username like it in the db),
-         * then the username is incorrect (because it already exists in the db)
+         * then the username is incorrect (because there is another user with that username)
          */
-        if(!isAvailable) {
+        if(isStored) {
             showError(errMessageDiv, "Username is not available");
             return false;
         }
@@ -212,7 +218,7 @@ export function isEmailValid(emailInput, errMessageDiv, isLogin=false) {
  * @param {string} username - the username entered by the user 
  * @returns {boolean} - true if the username does not exist in the database, false otherwise
  */
-async function isUsernameAvailable(username) {
+async function isUsernameStored(username) {
     // fetch from db
     // const url = `${BASE_URL}/server/database/services/auth/db_is_username_stored.php`;
     const url = `${BASE_URL}server/api/auth/check_username.php`;
@@ -240,7 +246,7 @@ async function isUsernameAvailable(username) {
         const is_stored = data['result']; 
 
         // if there is the same username in the database, this is false
-        return !is_stored;
+        return is_stored;
 
     } catch (error) {
         console.error(error);
