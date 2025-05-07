@@ -14,19 +14,21 @@ function is_username_valid ($conn, $username, $is_login) {
     if (!isset($username) || empty($username)) return false;
     if (!is_alphanumeric($username)) return false;
 
-    // FIXME is is_username_available has opposite value
-    // if there are no usernames like $username in the db then an empty array is returned
-    $is_username_available = db_is_username_stored($conn, $username);
-
-    // TODO maybe make it more simple
+    $is_stored = db_is_username_stored($conn, $username);
     /**
-     * if is available and register => true (user wants to register and the username is available)
-     * if not availabel and register => false (user wants to register and the username is not available)
-     * if available and login => false (user wants to login and the username is available)
-     * if not available and login => false (user wants to login and the username is not available)
+     * if the check is for login:
+     *      if the username is stored return true 
+     *      if the username is not stored return false
+     * if the check is for register:
+     *      if the username is stored return false 
+     *      if the username is not stored return true
+     * 
+     * So return true only if $is_stored and $is_login have the same value
+     * 
      */
-    return $is_username_available xor $is_login;
+    return !($is_stored xor $is_login);
 }
+
 
 function is_password_valid ($conn, $username, $password, $is_login=false) {
     if (!isset($password) || empty($password)) return false;
