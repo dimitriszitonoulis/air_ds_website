@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . "/../../../config/config.php";
-require_once BASE_PATH . "server/database/services/auth/db_is_username_stored.php";
+require_once BASE_PATH . "server/database/services/auth/db_is_field_stored.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_password_correct.php";
-require_once BASE_PATH . "server/database/services/auth/db_is_email_stored.php";
+// require_once BASE_PATH . "server/database/services/auth/db_is_email_stored.php";
 
 function is_name_valid ($name) {
     if(!isset($name) || empty($name)) return false;
