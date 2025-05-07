@@ -30,7 +30,6 @@ import { showError, clearError} from "../errorDisplay.js"
  */
 
 
-// TODO update comment to reflect the isLogin parameter 
 /**
  *  function that checks the validity of the value in the name <input> field
  * 
@@ -41,7 +40,7 @@ import { showError, clearError} from "../errorDisplay.js"
  * @param {object} errMessageDiv - The div used to display error messages for the name 
  * @returns {boolean} - true if the name is valid, false otherwise
  */
-export function isNameValid(nameInput, errMessageDiv, isLogin) {
+export function isNameValid(nameInput, errMessageDiv) {
     const name = nameInput.value;
 
     // if input empty
@@ -59,69 +58,38 @@ export function isNameValid(nameInput, errMessageDiv, isLogin) {
     return true;
 }
 
-// TODO update comment to reflect the isLogin parameter 
-/**
- * Function that checks if the username in the userame input field is valid.
- * 
- * If the username is not valid then an error message is shown in the page and false is returned.
- * Otherwise, the error message (if it appeared) gets cleared and true is returned
- * 
- * LOGIC:
- *  - checks if the username is empty
- *  - checks if the username is available 
- *  
- * @param {object} usernameInput - the input element for the username
- * @param {object} errMessageDiv - The div used to display error messages for the username
- * @returns {boolean} - true if the username is valid, false otherwise
- */
-export async function isUsernameValid(usernameInput, errMessageDiv, isLogin=false) {
+export async function isUsernameValidRegister(usernameInput, errMessageDiv) {
     let username = usernameInput.value;
 
-    // if input empty
-    if (!username)
-        return false;
-
-    if (!isAlphanumeric(username)) {
-        showError(errMessageDiv, "The username must only contain letters and numbers");
+    const isInputCorrect = validateUsernameInput(username, errMessageDiv);
+    if (!isInputCorrect) {
+        console.log("username input is incorrect");
         return false;
     }
 
     const isStored = await isUsernameStored(username);
 
-
-    //TODO
-    /**
-     *  TODO when the user tries to login it shows message before the button is pressed
-     * It should not do that
-     * maybe have to different functions one for login and one for registrations
-     * choose each function in loginField (checkLoginErrors.js)
-     * and registerFields (checkRegisterErrord.js)
-     */
-    // if the function is used for login checks
-    if (isLogin) {
-        /**
-         * all the usernames in the db are unique
-         * if the user is trying to login and the username is not stored 
-         * then the username is incorrect (because there is no user with that username)
-         */
-        if (!isStored) {
-            showError(errMessageDiv, "Invalid credentials");
-            return false;
-        }
+    if(isStored) {
+        showError(errMessageDiv, "Invalid username");
+        return false;
     }
+    
+    clearError(errMessageDiv);
+    return true;
+}
 
-    // if the function is used for registration checks
-    if(!isLogin) {
-         /**
-         * all the usernames in the db are unique
-         * if the user is trying to register and the username is is stored
-         * (there was another username like it in the db),
-         * then the username is incorrect (because there is another user with that username)
-         */
-        if(isStored) {
-            showError(errMessageDiv, "Username is not available");
-            return false;
-        }
+
+export async function isUsernameValidLogin(usernameInput, errMessageDiv) {
+    let username = usernameInput.value;
+
+    const isInputCorrect = validateUsernameInput(username, errMessageDiv);
+    if (!isInputCorrect) return false;
+
+    const isStored = await isUsernameStored(username);
+
+    if (isStored) {
+        showError(errMessageDiv, "Invalid credentials");
+        return false;
     }
 
     clearError(errMessageDiv);
@@ -129,7 +97,18 @@ export async function isUsernameValid(usernameInput, errMessageDiv, isLogin=fals
 }
 
 
-// TODO update comment to reflect the isLogin parameter 
+function validateUsernameInput(username, errMessageDiv) {
+     // if input empty
+     if (!username)
+        return false;
+
+    if (!isAlphanumeric(username)) {
+        showError(errMessageDiv, "The username must only contain letters and numbers");
+        return false;
+    }
+    return true;
+}
+
 /**
  * function that ensures the validity of the password <input> field
  * A valid password is one that:
@@ -141,7 +120,7 @@ export async function isUsernameValid(usernameInput, errMessageDiv, isLogin=fals
  * @param {object} errMessageDiv - the <div> containing the error message for the password
  * @returns 
  */
-export function isPasswordValid(passwordInput, errMessageDiv, isLogin=false) {
+export function isPasswordValidRegister(passwordInput, errMessageDiv) {
     let password = passwordInput.value;
 
     // check if the password is empty
@@ -165,8 +144,12 @@ export function isPasswordValid(passwordInput, errMessageDiv, isLogin=false) {
     return true;
 }
 
+// TODO implement
+export function isPasswordValidLogin(usernameInput, passwordInput, errMessageDiv) {
 
-// TODO update comment to reflect the isLogin parameter 
+}
+
+
 /**
  * function that ensures the validity of the email <input> field
  * A valid email is one that:
@@ -177,7 +160,7 @@ export function isPasswordValid(passwordInput, errMessageDiv, isLogin=false) {
  * @param {object} errMessageDiv - the <div> containing the error message for the email
  * @returns 
  */
-export function isEmailValid(emailInput, errMessageDiv, isLogin=false) {
+export function isEmailValid(emailInput, errMessageDiv) {
     const email = emailInput.value;
 
     // check if the email is empty

@@ -1,12 +1,14 @@
 import { fields } from "./fields.js";
 import { validateSubmitTime, validateRealTime } from "./validationManager.js";
 import { loginUser } from "./loginUser.js"
+import { isPasswordValidLogin, isUsernameValidLogin } from "./fieldValidatorFunctions.js";
+
 
 const loginFields = {
     // make a shallow copy the relative field and add an extra property
     // it means that the field is used for login, and should be checked accordingly
-   "username": {...fields["username"], isLogin: true},
-   "password": {...fields["password"], isLogin: true}
+   "username": {...fields["username"], validatorFunction: isUsernameValidLogin},
+   "password": {...fields["password"], validatorFunction: isPasswordValidLogin}
 };
 
 

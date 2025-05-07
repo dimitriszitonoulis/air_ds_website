@@ -11,7 +11,7 @@
  * If a field is invalid false is returned
  * 
  * 
- * @param {JSON} fields - A JSON containing:
+ * @param {object} fields - An object containing:
  *  - inputId: {string} the id of the <input> element on which the validation is applied
  *  - errorId: {string} the id of the <div> element containing the error message for the <input> element
  *  - event: {string} the event to pass on to the eventListener
@@ -27,13 +27,12 @@ export async function validateSubmitTime(fields) {
         const errorElement = document.getElementById(field.errorId);
         const isAsync = field.isAsync;
         let isValid = true;
-
-        const loginChecks = field.isLogin;
+        const isLogin = field.isLogin;
 
         if (isAsync) // if the function is async await its response
-            isValid = await field.validatorFunction(inputElement, errorElement, loginChecks);
+            isValid = await field.validatorFunction(inputElement, errorElement, isLogin);
         else
-            isValid = field.validatorFunction(inputElement, errorElement, loginChecks);
+            isValid = field.validatorFunction(inputElement, errorElement, isLogin);
         
         if (!isValid) return false; 
     }
@@ -76,14 +75,9 @@ export function validateRealTime(fields) {
         const inputElement = document.getElementById(field.inputId);
         const errorElement = document.getElementById(field.errorId);
         
-        // TODO maybe loginChecks = field.isLogin || false 
-        // for readability, functionality is okay beacause of 
-        // extra parameter with default value in validator functions
-        const loginChecks = field.isLogin;
-        
         inputElement.addEventListener(field.event, async (e) => {
-            if(field.isAsync) await field.validatorFunction(inputElement, errorElement, loginChecks);
-            else field.validatorFunction(inputElement, errorElement, loginChecks);
+            if(field.isAsync) await field.validatorFunction(inputElement, errorElement);
+            else field.validatorFunction(inputElement, errorElement, isLogin);
         });
     }
 }

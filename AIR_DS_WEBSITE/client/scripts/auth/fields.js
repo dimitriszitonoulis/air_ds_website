@@ -1,39 +1,37 @@
-import { isNameValid, isUsernameValid, isPasswordValid, isEmailValid } from "./fieldValidatorFunctions.js";
-
 export const fields = {
     'name': {
         inputId: 'name-input',
         errorId: 'name-input-error-message',
         event: 'change',
-        validatorFunction: isNameValid,
+        validatorFunction: undefined,
         isAsync: false
     },
     'surname': {
         inputId: 'surname-input',
         errorId: 'surname-input-error-message',
         event: 'change',
-        validatorFunction: isNameValid,
+        validatorFunction: undefined,
         isAsync: false
     },
    'username':  {
         inputId: 'username-input',
         errorId: 'username-input-error-message',
         event: 'change',
-        validatorFunction: isUsernameValid,
+        validatorFunction: undefined,
         isAsync: true
     },
     'password': {
         inputId: 'password-input',
         errorId: 'password-input-error-message',
         event: 'change',
-        validatorFunction: isPasswordValid,
+        validatorFunction: undefined,
         isAsync: false
     },
     'email':{
         inputId: 'email-input',
         errorId: 'email-input-error-message',
         event: 'change',
-        validatorFunction: isEmailValid,
+        validatorFunction: undefined,
         isAsync: false
     }
 };

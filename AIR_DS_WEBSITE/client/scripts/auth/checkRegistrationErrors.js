@@ -1,14 +1,7 @@
 import { fields } from "./fields.js"
+import { isEmailValid, isNameValid, isPasswordValid, isPasswordValidRegister, isUsernameValidRegister } from "./fieldValidatorFunctions.js";
 import { registerUser } from "./registerUser.js";
 import { validateSubmitTime, validateRealTime} from "./validationManager.js";
-
-/**
- * TODO
- * - For username availability maybe just return if any where found instead of getting the all the similar usernames 
- */ 
-
-
-
 
 /**
  * certain necessary fields for the form validation
@@ -20,11 +13,11 @@ import { validateSubmitTime, validateRealTime} from "./validationManager.js";
 
 
 const registerFields = {
-    "name": fields["name"],
-    "surname": fields["surname"],
-    "username": fields["username"],
-    "password": fields["password"],
-    "email": fields["email"]
+    "name": {...fields["name"], validatorFunction: isNameValid},
+    "surname": {...fields["surname"], validatorFunction: isNameValid},
+    "username": {...fields["username"], validatorFunction: isUsernameValidRegister},
+    "password": {...fields["password"], validatorFunction: isPasswordValidRegister},
+    "email": {...fields["email"], validatorFunction: isEmailValid}
 }
 
 const registerBtn = document.getElementById('register-button');
