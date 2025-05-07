@@ -39,6 +39,7 @@ function is_password_valid ($conn, $username, $password, $is_login=false) {
         return db_is_password_correct($conn, $username, $password);
     return true;
 }
+
 function is_email_valid ($conn, $email) {
     if (!isset($email) || empty($email)) return false;
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return false;
