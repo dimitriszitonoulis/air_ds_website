@@ -43,10 +43,6 @@ import { showError, clearError } from "../errorDisplay.js"
 export function isNameValid(nameInput, errMessageDiv) {
     const name = nameInput.value;
 
-    console.log("name", name);
-    console.log("nbame type = ", typeof(name));
-    console.log(errMessageDiv.value);
-
     // if input empty
     if (!name)
         return false;
@@ -146,7 +142,7 @@ export function isPasswordValidRegister(passwordInput, errMessageDiv) {
 
 // TODO implement
 export function isPasswordValidLogin(usernameInput, passwordInput, errMessageDiv) {
-
+    return true;
 }
 
 
