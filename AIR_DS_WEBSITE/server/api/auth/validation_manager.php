@@ -23,8 +23,18 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
     $field_names = array_keys($fields);
     $response_message = get_response_message($field_names);
 
+
+    $is_expected_fields = is_expected_fields_($field_names);
+    
+    // if a user messes with the js on client side unpredictable key names may comme
+    // if so ignore them
+    // TODO maybe add different error message (this one is valid as well)  
+    if (!$is_expected_fields)
+        return $response_message['failure']["missing"];
+
+
     // if for some reason no data comes from the client (individual array fields checked later)
-    if(!isset($decoded_content) || empty($decoded_content))
+    if (!isset($decoded_content) || empty($decoded_content))
         return $response_message['failure']["missing"];
 
     foreach ($fields as $field => $isValid) {
@@ -56,5 +66,15 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
     
     if (!$is_login) return $response_message["register"]["success"];
     else return $response_message["login"]["success"];
+}
+
+// checks if the fields received are expected
+function is_expected_fields_($names) {
+    $expected_names = ["name", "surname", "username", "password", "email"];
+
+    // array_diff() returns an array that contains all the elements in $names,
+    // that do not exists inside expected names.
+    // So, if array_diff() returns an empty array, every element of $names is also an element of $expected_names
+    return empty(array_diff($names, $expected_names));
 }
 ?>

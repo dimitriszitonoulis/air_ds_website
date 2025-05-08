@@ -26,13 +26,31 @@ function check_registration_errors() {
     $decoded_content = json_decode($content, true); // true is used to get associative array
 
     // Array with: field names => field validity
-    $fields = [
-        "name" => false,
-        "surname" => false,
-        "username" => false,
-        "password" => false,
-        "email" => false
-    ];
+
+    // TODO RUN TESTS
+    // what if the keys are not what I am expecting?
+    // get the name of the fields that come from the client
+    $field_names = array_keys($decoded_content);
+    // array showing the validity of each field
+    // like: field name => validity (boolean)
+    // for now initialize all fields as false
+    $fields =[];
+    foreach($field_names as $name) {
+        $fields[$name] = false;
+    }
+
+
+    // "name","surname","username","password","email"
+
+
+    // TODO maybe uncomment later
+    // $fields = [
+    //     "name" => false,
+    //     "surname" => false,
+    //     "username" => false,
+    //     "password" => false,
+    //     "email" => false
+    // ];
 
     // response = ["result" => boolean, "message" => string]
     $response = null;
