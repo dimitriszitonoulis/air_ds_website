@@ -18,15 +18,9 @@ require_once BASE_PATH . "client/includes/start_session.php"
 
   <?php include_once BASE_PATH . "client/includes/header.php"; ?>
   
+  
   <h2>Login/Register</h2>
 
-
-
-  <!--
-    TODO
-    CHECKS:
-    -not registered 
-   -->
   <form action="">
     <!-- username field -->
     <fieldset>
@@ -50,7 +44,8 @@ require_once BASE_PATH . "client/includes/start_session.php"
   <!-- Redirects to registration form -->
   <p>Need an account? <a href="./register.php">Register</a> </p>
 
-<?php include_once BASE_PATH . "client/includes/footer.php"; ?>
+
+  <?php include_once BASE_PATH . "client/includes/footer.php"; ?>
 
 <script>const BASE_URL = "<?= BASE_URL ?>";</script>
 <script type="module" src="<?= BASE_URL ?>/client/scripts/auth/checkLoginErrors.js"></script>
