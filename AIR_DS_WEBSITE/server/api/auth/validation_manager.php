@@ -2,6 +2,7 @@
 require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/db_utils/db_connect.php";
 require_once BASE_PATH . "server/api/auth/field_validator_functions.php";
+require_once BASE_PATH . "config/messages.php";
 
 /**
  * Summary of validate_fields
@@ -17,15 +18,20 @@ require_once BASE_PATH . "server/api/auth/field_validator_functions.php";
  * @return array{message: string, result: bool}
  */
 function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
+    // fields is an array with key values like: field name => boolean 
+    // The name of the fields must be passed to the function that gets the response messages for those fields
+    $field_names = array_keys($fields);
+    $response_message = get_response_message($field_names);
+
+    // FIXME add checks for login, dont just return for register
     // if for some reason no data comes from the client (individual array fields checked later)
     if(!isset($decoded_content) || empty($decoded_content))
-       return ["result" => false, "message" => "Missing content"];
+        return $response_message['failure']["missing"];
 
     foreach ($fields as $field => $isValid) {
-        if (!isset($decoded_content[$field])) 
-            return ["result" => false, "message" => "Missing field: $field"];
+        if (!isset($decoded_content[$field]))
+            return $response_message[$field]['missing'];
     }
-
     // if the validation is for register check the following fields
     if (!$is_login) {
         $fields["name"] = is_name_valid($decoded_content["name"]);
@@ -36,10 +42,13 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
     $fields["username"] = is_username_valid($conn, $decoded_content["username"], $is_login);
     $fields["password"] = is_password_valid($conn, $decoded_content["username"], $decoded_content["password"], $is_login);
 
-    foreach ($fields as $field => $isValid) {
-        if (!$isValid) return ["result" => false, "message" => "invalid $field"];
-    }
 
-    return ["result" => true,"message" => "All fields valid"];
+    // return ["result" => false, $response_message["email"]];
+
+    foreach ($fields as $field => $isValid) {
+        if (!$isValid) return $response_message[$field]['failure'];
+    }
+ 
+    return $response_message['register']['success'];
 }
 ?>
