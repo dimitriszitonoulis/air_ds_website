@@ -11,9 +11,7 @@ function is_name_valid ($name) {
 }
 
 function is_username_valid ($conn, $username, $is_login) {
-    if (!isset($username) || empty($username)) return false;
-    if (!is_alphanumeric($username)) return false;
-
+    if(!is_username_syntax_valid($username)) return false;
     $is_stored = db_is_username_stored($conn, $username);
     /**
      * if the check is for login:
@@ -29,6 +27,11 @@ function is_username_valid ($conn, $username, $is_login) {
     return !($is_stored xor $is_login);
 }
 
+function is_username_syntax_valid($username) {
+    if (!isset($username) || empty($username)) return false;
+    if (!is_alphanumeric($username)) return false;
+    return true;
+}
 
 function is_password_valid ($conn, $username, $password, $is_login=false) {
     if (!isset($password) || empty($password)) return false;
