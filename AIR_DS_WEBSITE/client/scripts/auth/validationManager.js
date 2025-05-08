@@ -23,14 +23,13 @@ export async function validateSubmitTime(fields) {
     // loop through all the fields and check if they are valid
     for (const key in fields) {
         const field = fields[key];
-        const inputElement = document.getElementById(field.inputId)
+        const input = document.getElementById(field.inputId).value;
         const errorElement = document.getElementById(field.errorId);
         const isAsync = field.isAsync;
         let isValid = true;
-        const isLogin = field.isLogin;
 
         if (isAsync) // if the function is async await its response
-            isValid = await field.validatorFunction(inputElement, errorElement, isLogin);
+            isValid = await field.validatorFunction(input, errorElement);
         else
             isValid = field.validatorFunction(inputElement, errorElement, isLogin);
         
