@@ -1,9 +1,13 @@
 <?php
 function get_response_message($fields){
     $failure_message = [
-        "missing" => ["result" => false, "message" => "missing content"],
-        "invalid" => ["result" => false, "message" => "invalid credentials"]
+        "missing" => ["result" => false, "message" => "missing content", "http_response_code" => 400],
+        "invalid" => ["result" => false, "message" => "invalid credentials", "http_response_code" => 400]
     ];
+
+    // very generic do not use unless no other choice where true must be returned\
+    // (ex is_payload_valid() in validation_manager.php)
+    $success_message = ["result" => true, "message" => "operation successfull"];
 
     $response_message = [
         "register" => [
@@ -14,7 +18,8 @@ function get_response_message($fields){
             "failure" => $failure_message,
             "success" => ["result" => true, "message" => "user logged in"]
         ],
-        "failure" => $failure_message
+        "failure" => $failure_message,
+        "success" => $success_message
     ];
 
     // add extra response messages for each field
