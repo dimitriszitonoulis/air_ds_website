@@ -84,7 +84,7 @@ export async function isUsernameValidLogin(usernameInput, errMessageDiv) {
 
     const isStored = await isUsernameStored(username);
 
-    if (isStored) {
+    if (!isStored) {
         showError(errMessageDiv, "Invalid credentials");
         return false;
     }
