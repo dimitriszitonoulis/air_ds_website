@@ -23,7 +23,6 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
     $field_names = array_keys($fields);
     $response_message = get_response_message($field_names);
 
-    // FIXME add checks for login, dont just return for register
     // if for some reason no data comes from the client (individual array fields checked later)
     if(!isset($decoded_content) || empty($decoded_content))
         return $response_message['failure']["missing"];
@@ -46,9 +45,16 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
     // return ["result" => false, $response_message["email"]];
 
     foreach ($fields as $field => $isValid) {
-        if (!$isValid) return $response_message[$field]['failure'];
+        // for register give feedback, which field is problematic
+        if (!$isValid && !$is_login) 
+            return $response_message[$field]['failure'];
+        // for login, give no feedback only say that the credentials are wrong
+        // (for security reasons to not reveal the users or their passwords) 
+        if(!$isValid && $is_login) 
+            return $response_message['login']['failure']['invalid'];
     }
- 
-    return $response_message['register']['success'];
+    
+    if (!$is_login) return $response_message["register"]["success"];
+    else return $response_message["login"]["success"];
 }
 ?>
