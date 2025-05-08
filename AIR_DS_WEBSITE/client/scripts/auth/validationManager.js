@@ -23,15 +23,15 @@ export async function validateSubmitTime(fields) {
     // loop through all the fields and check if they are valid
     for (const key in fields) {
         const field = fields[key];
-        const input = document.getElementById(field.inputId).value;
+        const inputElement = document.getElementById(field.inputId);
         const errorElement = document.getElementById(field.errorId);
         const isAsync = field.isAsync;
         let isValid = true;
 
         if (isAsync) // if the function is async await its response
-            isValid = await field.validatorFunction(input, errorElement);
+            isValid = await field.validatorFunction(inputElement, errorElement);
         else
-            isValid = field.validatorFunction(inputElement, errorElement, isLogin);
+            isValid = field.validatorFunction(inputElement, errorElement);
         
         if (!isValid) return false; 
     }
@@ -46,7 +46,7 @@ export async function validateSubmitTime(fields) {
 *  - Real time evaluation, by adding an event listener on the <input> element
 *  - Submit time evaluation, by returning true or false
 
-*  @param {JSON} - A JSON containing:
+*  @param {object} fields - An object containing:
 * - inputId: {string} the id of the <input> element on which the validation is applied
 * - errorId: {string} the id of the <div> element containing the error message for the <input> element
 * - event: {string} the event to pass on to the eventListener
@@ -61,7 +61,7 @@ export function validateRealTime(fields) {
         
         inputElement.addEventListener(field.event, async (e) => {
             if(field.isAsync) await field.validatorFunction(inputElement, errorElement);
-            else field.validatorFunction(inputElement, errorElement, isLogin);
+            else field.validatorFunction(inputElement, errorElement);
         });
     }
 }

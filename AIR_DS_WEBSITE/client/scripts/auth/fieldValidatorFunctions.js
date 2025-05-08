@@ -1,4 +1,4 @@
-import { showError, clearError} from "../errorDisplay.js"
+import { showError, clearError } from "../errorDisplay.js"
 
 /**
  * @fileoverview
@@ -43,6 +43,10 @@ import { showError, clearError} from "../errorDisplay.js"
 export function isNameValid(nameInput, errMessageDiv) {
     const name = nameInput.value;
 
+    console.log("name", name);
+    console.log("nbame type = ", typeof(name));
+    console.log(errMessageDiv.value);
+
     // if input empty
     if (!name)
         return false;
@@ -59,29 +63,26 @@ export function isNameValid(nameInput, errMessageDiv) {
 }
 
 export async function isUsernameValidRegister(usernameInput, errMessageDiv) {
-    let username = usernameInput.value;
-
+    const username = usernameInput.value;
     const isInputCorrect = validateUsernameInput(username, errMessageDiv);
     if (!isInputCorrect) {
-        console.log("username input is incorrect");
         return false;
     }
 
     const isStored = await isUsernameStored(username);
 
-    if(isStored) {
+    if (isStored) {
         showError(errMessageDiv, "Invalid username");
         return false;
     }
-    
+
     clearError(errMessageDiv);
     return true;
 }
 
 
 export async function isUsernameValidLogin(usernameInput, errMessageDiv) {
-    let username = usernameInput.value;
-
+    const username = usernameInput.value;
     const isInputCorrect = validateUsernameInput(username, errMessageDiv);
     if (!isInputCorrect) return false;
 
@@ -98,8 +99,8 @@ export async function isUsernameValidLogin(usernameInput, errMessageDiv) {
 
 
 function validateUsernameInput(username, errMessageDiv) {
-     // if input empty
-     if (!username)
+    // if input empty
+    if (!username)
         return false;
 
     if (!isAlphanumeric(username)) {
@@ -121,8 +122,7 @@ function validateUsernameInput(username, errMessageDiv) {
  * @returns 
  */
 export function isPasswordValidRegister(passwordInput, errMessageDiv) {
-    let password = passwordInput.value;
-
+    const password = passwordInput.value;
     // check if the password is empty
     if (!password)
         return false;
@@ -162,7 +162,6 @@ export function isPasswordValidLogin(usernameInput, passwordInput, errMessageDiv
  */
 export function isEmailValid(emailInput, errMessageDiv) {
     const email = emailInput.value;
-
     // check if the email is empty
     if (!email)
         return false;
@@ -220,13 +219,13 @@ async function isUsernameStored(username) {
         const data = await response.json();
 
         if (!response.ok) {
-        console.error("Server returned error", data);
+            console.error("Server returned error", data);
             throw new Error("HTTP error " + response.status);
         }
 
         console.log("Fetch succesful return data:", data)
-        
-        const is_stored = data['result']; 
+
+        const is_stored = data['result'];
 
         // if there is the same username in the database, this is false
         return is_stored;
