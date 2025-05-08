@@ -23,6 +23,35 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
     $field_names = array_keys($fields);
     $response_message = get_response_message($field_names);
 
+    // FIXME if all good it send generic positive response
+    $is_payload_valid_response = is_payload_valid( $decoded_content, $fields, $field_names, $response_message);
+    if ($is_payload_valid_response["result"]) return $is_payload_valid_response;
+
+
+    // TODO CALL FUNTION
+    $are_fields_checked_response = check_field_validity($conn, $decoded_content, $fields,  $response_message);
+    if (!$are_fields_checked_response["result"]) return $are_fields_checked_response["result"];
+
+    // final response message if everything is alright
+    //TODO maybe send generic positive response and be more specific after user register/login
+    if (!$is_login) return $response_message["register"]["success"];
+    else return $response_message["login"]["success"];
+}
+
+// checks if the fields received are expected
+function is_expected_fields_($names) {
+    $expected_names = ["name", "surname", "username", "password", "email"];
+
+    // array_diff() returns an array that contains all the elements in $names,
+    // that do not exists inside expected names.
+    // So, if array_diff() returns an empty array, every element of $names is also an element of $expected_names
+    return empty(array_diff($names, $expected_names));
+}
+
+
+//TODO write better documentation
+// checks if what is received from AJAX request is valid ()
+function is_payload_valid($decoded_content, $fields, $field_names, $response_message) {
 
     $is_expected_fields = is_expected_fields_($field_names);
     
@@ -41,6 +70,13 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
         if (!isset($decoded_content[$field]))
             return $response_message[$field]['missing'];
     }
+
+    return $response_message["success"];
+}
+
+//TODO write better documentation
+// TODO rename
+function check_field_validity($conn, $decoded_content, $fields, $response_message, $is_login=false) {
     // if the validation is for register check the following fields
     if (!$is_login) {
         $fields["name"] = is_name_valid($decoded_content["name"]);
@@ -63,18 +99,9 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
         if(!$isValid && $is_login) 
             return $response_message['login']['failure']['invalid'];
     }
-    
-    if (!$is_login) return $response_message["register"]["success"];
-    else return $response_message["login"]["success"];
+
+    // FIXME if all good it send generic positive response
+    return $response_message["success"];
 }
 
-// checks if the fields received are expected
-function is_expected_fields_($names) {
-    $expected_names = ["name", "surname", "username", "password", "email"];
-
-    // array_diff() returns an array that contains all the elements in $names,
-    // that do not exists inside expected names.
-    // So, if array_diff() returns an empty array, every element of $names is also an element of $expected_names
-    return empty(array_diff($names, $expected_names));
-}
 ?>
