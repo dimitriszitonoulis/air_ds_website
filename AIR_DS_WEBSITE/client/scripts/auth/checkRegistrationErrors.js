@@ -1,5 +1,5 @@
 import { fields } from "./fields.js"
-import { isEmailValid, isNameValid, isPasswordValid, isPasswordValidRegister, isUsernameValidRegister } from "./fieldValidatorFunctions.js";
+import { isEmailValid, isNameValid, isPasswordValidRegister, isUsernameValidRegister } from "./fieldValidatorFunctions.js";
 import { registerUser } from "./registerUser.js";
 import { validateSubmitTime, validateRealTime} from "./validationManager.js";
 
