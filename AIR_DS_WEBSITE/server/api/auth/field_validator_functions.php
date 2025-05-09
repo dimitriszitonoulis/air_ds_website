@@ -4,6 +4,33 @@ require_once BASE_PATH . "server/database/services/auth/db_is_field_stored.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_password_correct.php";
 // require_once BASE_PATH . "server/database/services/auth/db_is_email_stored.php";
 
+/**
+ * Summary of get_validators
+ * An array containing key value pairs of authorization fields and their validator functions
+ * @return array{email: (callable(mixed ):bool), name: (callable(mixed ):bool), password: (callable(mixed ):bool), surname: (callable(mixed ):bool), username: (callable(mixed ):bool)}
+ */
+function get_validators() {
+    return [
+        "name" => function ($params) { 
+            return is_name_valid($params["name"]);
+        },
+        "surname" => function ($params) { 
+            return is_name_valid($params["surname"] ); 
+        },
+        "username" => function ($params) {
+            return is_username_valid($params["conn"], $params["username"], $params["is_login"]); 
+        },
+        "password" => function ($params) {
+            // $params[username_value"] is used beacuse what if params may have already have 
+            return is_password_valid( $params["conn"],$params["username"], $params["password"], $params["is_login"]); 
+        },
+        "email" => function ($params)  {
+            return is_email_valid($params["conn"], $params["email"]); 
+        }
+    ];
+}
+
+
 function is_name_valid ($name) {
     if(!isset($name) || empty($name)) return false;
     if(!is_only_letters($name)) return false;
@@ -33,13 +60,25 @@ function is_username_syntax_valid($username) {
     return true;
 }
 
-function is_password_valid ($conn, $username, $password, $is_login=false) {
+function is_password_valid ($conn, $username=null, $password, $is_login=false) {
     if (!isset($password) || empty($password)) return false;
     if (!contains_number($password)) return false;
     if (strlen($password) < 4 || strlen($password) > 10)  return false;
+
     // if for login check if the password matches the username
-    if ($is_login) 
+    if ($is_login) {
+        // if no username is provided do not query db return false immediately
+        if ($username === null) 
+            return false;
         return db_is_password_correct($conn, $username, $password);
+    }
+    return true;
+}
+
+function is_password_syntax_valid($password) {
+    if (!isset($password) || empty($password)) return false;
+    if (!contains_number($password)) return false;
+    if (strlen($password) < 4 || strlen($password) > 10)  return false;
     return true;
 }
 
