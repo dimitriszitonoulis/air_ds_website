@@ -25,12 +25,10 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
 
     // FIXME if all good it send generic positive response
     $is_payload_valid_response = is_payload_valid( $decoded_content, $fields, $field_names, $response_message);
-    if ($is_payload_valid_response["result"]) return $is_payload_valid_response;
+    if (!$is_payload_valid_response["result"]) return $is_payload_valid_response;
 
-
-    // TODO CALL FUNTION
-    $are_fields_checked_response = check_field_validity($conn, $decoded_content, $fields,  $response_message);
-    if (!$are_fields_checked_response["result"]) return $are_fields_checked_response["result"];
+    $are_fields_checked_response = check_field_validity($conn, $decoded_content, $fields,  $response_message, $is_login);
+    if (!$are_fields_checked_response["result"]) return $are_fields_checked_response;
 
     // final response message if everything is alright
     //TODO maybe send generic positive response and be more specific after user register/login
@@ -70,38 +68,67 @@ function is_payload_valid($decoded_content, $fields, $field_names, $response_mes
         if (!isset($decoded_content[$field]))
             return $response_message[$field]['missing'];
     }
-
+    
     return $response_message["success"];
 }
 
 //TODO write better documentation
 // TODO rename
 function check_field_validity($conn, $decoded_content, $fields, $response_message, $is_login=false) {
-    // if the validation is for register check the following fields
-    if (!$is_login) {
-        $fields["name"] = is_name_valid($decoded_content["name"]);
-        $fields["surname"] = is_name_valid($decoded_content["surname"]);
-        $fields["email"] = is_email_valid($conn, $decoded_content["email"]);
+
+    $validators = get_validators();
+
+    // if the password is set this value is needed
+    $username = null;
+    if (array_key_exists("username", $decoded_content)) {
+        if (isset($decoded_content["username"])) {
+            $username = $decoded_content["username"];
+        }
     }
 
-    $fields["username"] = is_username_valid($conn, $decoded_content["username"], $is_login);
-    $fields["password"] = is_password_valid($conn, $decoded_content["username"], $decoded_content["password"], $is_login);
+    // TODO maybe move them in a function in field_validator_functions
+    // some extra parameters needed by some of the validators
+    $params = [
+        "conn" => $conn,
+        "username" => $username,
+        "is_login" => $is_login
+    ];
+    
+    // TODO maybe just loop through the field names
+    //loop through all the fields, 
+    // call their validators,
+    // set the value of associative array $fields for the current field
+    foreach ($fields as $current => $is_valid) {
+        // add the value of thhe current field to the validator function parameters
+        $params[$current] =  $decoded_content[$current];
+        $fields[$current] = $validators[$current]($params);
 
+        // no need to unset the key it beacuse $params is pass by reference not value
+        // does not add overhead
+        // In no way must username be unset because it is needed  for password
 
-    // return ["result" => false, $response_message["email"]];
+        // if a field is unvalid do not continue with the other checks
+        if (!$fields[$current]) {
+            if (!$is_login) return $response_message[$current]["failure"];
+            return $response_message["login"]["failure"]["invalid"];
+        }
+    }
 
-    foreach ($fields as $field => $isValid) {
-        // for register give feedback, which field is problematic
-        if (!$isValid && !$is_login) 
-            return $response_message[$field]['failure'];
-        // for login, give no feedback only say that the credentials are wrong
-        // (for security reasons to not reveal the users or their passwords) 
-        if(!$isValid && $is_login) 
-            return $response_message['login']['failure']['invalid'];
+    foreach ($fields as $field => $is_valid) {
+        if(!$is_valid) {
+            // for register give feedback, which field is problematic
+            if (!$is_login) return $response_message[$field]['failure'];
+            
+            // for login, give no feedback only say that the credentials are wrong
+            // (for security reasons to not reveal the users or their passwords) 
+            if ($is_login) return $response_message['login']['failure']['invalid'];
+        }
     }
 
     // FIXME if all good it send generic positive response
     return $response_message["success"];
 }
+
+
 
 ?>
