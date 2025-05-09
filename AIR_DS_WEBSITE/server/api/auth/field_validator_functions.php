@@ -15,7 +15,7 @@ function get_validators() {
             return is_name_valid($params["name"]);
         },
         "surname" => function ($params) { 
-            return is_name_valid($params["surname"] ); 
+            return is_name_valid($params["surname"]); 
         },
         "username" => function ($params) {
             return is_username_valid($params["conn"], $params["username"], $params["is_login"]); 
@@ -29,7 +29,6 @@ function get_validators() {
         }
     ];
 }
-
 
 function is_name_valid ($name) {
     if(!isset($name) || empty($name)) return false;
