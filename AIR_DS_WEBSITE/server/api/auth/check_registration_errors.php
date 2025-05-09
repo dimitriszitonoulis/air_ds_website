@@ -3,10 +3,8 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/api/auth/validation_manager.php";
 require_once BASE_PATH . "server/database/services/auth/db_insert_user.php";
 
-
 // error_reporting(0);
 // ini_set('display_errors', 0);
-
 
 check_registration_errors();
 
@@ -25,12 +23,10 @@ function check_registration_errors() {
     $content = trim(file_get_contents("php://input")); // trim => remove white space from beggining and end
     $decoded_content = json_decode($content, true); // true is used to get associative array
 
-    // Array with: field names => field validity
-
-    // TODO RUN TESTS
     // what if the keys are not what I am expecting?
     // get the name of the fields that come from the client
     $field_names = array_keys($decoded_content);
+
     // array showing the validity of each field
     // like: field name => validity (boolean)
     // for now initialize all fields as false
@@ -39,18 +35,7 @@ function check_registration_errors() {
         $fields[$name] = false;
     }
 
-
     // "name","surname","username","password","email"
-
-
-    // TODO maybe uncomment later
-    // $fields = [
-    //     "name" => false,
-    //     "surname" => false,
-    //     "username" => false,
-    //     "password" => false,
-    //     "email" => false
-    // ];
 
     // response = ["result" => boolean, "message" => string]
     $response = null;
@@ -58,6 +43,8 @@ function check_registration_errors() {
   
     if (!$response["result"]) {
         header('Content-Type: application/json');
+        // 400 should only be returned if the input is syntactically incorrect
+        // it would not be right to send 400 if a username is talen
         http_response_code(400);
         echo json_encode($response);
         exit;
