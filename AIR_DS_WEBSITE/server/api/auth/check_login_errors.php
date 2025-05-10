@@ -3,6 +3,7 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/api/auth/validation_manager.php";
 require_once BASE_PATH . "server/api/auth/login_user.php";
 require_once BASE_PATH . "config/messages.php";
+require_once BASE_PATH . "server/database/services/auth/db_are_credentials_correct.php";
 
 // error_reporting(0);
 // ini_set('display_errors', 0);
@@ -58,7 +59,7 @@ function check_login_errors() {
     }
 
     try {
-        $is_credentials_correct= db_is_password_correct($conn, $username, $password);
+        $is_credentials_correct= db_are_credentials_correct($conn, $username, $password);
     } catch (Exception $e) {
         // TODO maybe change later to have specific message for login
         $response = $response_message['failure']['invalid'];
