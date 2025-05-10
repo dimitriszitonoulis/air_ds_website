@@ -3,7 +3,7 @@ function get_response_message($fields){
     $failure_message = [
         "missing" => ["result" => false, "message" => "missing content", "http_response_code" => 400],
         "invalid" => ["result" => false, "message" => "invalid credentials", "http_response_code" => 400],
-        "problem" => ["result" => false, "message" => "could not perform operation", "http_response_code" => 400]
+        "nop" => ["result" => false, "message" => "could not perform operation", "http_response_code" => 400]
     ];
 
     // very generic do not use unless no other choice where true must be returned\
@@ -12,10 +12,14 @@ function get_response_message($fields){
 
     $response_message = [
         "register" => [
+            // TODO maybe remove, not needed
+            // must check the aut h files to see if these are used
             "failure" => $failure_message,
             "success" => ["result" => true, "message" => "user registered"]
         ],
         "login" => [
+            // TODO maybe remove, not needed
+            // must check the aut h files to see if these are used
             "failure" => $failure_message,
             "success" => ["result" => true, "message" => "user logged in"]
         ],
@@ -34,7 +38,7 @@ function get_response_message($fields){
     return $response_message;
 }
 
-
+// TODO delete function
 function response_register($fields){
     foreach ($fields as $field) {
         $response_message[$field] = [
