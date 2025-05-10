@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../../../config/config.php";
-require_once BASE_PATH . "AIR_DS_WEBSITE/config/messages.php";
+require_once BASE_PATH . "config/messages.php";
 
 /**
  * Summary of login_user
