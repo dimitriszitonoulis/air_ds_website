@@ -1,13 +1,15 @@
 import { fields } from "./fields.js";
-import { validateSubmitTime, validateRealTime } from "./validationManager.js";
+import { validateSubmitTime } from "./validationManager.js";
 import { loginUser } from "./loginUser.js"
-import { isPasswordValidLogin, isUsernameValidLogin } from "./fieldValidatorFunctions.js";
+import { isPasswordValid, isUsernameValidLogin } from "./fieldValidatorFunctions.js";
 
 // take the necessary fields from fields global variable and add their validator fucntions
 // attention create shallow copy, do not modify the global variable
 const loginFields = {
    "username": {...fields["username"], validatorFunction: isUsernameValidLogin},
-   "password": {...fields["password"], validatorFunction: isPasswordValidLogin}
+//    "username": {...fields["username"], validatorFunction: isUsernameInputValid},
+//    "password": {...fields["password"], validatorFunction: isPasswordValidLogin}
+   "password": {...fields["password"], validatorFunction: isPasswordValid}
 };
 
 
@@ -24,22 +26,22 @@ loginBtn.addEventListener('click', async (e) => {
 
     // TODO uncomment the check later
     // if a field is invalid do nothing
-    // if (!isAllValid) return;
+    if (!isAllValid) return;
   
-    // document.getElementById('registration-form').requestSubmit();
     const values = {};
-
     for (const key in loginFields) {
         const field = loginFields[key];
         const element = document.getElementById(field.inputId);
         values[element.name] = element.value;
     }
    
-    
     // TODO maybe modify to do something with error message
     const isLoggedIn = await loginUser(values, BASE_URL);
 
+    // Add code that fields are invalid if not alredy logged in 
     if (isLoggedIn) {
+        // TODO uncomment later
+
         // redirect to login page
         // window.location.replace(`${BASE_URL}/client/pages/auth/login.php`)
 
@@ -49,7 +51,3 @@ loginBtn.addEventListener('click', async (e) => {
         // console.error("registration failed")
     }
 });
-
-validateRealTime(loginFields);
-
-
