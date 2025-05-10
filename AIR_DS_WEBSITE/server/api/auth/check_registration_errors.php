@@ -2,6 +2,7 @@
 require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/api/auth/validation_manager.php";
 require_once BASE_PATH . "server/database/services/auth/db_insert_user.php";
+require_once BASE_PATH . "config/messages.php";
 
 // error_reporting(0);
 // ini_set('display_errors', 0);
@@ -44,7 +45,7 @@ function check_registration_errors() {
     if (!$response["result"]) {
         header('Content-Type: application/json');
         // 400 should only be returned if the input is syntactically incorrect
-        // it would not be right to send 400 if a username is talen
+        // it would not be right to send 400 if a username is taken
         http_response_code(400);
         echo json_encode($response);
         exit;
@@ -62,11 +63,20 @@ function check_registration_errors() {
  */
     
     // if this point is reached all the fields are valid
-    db_insert_user($conn, $decoded_content);
+    try {
+        db_insert_user($conn, $decoded_content);
+    } catch (PDOException $e) {
+        header('Content-Type: application/json');
+        // no reason to get error messages for each field, send empty array
+        $response_message = get_response_message([]);
+        $response = $response_message['register']['problem'];
+        echo json_encode($response);
+        exit;  
+    }
 
-    $response["result"] = true;
-    $response["message"] = "user registered";
     header('Content-Type: application/json');
+    $response_message = get_response_message([]);
+    $response = $response_message['register']['success'];
     echo json_encode($response);
     exit;  
 }
