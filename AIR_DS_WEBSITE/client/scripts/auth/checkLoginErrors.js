@@ -2,6 +2,7 @@ import { fields } from "./fields.js";
 import { validateSubmitTime } from "./validationManager.js";
 import { loginUser } from "./loginUser.js"
 import { isPasswordValid, isUsernameValidLogin } from "./fieldValidatorFunctions.js";
+import { showError, clearError } from "../errorDisplay.js";
 
 // take the necessary fields from fields global variable and add their validator fucntions
 // attention create shallow copy, do not modify the global variable
@@ -14,6 +15,7 @@ const loginFields = {
 
 
 const loginBtn = document.getElementById('login-button');
+const loginBtnErrorDiv = document.getElementById('login-button-error-message');
 
 // add event listener to the register button to validate the values of the form fields
 // if by chance any field has an invalid value do not register
@@ -26,8 +28,10 @@ loginBtn.addEventListener('click', async (e) => {
 
     // TODO uncomment the check later
     // if a field is invalid do nothing
-    if (!isAllValid) return;
-  
+    if (!isAllValid) {
+        // showError(loginBtnErrorDiv, "Invalid credentials");
+        return;
+    }
     const values = {};
     for (const key in loginFields) {
         const field = loginFields[key];
@@ -40,6 +44,7 @@ loginBtn.addEventListener('click', async (e) => {
 
     // Add code that fields are invalid if not alredy logged in 
     if (isLoggedIn) {
+        clearError(loginBtnErrorDiv);
         // TODO uncomment later
 
         // redirect to login page
@@ -48,6 +53,7 @@ loginBtn.addEventListener('click', async (e) => {
         // DELETE LATER
         // window.location.href = `${BASE_URL}/client/pages/auth/login.php`;  
     } else {
+        showError(loginBtnErrorDiv, "Invalid credentials")
         // console.error("registration failed")
     }
 });
