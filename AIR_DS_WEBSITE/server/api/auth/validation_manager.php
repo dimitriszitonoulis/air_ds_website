@@ -24,11 +24,11 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
     $response_message = get_response_message($field_names);
 
     // FIXME if all good it send generic positive response
-    $is_payload_valid_response = is_payload_valid( $decoded_content, $fields, $field_names, $response_message);
+    $is_payload_valid_response = is_payload_valid( $decoded_content, $field_names, $response_message);
     if (!$is_payload_valid_response["result"]) return $is_payload_valid_response;
 
-    $are_fields_checked_response = check_field_validity($conn, $decoded_content, $fields,  $response_message, $is_login);
-    if (!$are_fields_checked_response["result"]) return $are_fields_checked_response;
+    $are_fields_valid_response = apply_validators($conn, $decoded_content, $fields,  $response_message, $is_login);
+    if (!$are_fields_valid_response["result"]) return $are_fields_valid_response;
 
     // final response message if everything is alright
     //TODO maybe send generic positive response and be more specific after user register/login
@@ -36,8 +36,13 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
     else return $response_message["login"]["success"];
 }
 
-// checks if the fields received are expected
-function is_expected_fields_($names) {
+/**
+ * Summary of is_expected_fields
+ * checks if the fields received are expected
+ * @param mixed $names - an array containing the names of the fields
+ * @return bool - true if the name of the fields are what is expected, otherwise false
+ */
+function is_expected_fields($names) {
     $expected_names = ["name", "surname", "username", "password", "email"];
 
     // array_diff() returns an array that contains all the elements in $names,
@@ -46,12 +51,22 @@ function is_expected_fields_($names) {
     return empty(array_diff($names, $expected_names));
 }
 
+/**
+ * Summary of is_payload_valid
+ * 
+ * Checks if what is received from AJAX request is valid (not empty and the expected fields arrived)
+ * 
+ * @param mixed $decoded_content - the array received from the AJAX request
+ * @param mixed $fields - Associative array where: keys = the name of the fields, values = the validity of the field
+ * @param mixed $field_names - Array containing the names of the fields
+ * @param mixed $response_message - An array containing response messages
+ * @return mixed - Associative array containing:
+ *                   - the result of the check (boolean)
+ *                   - a message explaining the result of the check
+ */
+function is_payload_valid($decoded_content, $field_names, $response_message) {
 
-//TODO write better documentation
-// checks if what is received from AJAX request is valid ()
-function is_payload_valid($decoded_content, $fields, $field_names, $response_message) {
-
-    $is_expected_fields = is_expected_fields_($field_names);
+    $is_expected_fields = is_expected_fields($field_names);
     
     // if a user messes with the js on client side unpredictable key names may comme
     // if so ignore them
@@ -59,22 +74,22 @@ function is_payload_valid($decoded_content, $fields, $field_names, $response_mes
     if (!$is_expected_fields)
         return $response_message['failure']["missing"];
 
-
     // if for some reason no data comes from the client (individual array fields checked later)
     if (!isset($decoded_content) || empty($decoded_content))
         return $response_message['failure']["missing"];
 
-    foreach ($fields as $field => $isValid) {
+    // check that each field sent by the client is set
+    foreach ($field_names as $field) {
         if (!isset($decoded_content[$field]))
             return $response_message[$field]['missing'];
     }
-    
     return $response_message["success"];
 }
 
 //TODO write better documentation
 // TODO rename
-function check_field_validity($conn, $decoded_content, $fields, $response_message, $is_login=false) {
+
+function apply_validators($conn, $decoded_content, $fields, $response_message, $is_login=false) {
 
     $validators = get_validators();
 
