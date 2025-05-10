@@ -24,7 +24,8 @@ function get_validators() {
             return is_name_valid($params["surname"]); 
         },
         "username" => function ($params) {
-            return is_username_valid($params["conn"], $params["username"], $params["is_login"]); 
+            // return is_username_valid($params["conn"], $params["username"], $params["is_login"]); 
+            return is_username_syntax_valid($params["username"]);
         },
         "password" => function ($params) {
             // $params[username_value"] is used beacuse what if params may have already have 
@@ -42,22 +43,22 @@ function is_name_valid ($name) {
     return true;
 }
 
-function is_username_valid ($conn, $username, $is_login) {
-    if(!is_username_syntax_valid($username)) return false;
-    $is_stored = db_is_username_stored($conn, $username);
-    /**
-     * if the check is for login:
-     *      if the username is stored return true 
-     *      if the username is not stored return false
-     * if the check is for register:
-     *      if the username is stored return false 
-     *      if the username is not stored return true
-     * 
-     * So return true only if $is_stored and $is_login have the same value
-     * 
-     */
-    return !($is_stored xor $is_login);
-}
+// function is_username_valid ($conn, $username, $is_login) {
+//     if(!is_username_syntax_valid($username)) return false;
+//     $is_stored = db_is_username_stored($conn, $username);
+//     /**
+//      * if the check is for login:
+//      *      if the username is stored return true 
+//      *      if the username is not stored return false
+//      * if the check is for register:
+//      *      if the username is stored return false 
+//      *      if the username is not stored return true
+//      * 
+//      * So return true only if $is_stored and $is_login have the same value
+//      * 
+//      */
+//     return !($is_stored xor $is_login);
+// }
 
 function is_username_syntax_valid($username) {
     if (!isset($username) || empty($username)) return false;
