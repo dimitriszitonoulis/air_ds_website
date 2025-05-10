@@ -38,6 +38,7 @@ require_once BASE_PATH . "client/includes/start_session.php"
 
     <fieldset id="login-button-fieldset">
       <input type="submit" id="login-button" name="login-button" value="Login">
+      <div id="submit-button-error-message" class="error-message">Empty</div>
     </fieldset>
   </form>
 
