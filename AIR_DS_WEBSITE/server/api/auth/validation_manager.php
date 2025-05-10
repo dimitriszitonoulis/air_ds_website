@@ -112,21 +112,25 @@ function apply_validators($conn, $decoded_content, $fields, $response_message, $
     // call their validators,
     // set the value of associative array $fields for the current field (is_valid is not used)
     foreach ($fields as $current => $is_valid) {
-        // add the value of thhe current field to the validator function parameters
-        $params[$current] =  $decoded_content[$current];
+        // add the value of the current field to the validator function parameters
+        $params[$current] = $decoded_content[$current];
         $fields[$current] = $validators[$current]($params);
-
-        // no need to unset the key it beacuse $params is pass by reference not value
-        // does not add overhead
+        // no need to unset the key it beacuse $params is pass by reference not value (does not add overhead)
         // In no way must username be unset because it is needed  for password
 
-        // if a field is unvalid do not continue with the other checks
+        // if a field is invalid do not continue with the other checks
         if (!$fields[$current]) {
+            // for register
             if (!$is_login) return $response_message[$current]["failure"];
+            // for login
             return $response_message["login"]["failure"]["invalid"];
+
         }
     }
 
+
+    // TODO maybe remove loop
+    // if a check has failed the function wil have alreayd returned a valud from the above for loop
     foreach ($fields as $field => $is_valid) {
         if(!$is_valid) {
             // for register give feedback, which field is problematic
@@ -137,11 +141,7 @@ function apply_validators($conn, $decoded_content, $fields, $response_message, $
             if ($is_login) return $response_message['login']['failure']['invalid'];
         }
     }
-
-    // FIXME if all good it send generic positive response
+    
     return $response_message["success"];
 }
-
-
-
 ?>
