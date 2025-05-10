@@ -3,7 +3,8 @@ function get_response_message($fields){
     $failure_message = [
         "missing" => ["result" => false, "message" => "missing content", "http_response_code" => 400],
         "invalid" => ["result" => false, "message" => "invalid credentials", "http_response_code" => 400],
-        "nop" => ["result" => false, "message" => "could not perform operation", "http_response_code" => 400]
+        "nop" => ["result" => false, "message" => "did not perform operation", "http_response_code" => 400],
+        "connection" => ["result" => false, "message" => "Could not establish connection", "http_response_code" => 500]
     ];
 
     // very generic do not use unless no other choice where true must be returned\
@@ -31,10 +32,16 @@ function get_response_message($fields){
     foreach ($fields as $field) {
         $response_message[$field] = [
             "missing" => ["result" => false, "message" => "missing field: $field"],
+            // maybe change to invalid and valid
             "failure" => ["result" => false, "message" => "invalid $field"],
             "success" => ["result" => true, "message" => "valid $field"]
         ];
     }
+    // if (array_key_exists("username", $fields)) {
+    //     $response_message['username'] = [
+            
+    //     ]
+    // }
     return $response_message;
 }
 
