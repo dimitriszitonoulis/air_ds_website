@@ -2,7 +2,8 @@
 function get_response_message($fields){
     $failure_message = [
         "missing" => ["result" => false, "message" => "missing content", "http_response_code" => 400],
-        "invalid" => ["result" => false, "message" => "invalid credentials", "http_response_code" => 400],
+        // invalid but syntactically correct
+        "invalid" => ["result" => false, "message" => "invalid credentials", "http_response_code" => 200],
         "nop" => ["result" => false, "message" => "did not perform operation", "http_response_code" => 400],
         "connection" => ["result" => false, "message" => "Could not establish connection", "http_response_code" => 500]
     ];
