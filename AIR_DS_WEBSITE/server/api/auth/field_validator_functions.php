@@ -7,7 +7,13 @@ require_once BASE_PATH . "server/database/services/auth/db_is_password_correct.p
 /**
  * Summary of get_validators
  * An array containing key value pairs of authorization fields and their validator functions
- * @return array{email: (callable(mixed ):bool), name: (callable(mixed ):bool), password: (callable(mixed ):bool), surname: (callable(mixed ):bool), username: (callable(mixed ):bool)}
+ * @return array{
+ *  email: (callable(mixed ):bool), 
+ *  name: (callable(mixed ):bool), 
+ *  password: (callable(mixed ):bool), 
+ *  surname: (callable(mixed ):bool), 
+ *  username: (callable(mixed ):bool)
+ * }
  */
 function get_validators() {
     return [
