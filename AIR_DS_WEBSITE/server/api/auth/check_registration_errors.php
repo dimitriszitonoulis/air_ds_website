@@ -85,7 +85,6 @@ function check_registration_errors() {
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 
-    // no reason to get error messages for each field, send empty array
     // if this point is reached all the fields are valid
     try {
         db_insert_user($conn, $decoded_content);
