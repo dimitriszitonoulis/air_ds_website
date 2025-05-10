@@ -21,6 +21,9 @@
  */
 export async function validateSubmitTime(fields) {
     // loop through all the fields and check if they are valid
+    
+    let isAllValid = true;
+
     for (const key in fields) {
         const field = fields[key];
         const inputElement = document.getElementById(field.inputId);
@@ -32,11 +35,12 @@ export async function validateSubmitTime(fields) {
             isValid = await field.validatorFunction(inputElement, errorElement);
         else
             isValid = field.validatorFunction(inputElement, errorElement);
-        
-        if (!isValid) return false; 
+
+        if (!isValid) 
+            isAllValid = false;
     }
 
-    return true;
+    return isAllValid;
 }
 
 

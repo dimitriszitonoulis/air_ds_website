@@ -45,10 +45,10 @@ import { showError, clearError } from "../errorDisplay.js"
  */
 export function isNameValid(nameInput, errMessageDiv) {
     const name = nameInput.value;
-
-    // if input empty
-    if (!name)
+    if (!name) {
+        showError(errMessageDiv, "Field must not be empty");
         return false;
+    }
 
     // if name contains something other than letters
     if (!isOnlyLetters(name)) {
@@ -87,7 +87,7 @@ export async function isUsernameValidLogin(usernameInput, errMessageDiv) {
 
     // TODO maybe remove since both the username and the password are checked after submitting
     const isStored = await isUsernameStored(username);
-
+    // TODO maybe remove along with above code
     if (!isStored) {
         showError(errMessageDiv, "Invalid credentials");
         return false;
@@ -97,10 +97,13 @@ export async function isUsernameValidLogin(usernameInput, errMessageDiv) {
     return true;
 }
 
-
-function isUsernameInputValid(username, errMessageDiv) {
+// TODO maybe remove export later
+export function isUsernameInputValid(username, errMessageDiv) {
     // if input empty
-    if (!username) return false;
+    if (!username) {
+        showError(errMessageDiv, "Field must not be empty");
+        return false;
+    }
     if (!isAlphanumeric(username)) {
         showError(errMessageDiv, "The username must only contain letters and numbers");
         return false;
@@ -119,32 +122,13 @@ function isUsernameInputValid(username, errMessageDiv) {
  * @param {object} errMessageDiv - the <div> containing the error message for the password
  * @returns 
  */
-export function isPasswordValidRegister(passwordInput, errMessageDiv) {
+export function isPasswordValid(passwordInput, errMessageDiv) {
     const password = passwordInput.value;
-    const isInputValid = isPasswordInputValid(password, errMessageDiv);
-    if (!isInputValid) return false
-
-    // all good
-    clearError(errMessageDiv);
-    return true;
-}
-
-// TODO implement
-export function isPasswordValidLogin(usernameInput, passwordInput, errMessageDiv) {
-    const password = passwordInput.value;
-    const isInputValid = isPasswordInputValid(password);
-    if (!isInputValid) return false;
-
-    
-
-    clearError(errMessageDiv);
-    return true;
-}
-
-
-function isPasswordInputValid(password) {
     // check if the password is empty
-    if (!password) return false;
+    if (!password) {
+        showError(errMessageDiv, "field must not be empty");
+        return false;
+    }
     if (!constainsNumber(password)) {
         showError(errMessageDiv, "Password must contain at least one digit.");
         return false;
@@ -153,44 +137,10 @@ function isPasswordInputValid(password) {
         showError(errMessageDiv, "Password must have between 4 and 10 digits");
         return false;
     }
+    // all good
+    clearError(errMessageDiv);
     return true;
 }
-
-async function isAccountPassword(username, password) {
-    const url = `${BASE_URL}server/database/services/auth/db_are_credentials_correct.php`;
-
-    try {
-        let response = await fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                'username': `${username}`,
-                'password': `${password}`
-            })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            console.error("Server returned error", data);
-            throw new Error("HTTP error " + response.status);
-        }
-
-        console.log("Fetch succesful return data:", data)
-
-        const are_credentials_valid = data['result'];
-        
-        // if there is the same username in the database, this is false
-        return is_stored;
-
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
-}
-
 
 /**
  * function that ensures the validity of the email <input> field
@@ -205,8 +155,10 @@ async function isAccountPassword(username, password) {
 export function isEmailValid(emailInput, errMessageDiv) {
     const email = emailInput.value;
     // check if the email is empty
-    if (!email)
+    if (!email) {
+        showError(errMessageDiv, "Field must not be empty");
         return false;
+    }
 
     // check if the email contains the @ character
     if (!containsATCharacter(email)) {
