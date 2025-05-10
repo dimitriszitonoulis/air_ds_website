@@ -5,7 +5,11 @@
  */
 
 // checks if the given username is stored in the database
-function db_is_username_stored($conn, $username) {
+function db_is_username_stored($conn, $username=null) {
+    // TODO maybe trhow exception????
+    // if no username is provided
+    if ($username === null) throw new InvalidArgumentException("Username must not be null.");
+    
     // query to be run
     // BINARY is used because the username is stored with collation utf8mb4_general_ci 
     // which is case insensitive
