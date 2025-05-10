@@ -61,21 +61,20 @@ function check_registration_errors() {
  * 
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
-    
+    $response_message = get_response_message([]);
+
+    // no reason to get error messages for each field, send empty array
     // if this point is reached all the fields are valid
     try {
         db_insert_user($conn, $decoded_content);
     } catch (PDOException $e) {
         header('Content-Type: application/json');
-        // no reason to get error messages for each field, send empty array
-        $response_message = get_response_message([]);
-        $response = $response_message['register']['problem'];
+        $response = $response_message['failure']['nop'];
         echo json_encode($response);
         exit;  
     }
 
     header('Content-Type: application/json');
-    $response_message = get_response_message([]);
     $response = $response_message['register']['success'];
     echo json_encode($response);
     exit;  
