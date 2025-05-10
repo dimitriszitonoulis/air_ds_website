@@ -86,12 +86,12 @@ export async function isUsernameValidLogin(usernameInput, errMessageDiv) {
     if (!isInputValid) return false;
 
     // TODO maybe remove since both the username and the password are checked after submitting
-    const isStored = await isUsernameStored(username);
+    // const isStored = await isUsernameStored(username);
     // TODO maybe remove along with above code
-    if (!isStored) {
-        showError(errMessageDiv, "Invalid credentials");
-        return false;
-    }
+    // if (!isStored) {
+    //     showError(errMessageDiv, "Invalid credentials");
+    //     return false;
+    // }
 
     clearError(errMessageDiv);
     return true;
@@ -126,7 +126,7 @@ export function isPasswordValid(passwordInput, errMessageDiv) {
     const password = passwordInput.value;
     // check if the password is empty
     if (!password) {
-        showError(errMessageDiv, "field must not be empty");
+        showError(errMessageDiv, "Field must not be empty");
         return false;
     }
     if (!constainsNumber(password)) {
