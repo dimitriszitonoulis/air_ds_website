@@ -30,6 +30,9 @@ import { showError, clearError } from "../errorDisplay.js"
  */
 
 
+// TODO maybe change the order of functions
+
+
 /**
  *  function that checks the validity of the value in the name <input> field
  * 
@@ -60,8 +63,8 @@ export function isNameValid(nameInput, errMessageDiv) {
 
 export async function isUsernameValidRegister(usernameInput, errMessageDiv) {
     const username = usernameInput.value;
-    const isInputCorrect = validateUsernameInput(username, errMessageDiv);
-    if (!isInputCorrect) {
+    const isInputValid = isUsernameInputValid(username, errMessageDiv);
+    if (!isInputValid) {
         return false;
     }
 
@@ -79,9 +82,10 @@ export async function isUsernameValidRegister(usernameInput, errMessageDiv) {
 
 export async function isUsernameValidLogin(usernameInput, errMessageDiv) {
     const username = usernameInput.value;
-    const isInputCorrect = validateUsernameInput(username, errMessageDiv);
-    if (!isInputCorrect) return false;
+    const isInputValid = isUsernameInputValid(username, errMessageDiv);
+    if (!isInputValid) return false;
 
+    // TODO maybe remove since both the username and the password are checked after submitting
     const isStored = await isUsernameStored(username);
 
     if (!isStored) {
@@ -94,11 +98,9 @@ export async function isUsernameValidLogin(usernameInput, errMessageDiv) {
 }
 
 
-function validateUsernameInput(username, errMessageDiv) {
+function isUsernameInputValid(username, errMessageDiv) {
     // if input empty
-    if (!username)
-        return false;
-
+    if (!username) return false;
     if (!isAlphanumeric(username)) {
         showError(errMessageDiv, "The username must only contain letters and numbers");
         return false;
@@ -119,21 +121,8 @@ function validateUsernameInput(username, errMessageDiv) {
  */
 export function isPasswordValidRegister(passwordInput, errMessageDiv) {
     const password = passwordInput.value;
-    // check if the password is empty
-    if (!password)
-        return false;
-
-    // check password contains at least one digit
-    if (!constainsNumber(password)) {
-        showError(errMessageDiv, "Password must contain at least one digit.");
-        return false;
-    }
-
-    // check password is 4 - 10 digits
-    if (password.length < 4 || password.length > 10) {
-        showError(errMessageDiv, "Password must have between 4 and 10 digits");
-        return false;
-    }
+    const isInputValid = isPasswordInputValid(password, errMessageDiv);
+    if (!isInputValid) return false
 
     // all good
     clearError(errMessageDiv);
@@ -142,7 +131,64 @@ export function isPasswordValidRegister(passwordInput, errMessageDiv) {
 
 // TODO implement
 export function isPasswordValidLogin(usernameInput, passwordInput, errMessageDiv) {
+    const password = passwordInput.value;
+    const isInputValid = isPasswordInputValid(password);
+    if (!isInputValid) return false;
+
+    
+
+    clearError(errMessageDiv);
     return true;
+}
+
+
+function isPasswordInputValid(password) {
+    // check if the password is empty
+    if (!password) return false;
+    if (!constainsNumber(password)) {
+        showError(errMessageDiv, "Password must contain at least one digit.");
+        return false;
+    }
+    if (password.length < 4 || password.length > 10) {
+        showError(errMessageDiv, "Password must have between 4 and 10 digits");
+        return false;
+    }
+    return true;
+}
+
+async function isAccountPassword(username, password) {
+    const url = `${BASE_URL}server/database/services/auth/db_are_credentials_correct.php`;
+
+    try {
+        let response = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                'username': `${username}`,
+                'password': `${password}`
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Server returned error", data);
+            throw new Error("HTTP error " + response.status);
+        }
+
+        console.log("Fetch succesful return data:", data)
+
+        const are_credentials_valid = data['result'];
+        
+        // if there is the same username in the database, this is false
+        return is_stored;
+
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
 }
 
 
@@ -222,7 +268,7 @@ async function isUsernameStored(username) {
         console.log("Fetch succesful return data:", data)
 
         const is_stored = data['result'];
-
+        
         // if there is the same username in the database, this is false
         return is_stored;
 
