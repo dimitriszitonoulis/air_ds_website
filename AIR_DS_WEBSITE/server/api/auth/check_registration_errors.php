@@ -10,13 +10,17 @@ require_once BASE_PATH . "config/messages.php";
 check_registration_errors();
 
 function check_registration_errors() {
+    header('Content-Type: application/json');
+
+    $response_message = get_response_message([]);
+
     $conn = NULL;
     try {
         $conn = db_connect();
     } catch (PDOException $e) {
-        header('Content-Type: application/json');
+        $response = $response_message['failure']['connection'];
         http_response_code(500);
-        echo json_encode(["result" => false, "message" => "Database connection failed"]);
+        echo json_encode($response);
         exit;
     }
 
@@ -29,24 +33,42 @@ function check_registration_errors() {
     $field_names = array_keys($decoded_content);
 
     // array showing the validity of each field
-    // like: field name => validity (boolean)
-    // for now initialize all fields as false
+    // field name (string) => validity (boolean)
     $fields =[];
     foreach($field_names as $name) {
-        $fields[$name] = false;
+        $fields[$name] = false;     //initialize as false
     }
 
-    // "name","surname","username","password","email"
-
-    // response = ["result" => boolean, "message" => string]
     $response = null;
+    // response = ["result" => boolean, "message" => string]
     $response = validate_fields($conn, $decoded_content, $fields, false);
-  
     if (!$response["result"]) {
-        header('Content-Type: application/json');
-        // 400 should only be returned if the input is syntactically incorrect
-        // it would not be right to send 400 if a username is taken
         http_response_code(400);
+        echo json_encode($response);
+        exit;
+    }
+
+    $username = null;
+    // check if the username is inside the content sent by the client
+    if (array_key_exists("username", $decoded_content)) {
+        // if it is, then its value has already been validated,
+        // So no additional checks needed
+        $username = $decoded_content["username"];
+    }
+    try {
+        $is_username_stored = db_is_username_stored($conn, $username);
+    } catch (Exception $e) {
+        // if exception do nothing
+        $response = $response_message['failure']['nop'];
+        http_response_code(500);
+        echo json_encode($response);
+        exit;  
+    }
+
+    // if the username is not available
+    if($is_username_stored) {
+        $response = ['result' => false, 'message' => "username is taken"];
+        http_response_code(200);
         echo json_encode($response);
         exit;
     }
@@ -61,20 +83,18 @@ function check_registration_errors() {
  * 
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
-    $response_message = get_response_message([]);
 
     // no reason to get error messages for each field, send empty array
     // if this point is reached all the fields are valid
     try {
         db_insert_user($conn, $decoded_content);
-    } catch (PDOException $e) {
-        header('Content-Type: application/json');
+    } catch (Exception $e) {
         $response = $response_message['failure']['nop'];
+        http_response_code(500);
         echo json_encode($response);
         exit;  
     }
 
-    header('Content-Type: application/json');
     $response = $response_message['register']['success'];
     echo json_encode($response);
     exit;  
