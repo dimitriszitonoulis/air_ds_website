@@ -42,6 +42,7 @@ function check_registration_errors() {
     $response = null;
     // response = ["result" => boolean, "message" => string]
     $response = validate_fields($conn, $decoded_content, $fields, false);
+    // if a field is invalid
     if (!$response["result"]) {
         http_response_code(400);
         echo json_encode($response);
@@ -67,8 +68,8 @@ function check_registration_errors() {
 
     // if the username is not available
     if($is_username_stored) {
-        $response = ['result' => false, 'message' => "username is taken"];
-        http_response_code(200);
+        $response = $response_message['register']['username_taken'];
+        http_response_code($response_message['register']['username_taken']['http_response_code']);
         echo json_encode($response);
         exit;
     }
