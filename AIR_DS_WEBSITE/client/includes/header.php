@@ -10,10 +10,17 @@ require_once BASE_PATH . "config/config.php";
     <a>Home</a>
     <a>My Trips</a>
 
-    <?php if (!isset($_SESSION["userId"])) { ?>
+    <?php 
+      if (!isset($_SESSION["userId"])) { 
+    ?>
       <a href="<?= BASE_URL . "client/pages/auth/login.php"?>">Login</a>
-    <?php } else { ?>
-      <a>Logout</a>
-    <?php } ?>
+    <?php 
+      } else {
+    ?>
+    <!-- TODO add script to log user out -->
+      <a id="logout">Logout</a>
+    <?php 
+      } 
+    ?>
   </nav>
 </header>
