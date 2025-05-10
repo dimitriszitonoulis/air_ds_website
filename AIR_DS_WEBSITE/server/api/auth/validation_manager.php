@@ -32,8 +32,9 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
 
     // final response message if everything is alright
     //TODO maybe send generic positive response and be more specific after user register/login
-    if (!$is_login) return $response_message["register"]["success"];
-    else return $response_message["login"]["success"];
+    // if (!$is_login) return $response_message["register"]["success"];
+    // else return $response_message["login"]["success"];
+    return $response_message['success'];
 }
 
 /**
