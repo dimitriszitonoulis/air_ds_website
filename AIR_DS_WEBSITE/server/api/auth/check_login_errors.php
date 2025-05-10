@@ -11,11 +11,14 @@ require_once BASE_PATH . "config/messages.php";
 check_login_errors();
 
 function check_login_errors() {
+    header('Content-type: application/json');
+
+    $response_message = get_response_message([]);
+
     $conn = NULL;
     try {
         $conn = db_connect();
     } catch (PDOException $e) {
-        header('Content-type: application/json');
         http_response_code(500);
         echo json_encode(["result" => false, "message" => "Database connection failed"]);
         exit;
@@ -41,30 +44,49 @@ function check_login_errors() {
     $response = validate_fields($conn, $decoded_content, $fields, true);
   
     if (!$response["result"]) {
-        header('Content-Type: application/json');
-        // 400 should only be returned if the input is syntactically incorrect
-        // it would not be right to send 400 if a username is taken
         http_response_code(400);
         echo json_encode($response);
         exit;
     }
 
+    $username = null;
+    $password = null;
+    if (array_key_exists("username", $fields)
+        && array_key_exists("password", $decoded_content)) {    
+        $username = $decoded_content["username"];
+        $password = $decoded_content["password"];
+    }
+
+    try {
+        $is_credentials_correct= db_is_password_correct($conn, $username, $password);
+    } catch (Exception $e) {
+        // TODO maybe change later to have specific message for login
+        $response = $response_message['failure']['invalid'];
+        http_response_code($response['http_response_code']);
+        echo json_encode($response);
+        exit;
+    }
+
+    if (!$is_credentials_correct) {
+        $response = $response_message['failure']['invalid'];
+        // FIXME sends 400 but it should send 200
+        http_response_code($response['http_response_code']);
+        echo json_encode($response);
+        exit;
+    }
+
     // if this point is reached all the fields are valid
-    login_user($conn, $decoded_content);
+    login_user($decoded_content);
 
-
-    $response_message = get_response_message([]);
-
+    // TODO maybe add check that the session userId is the same as the username
     if(!isset($_SESSION['userId'])) {
         $response = $response_message['failure']['nop'];
-        header('Content-Type: application/json');
-        // echo json_encode(['result' => true, "session" => $_SESSION['userId']]);
-        echo json_encode($response);
+        echo json_encode(["result" => true, "seesion" => $_SESSION['userId']]);
+        // echo json_encode($response);
         exit;  
     }
 
     $response = $response_message['login']['success'];
-    header('Content-Type: application/json');
     echo json_encode($response);
     exit;  
 }
