@@ -110,9 +110,9 @@ function apply_validators($conn, $decoded_content, $fields, $response_message, $
     ];
     
     // TODO maybe just loop through the field names
-    //loop through all the fields, 
+    // loop through all the fields, 
     // call their validators,
-    // set the value of associative array $fields for the current field
+    // set the value of associative array $fields for the current field (is_valid is not used)
     foreach ($fields as $current => $is_valid) {
         // add the value of thhe current field to the validator function parameters
         $params[$current] =  $decoded_content[$current];
