@@ -59,7 +59,7 @@ function check_login_errors() {
     }
 
     try {
-        $is_credentials_correct= db_are_credentials_correct($conn, $username, $password);
+        $is_credentials_correct = db_are_credentials_correct($conn, $username, $password);
     } catch (Exception $e) {
         // TODO maybe change later to have specific message for login
         $response = $response_message['failure']['invalid'];
