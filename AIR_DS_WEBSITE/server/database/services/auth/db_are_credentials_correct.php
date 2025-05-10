@@ -28,7 +28,7 @@ function db_are_credentials_correct($conn, $username=null, $password=null) {
     // get the all the passwords that match for the given username 
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // if there are no rows then there is no acount with the given username,
+    // if there are no rows then there is no acount with the given username, 
     // that has the given password
     if (count($result) === 0) return false;
 
