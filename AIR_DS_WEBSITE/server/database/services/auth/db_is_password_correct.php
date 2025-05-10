@@ -8,7 +8,7 @@ function db_is_password_correct($conn, $username, $password) {
     // either use BINARY or use collation utf8mb4_bin when creating the db
     $query = "  SELECT username, password
                 FROM users 
-                WHERE BINARY username LIKE :username AND password LIKE :password;
+                WHERE BINARY username = :username AND BINARY password = :password;
             ";
     
     // prepare the statement
