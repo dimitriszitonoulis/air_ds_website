@@ -1,5 +1,5 @@
 import { fields } from "./fields.js"
-import { isEmailValid, isNameValid, isPasswordValidRegister, isUsernameValidRegister } from "./fieldValidatorFunctions.js";
+import { isEmailValid, isNameValid, isPasswordValid, isUsernameValidRegister } from "./fieldValidatorFunctions.js";
 import { registerUser } from "./registerUser.js";
 import { validateSubmitTime, validateRealTime} from "./validationManager.js";
 
@@ -16,7 +16,7 @@ const registerFields = {
     "name": {...fields["name"], validatorFunction: isNameValid},
     "surname": {...fields["surname"], validatorFunction: isNameValid},
     "username": {...fields["username"], validatorFunction: isUsernameValidRegister},
-    "password": {...fields["password"], validatorFunction: isPasswordValidRegister},
+    "password": {...fields["password"], validatorFunction: isPasswordValid},
     "email": {...fields["email"], validatorFunction: isEmailValid}
 }
 
@@ -32,19 +32,17 @@ registerBtn.addEventListener('click', async (e) => {
     const isAllValid = await validateSubmitTime(registerFields);
 
     // if a field is invalid do nothing
-    if (!isAllValid) return;
-  
-    // document.getElementById('registration-form').requestSubmit();
+    if (!isAllValid) return; 
+
     const values = {};
     for (const key in registerFields) {
         const field = registerFields[key];
         const element = document.getElementById(field.inputId);
         values[element.name] = element.value;
     }
-
     
     // TODO maybe modify to do something with error message
-    const isRegistered = await registerUser(values, BASE_URL);
+    const isRegistered = await registerUser(values, BASE_URL); 
 
     if(isRegistered) {
         // redirect to login page
