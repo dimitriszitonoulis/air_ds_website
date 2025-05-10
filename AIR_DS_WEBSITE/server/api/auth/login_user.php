@@ -10,11 +10,11 @@ require_once BASE_PATH . "config/messages.php";
  *  - message: a message that describes what happend. e.x. "Invalid credentials"
  *  - result: If login successful then true, otherwise false
  */
-function login_user($conn, $username) {
+function login_user($username) {
     // if user credentials are correct create a session
     if (session_status() === PHP_SESSION_NONE)
         session_start();
-    $_SESSION['userID'] = $username;
+    $_SESSION['userId'] = $username;
 
     // response messages for each field not needed, pass empty array as parameter
     $response_message = get_response_message([]);
