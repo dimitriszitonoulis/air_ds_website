@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../../../config/config.php";
+require_once BASE_PATH . "AIR_DS_WEBSITE/config/messages.php";
 
 /**
  * Summary of login_user
@@ -14,6 +15,10 @@ function login_user($conn, $username) {
     if (session_status() === PHP_SESSION_NONE)
         session_start();
     $_SESSION['userID'] = $username;
-    return ["result" => true, "message" => "user logged in"];
+
+    // response messages for each field not needed, pass empty array as parameter
+    $response_message = get_response_message([]);
+    //return generic positive response 
+    return $response_message['success'];
 }
 ?>
