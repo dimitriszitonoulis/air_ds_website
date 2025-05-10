@@ -41,6 +41,7 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
  * @return bool - true if the name of the fields are what is expected, otherwise false
  */
 function is_expected_fields($names) {
+    // TODO maybe pass this as parameter
     $expected_names = ["name", "surname", "username", "password", "email"];
 
     // array_diff() returns an array that contains all the elements in $names,
@@ -85,8 +86,6 @@ function is_payload_valid($decoded_content, $field_names, $response_message) {
 }
 
 //TODO write better documentation
-// TODO rename
-
 function apply_validators($conn, $decoded_content, $fields, $response_message, $is_login=false) {
 
     $validators = get_validators();
@@ -103,8 +102,6 @@ function apply_validators($conn, $decoded_content, $fields, $response_message, $
     // some extra parameters needed by some of the validators
     $params = [
         "conn" => $conn,
-        "username" => $username,
-        "is_login" => $is_login
     ];
     
     // TODO maybe just loop through the field names
@@ -124,24 +121,9 @@ function apply_validators($conn, $decoded_content, $fields, $response_message, $
             if (!$is_login) return $response_message[$current]["failure"];
             // for login
             return $response_message["login"]["failure"]["invalid"];
-
         }
     }
-
-
-    // TODO maybe remove loop
-    // if a check has failed the function wil have alreayd returned a valud from the above for loop
-    foreach ($fields as $field => $is_valid) {
-        if(!$is_valid) {
-            // for register give feedback, which field is problematic
-            if (!$is_login) return $response_message[$field]['failure'];
-            
-            // for login, give no feedback only say that the credentials are wrong
-            // (for security reasons to not reveal the users or their passwords) 
-            if ($is_login) return $response_message['login']['failure']['invalid'];
-        }
-    }
-    
+ 
     return $response_message["success"];
 }
 ?>
