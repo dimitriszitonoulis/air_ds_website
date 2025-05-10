@@ -16,6 +16,8 @@ function get_response_message($fields){
             // TODO maybe remove, not needed
             // must check the aut h files to see if these are used
             "failure" => $failure_message,
+            // return 200 because the request is valid based on what the client sent (no syntactical errors)
+            "username_taken" => ["result" => false, "message" => "username is taken", "http_response_code" => 200],
             "success" => ["result" => true, "message" => "user registered"]
         ],
         "login" => [
