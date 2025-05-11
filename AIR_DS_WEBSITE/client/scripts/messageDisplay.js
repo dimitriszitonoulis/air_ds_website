@@ -24,7 +24,7 @@ export function appendMessage(element, messageToAppend) {
 }
 
 
-export function showRedirectMessage(repeats, messageElement, appendedMessage, url, intervalTime) {
+export function showRedirectMessage(messageElement, appendedMessage, url, repeats, timeBetweenRepeats) {
     let countDown = repeats;
 
     const intervalId = setInterval(() => {
@@ -35,5 +35,5 @@ export function showRedirectMessage(repeats, messageElement, appendedMessage, ur
             clearInterval(intervalId);
             window.location.replace(url);
         }
-    }, intervalTime);
+    }, timeBetweenRepeats);
 }
