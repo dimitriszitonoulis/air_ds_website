@@ -19,21 +19,28 @@
 * @returns {boolean} - true every field is valid, false otherwise
  */
 export async function validateSubmitTime(fields) {
-    // loop through all the fields and check if they are valid
-    
     let isAllValid = true;
-
     for (const key in fields) {
         const field = fields[key];
-        const inputElement = document.getElementById(field.inputId);
-        const errorElement = document.getElementById(field.errorId);
+        let inputElements = 0;
+        let errorElements = 0
+
+        // if mutliple fields must be examined by the same validator function (ex choice of airports)
+        if (field.isCollection === true) {
+            // get a bunch of fields and pass them to the validator function
+            // how they will be treated is the validator's responsibility
+            inputElements = getCollection(field.inputId);
+            errorElements = getCollection(field.errorId);
+        } else {
+            inputElements = document.getElementById(field.inputId);
+            errorElements = document.getElementById(field.errorId);
+        }
+
         const isAsync = field.isAsync;
         let isValid = true;
 
-        if (isAsync) // if the function is async await its response
-            isValid = await field.validatorFunction(inputElement, errorElement);
-        else
-            isValid = field.validatorFunction(inputElement, errorElement);
+        if (isAsync) isValid = await field.validatorFunction(inputElements, errorElements);
+        else isValid = field.validatorFunction(inputElements, errorElements);
 
         if (!isValid) 
             isAllValid = false;
@@ -64,4 +71,16 @@ export function validateRealTime(fields) {
             else field.validatorFunction(inputElement, errorElement);
         });
     }
+}
+
+
+
+
+function getCollection(ids) {
+    const elements = [];
+    for (const current in ids) {
+        const id = ids[current];
+        elements.push(getElementById(id));
+    }
+    return elements;
 }
