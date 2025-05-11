@@ -46,7 +46,7 @@ registerBtn.addEventListener('click', async (e) => {
 
     // TODO maybe modify to do something with error message
     // const isRegistered = await registerUser(values, BASE_URL);
-    let isRegistered = await registerUser(values, BASE_URL);
+    const isRegistered = await registerUser(values, BASE_URL);
 
     if (isRegistered) {
         // clear previous errors
