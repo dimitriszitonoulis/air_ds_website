@@ -23,7 +23,6 @@ export function appendMessage(element, messageToAppend) {
     element.innerText += messageToAppend;
 }
 
-
 export function showRedirectMessage(messageElement, appendedMessage, url, repeats, timeBetweenRepeats) {
     let countDown = repeats;
 
