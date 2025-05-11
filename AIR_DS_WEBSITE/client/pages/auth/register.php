@@ -55,6 +55,7 @@ require_once __DIR__ . "/../../../config/config.php";
 
     <fieldset id="register-button-fieldset">
       <input type="submit" id="register-button" name="register-button" value="Register">
+      <div id="registration-button-error-message" class="error-message"></div>
     </fieldset>
   </form>
 
