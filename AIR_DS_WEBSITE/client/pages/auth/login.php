@@ -49,7 +49,8 @@ require_once BASE_PATH . "client/includes/start_session.php"
   <?php include_once BASE_PATH . "client/includes/footer.php"; ?>
 
 <script>const BASE_URL = "<?= BASE_URL ?>";</script>
-<script type="module" src="<?= BASE_URL ?>/client/scripts/auth/checkLoginErrors.js"></script>
+<script type="module" src="<?= BASE_URL ?>client/scripts/auth/checkLoginErrors.js"></script>
+<!-- <script src="<?= BASE_URL ?>client/scripts/auth/logout.js"></script> -->
 </body>
 
 </html>
