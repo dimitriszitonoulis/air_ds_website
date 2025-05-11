@@ -56,10 +56,6 @@ loginBtn.addEventListener('click', async (e) => {
 
         const redirectUrl = `${BASE_URL}/client/pages/home.php`
         showRedirectMessage(loginBtnErrorDiv, ".", redirectUrl, 3, 1000);
-        // redirect to login page
-        // window.location.replace(`${BASE_URL}/client/pages/auth/login.php`)
-
-
     } else {
         showError(loginBtnErrorDiv, "Invalid credentials")
         // console.error("registration failed")
