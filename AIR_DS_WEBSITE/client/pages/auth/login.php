@@ -11,6 +11,7 @@ require_once BASE_PATH . "client/includes/start_session.php"
 <head>
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/style.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/header.css">
+  <link rel="stylesheet" href = "<?= BASE_URL ?>client/styles/form.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/footer.css">
 </head>
 
