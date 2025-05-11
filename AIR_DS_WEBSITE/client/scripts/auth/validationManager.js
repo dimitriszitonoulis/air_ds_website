@@ -5,7 +5,6 @@
  * 
  */
 
-
 /**
  * This function runs the validator functions on the fields they validate
  * If a field is invalid false is returned
@@ -39,11 +38,8 @@ export async function validateSubmitTime(fields) {
         if (!isValid) 
             isAllValid = false;
     }
-
     return isAllValid;
 }
-
-
 
 /**
 * This function performs:
