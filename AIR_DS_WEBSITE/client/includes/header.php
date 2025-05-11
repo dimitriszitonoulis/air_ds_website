@@ -7,7 +7,7 @@ require_once BASE_PATH . "config/config.php";
 
 <header id="header">
   <nav>
-    <a>Home</a>
+    <a href="<?= BASE_URL . "client/pages/home.php"?>">Home</a>
     <a>My Trips</a>
 
     <?php 
