@@ -1,4 +1,4 @@
-import { showError, clearError } from "../errorDisplay.js"
+import { showError, clearError } from "../messageDisplay.js"
 
 /**
  * @fileoverview
