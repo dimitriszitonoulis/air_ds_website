@@ -11,6 +11,8 @@ db_initialize();
 <head>
   <!-- <link rel="stylesheet" href="./client/styles/style.css">  -->
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/style.css"> 
+  <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/header.css">
+  <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/footer.css">
 </head>
 
 <body>
