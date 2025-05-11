@@ -1,7 +1,7 @@
-import { fields } from "./fields.js"
-import { isEmailValid, isNameValid, isPasswordValid, isUsernameValidRegister } from "./fieldValidatorFunctions.js";
+import { fields } from "./authFields.js"
+import { isEmailValid, isNameValid, isPasswordValid, isUsernameValidRegister } from "./authValidators.js";
 import { registerUser } from "./registerUser.js";
-import { validateSubmitTime, validateRealTime } from "./validationManager.js";
+import { validateSubmitTime, validateRealTime } from "../validationManager.js";
 import { showMessage, hideMessage, appendMessage, clearError, showError, showRedirectMessage } from "../messageDisplay.js";
 
 /**
