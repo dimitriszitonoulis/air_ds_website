@@ -26,19 +26,19 @@ db_initialize();
 
     <!-- departure aiport select field -->
     <fieldset>
-      <label class="airport-label" for="airport-selection">Select the departure airport</label>
+      <label class="airport-label" for="departure-airport">Select the departure airport</label>
       <br>
       <!-- gets filled with js -->
-      <select class="airport-selection" name="departure-airport"></select>
+      <select id="departure-airport" class="airport-selection" name="departure-airport"></select>
       <div id="departure-airport-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <!-- destination airport select field -->
     <fieldset>
-      <label class="airport-label" for="airport-selection">Select the destination airport</label>
+      <label class="airport-label" for="destination-airport">Select the destination airport</label>
       <br>
       <!-- gets filled with js -->
-      <select class="airport-selection" name="destination-airport"></select>
+      <select id="destination-airport" class="airport-selection" name="destination-airport"></select>
       <div id="destination-aiport-error-message" class="error-message">Empty</div>
     </fieldset>
 
