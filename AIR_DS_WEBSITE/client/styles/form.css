@@ -1,0 +1,27 @@
+form {
+
+
+    /* position */
+    margin-left: 30%;
+    margin-right: 30%
+}
+
+
+
+
+fieldset {
+    /* border */
+    border: solid;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 10px;
+
+
+    /* contents alignment */
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* text-align: center; */
+}
+
