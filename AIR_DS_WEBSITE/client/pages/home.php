@@ -26,33 +26,33 @@ db_initialize();
 
     <!-- departure aiport select field -->
     <fieldset>
-      <label class="airport-label" for="departure-airport">Select the departure airport</label>
+      <label class="airport-label" for="departure-airport-input">Select the departure airport</label>
       <br>
       <!-- gets filled with js -->
-      <select id="departure-airport" class="airport-selection" name="departure-airport"></select>
+      <select id="departure-airport-input" class="airport-selection" name="departure-airport"></select>
       <div id="departure-airport-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <!-- destination airport select field -->
     <fieldset>
-      <label class="airport-label" for="destination-airport">Select the destination airport</label>
+      <label class="airport-label" for="destination-airport-input">Select the destination airport</label>
       <br>
       <!-- gets filled with js -->
-      <select id="destination-airport" class="airport-selection" name="destination-airport"></select>
+      <select id="destination-airport-input" class="airport-selection" name="destination-airport"></select>
       <div id="destination-aiport-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <!-- departure date select field -->
     <fieldset>
-      <label for="departure-date">Select Departure Date</label>
-      <input type="datetime-local" id="departure-date" name="departure-date">
+      <label for="departure-date-input">Select Departure Date</label>
+      <input type="datetime-local" id="departure-date-input" name="departure-date">
       <div id="departure-date-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <!-- ticket number field -->
     <fieldset>
-      <label id="ticket-number-label" for="ticket-number">Choose the number of tickets you want</label>
-      <input type="text" id="ticket-number" name="ticket-number" value="1" required>
+      <label id="ticket-number-label" for="ticket-input">Choose the number of tickets you want</label>
+      <input type="text" id="ticket-number-input" name="ticket-number" value="1" required>
       <!-- <input type="number" id="ticket-number" name="ticket-number" value="1" min="1"> -->
       <div id="ticket-number-error-message" class="error-message">Empty</div>
     </fieldset>
