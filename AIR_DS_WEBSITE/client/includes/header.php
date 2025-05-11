@@ -13,12 +13,12 @@ require_once BASE_PATH . "config/config.php";
     <?php 
       if (!isset($_SESSION["userId"])) { 
     ?>
-      <a href="<?= BASE_URL . "client/pages/auth/login.php"?>">Login</a>
+      <a href="<?= BASE_URL ?>client/pages/auth/login.php">Login</a>
     <?php 
       } else {
     ?>
     <!-- TODO add script to log user out -->
-      <a id="logout">Logout</a>
+      <a href= "<?= BASE_URL ?>client/includes/logout.php"id="logout">Logout</a>
     <?php 
       } 
     ?>
