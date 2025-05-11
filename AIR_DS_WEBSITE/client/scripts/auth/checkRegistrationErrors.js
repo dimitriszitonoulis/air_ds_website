@@ -2,7 +2,7 @@ import { fields } from "./authFields.js"
 import { isEmailValid, isNameValid, isPasswordValid, isUsernameValidRegister } from "./authValidators.js";
 import { registerUser } from "./registerUser.js";
 import { validateSubmitTime, validateRealTime } from "../validationManager.js";
-import { showMessage, hideMessage, appendMessage, clearError, showError, showRedirectMessage } from "../messageDisplay.js";
+import { showMessage, hideMessage, appendMessage, clearError, showError, showRedirectMessage } from "../displayMessages.js";
 
 /**
  * certain necessary fields for the form validation

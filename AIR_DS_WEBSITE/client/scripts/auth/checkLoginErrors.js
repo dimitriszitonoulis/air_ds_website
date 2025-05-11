@@ -2,7 +2,7 @@ import { fields } from "./authFields.js";
 import { validateSubmitTime } from "./validationManager.js";
 import { loginUser } from "./loginUser.js"
 import { isPasswordValid, isUsernameValidLogin } from "./authValidators.js";
-import { showError, clearError, showMessage, showRedirectMessage } from "../messageDisplay.js";
+import { showError, clearError, showMessage, showRedirectMessage } from "../displayMessages.js";
 
 // take the necessary fields from fields global variable and add their validator fucntions
 // attention create shallow copy, do not modify the global variable
