@@ -44,17 +44,17 @@ db_initialize();
 
     <!-- departure date select field -->
     <fieldset>
-      <label for="departure-date-input">Select Departure Date</label>
-      <input type="datetime-local" id="departure-date-input" name="departure-date">
-      <div id="departure-date-error-message" class="error-message">Empty</div>
+      <label for="date-input">Select Departure Date</label>
+      <input type="datetime-local" id="date-input" name="date">
+      <div id="date-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <!-- ticket number field -->
     <fieldset>
-      <label id="ticket-number-label" for="ticket-input">Choose the number of tickets you want</label>
-      <input type="text" id="ticket-number-input" name="ticket-number" value="1" required>
+      <label id="ticket-label" for="ticket-input">Choose the number of tickets you want</label>
+      <input type="text" id="ticket-input" name="ticket" value="1" required>
       <!-- <input type="number" id="ticket-number" name="ticket-number" value="1" min="1"> -->
-      <div id="ticket-number-error-message" class="error-message">Empty</div>
+      <div id="ticket-error-message" class="error-message">Empty</div>
     </fieldset>
 
     <fieldset id="buy-tickets-button-fieldset">
