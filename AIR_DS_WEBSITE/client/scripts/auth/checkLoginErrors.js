@@ -1,5 +1,5 @@
 import { fields } from "./authFields.js";
-import { validateSubmitTime } from "./validationManager.js";
+import { validateSubmitTime } from "../validationManager.js";
 import { loginUser } from "./loginUser.js"
 import { isPasswordValid, isUsernameValidLogin } from "./authValidators.js";
 import { showError, clearError, showMessage, showRedirectMessage } from "../displayMessages.js";
