@@ -33,14 +33,21 @@ export function isTicketNumberValid(numberOfTicketsElement, errMessageDiv) {
 
     // is input number?
     if (!isNumber(ticketNumber)) {
-        showError(errMessageDiv, "you must enter a number")
+        showError(errMessageDiv, "You must enter a number")
         return false;
     }
     // is number >= 1
     if (ticketNumber < 1) {
-        showError(errMessageDiv, "you must buy at least 1 ticket")
+        showError(errMessageDiv, "You must buy at least 1 ticket")
         return false;
     }
+
+    // each plane has 186 seats
+    if (ticketNumber > 186) {
+        showError(errMessageDiv, "You cannot buy more than 186 tickets per flight.")
+        return false;
+    }
+
     // all is good
     clearError(errMessageDiv);
     return true;
@@ -230,9 +237,6 @@ function isAirportCorrect(airportElement, errMessageDiv) {
     return true;
 }
 
-
-
-// ------------------------------------------------------------
 
 
 function isNumber(i) {
