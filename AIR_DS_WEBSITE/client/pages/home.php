@@ -58,8 +58,9 @@ db_initialize();
       <div id="ticket-error-message" class="error-message">Empty</div>
     </fieldset>
 
-    <fieldset id="buy-tickets-button-fieldset">
-      <input type="submit" id="buy-tickets-button" name="buy-tickets-button" value="Purchase">
+    <fieldset id="purchase-button-fieldset">
+      <input type="submit" id="purchase-button" name="purchase-button" value="Purchase">
+      <div id="purchase-button-error-message" class="error-message"></div>
     </fieldset>
   </form>
 
@@ -67,7 +68,10 @@ db_initialize();
 
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
   <script src="<?= BASE_URL ?>client/scripts/getAirports.js"></script>
-  <script src="<?= BASE_URL ?>client/scripts/errorChecking.js"></script>
+  <!-- <script src="<?= BASE_URL ?>client/scripts/errorChecking.js"></script> -->
+
+  <script type="module" src="<?= BASE_URL ?>client/scripts/reservation/checkReservationErrors.js"></script>
+  
 </body>
 
 </html>

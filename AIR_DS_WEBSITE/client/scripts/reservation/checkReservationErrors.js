@@ -1,11 +1,19 @@
+import { validateRealTime, validateSubmitTime } from "../validationManager.js";
+import { fields } from "./reservationFields.js";
+import { isAiportValid, isDateValid, isTicketNumberValid } from "./reservationValidators.js";
+import { showError, clearError } from "../displayMessages.js";
 
 
 const reservationFields = {
-
+    'airports': {...fields['airports'], validatorFunction: isAiportValid},
+    'date': {...fields['date'], validatorFunction: isDateValid},
+    'ticket': {...fields['ticket'], validatorFunction: isTicketNumberValid}
 };
 
-const buyTicketBtn = document.getElementById('buy-tickets-button');
-buyTicketBtn.addEventListener('click', async (e) => {
+const purchaseBtn = document.getElementById('purchase-button');
+const purchaseBtnErrorDiv = document.getElementById('purchase-button-error-message');
+
+purchaseBtn.addEventListener('click', async (e) => {
     // if the button is clicked without any field being checked do nothing
     e.preventDefault();
 
@@ -19,21 +27,25 @@ buyTicketBtn.addEventListener('click', async (e) => {
 
     // TODO maybe modify to do something with error message
     // const isRegistered = await registerUser(values, BASE_URL);
-    const isRegistered = await registerUser(values, BASE_URL);
+
+    const isRegistered = false;
+    console.log(isRegistered);
 
     if (isRegistered) {
         // clear previous errors
-        clearError(registerBtnErrorDiv);
+        clearError(purchaseBtnErrorDiv);
 
         const message = `Registered sucessfully\n You will be redirected to the login page shortly`;
-        showMessage(registerBtnErrorDiv, "white", message);
+        showMessage(purchaseBtnErrorDiv, "white", message);
 
-        const redirectUrl = `${BASE_URL}/client/pages/auth/login.php`
-        showRedirectMessage(registerBtnErrorDiv, ".", redirectUrl, 3, 1000);
+        // const redirectUrl = `${BASE_URL}/client/pages/auth/login.php`
+        // showRedirectMessage(purchaseBtnErrorDiv, ".", redirectUrl, 3, 1000);
     } else {
-        showError(registerBtnErrorDiv, "Could not register user");
+        showError(purchaseBtnErrorDiv, "Could not purchase tickets");
     }
 });
+
+validateRealTime(reservationFields);
 
 function getValues(reservationFields) {
     let values = {};
