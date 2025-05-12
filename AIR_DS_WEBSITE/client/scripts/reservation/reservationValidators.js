@@ -1,10 +1,16 @@
 import {showError, clearError} from '../displayMessages.js' 
 
 // TODO must be fixed to validate what was fetched from the db
-export function isDateValid(tripDate, errMessageDiv) {
+export function isDateValid(tripDateElement, errMessageDiv) {
+    const tripDate = tripDateElement.value;
     // every time a change is made calculate the current time and the time given by the element 
     let currentDate = new Date();
-    let tripDateValue = new Date(tripDate.value);
+    let tripDateValue = new Date(tripDate);
+
+    if(!tripDate) {
+        showError(errMessageDiv, "This field is required");
+        return false;
+    }
 
     // get the difference of the 2 dates in milliseconds
     // the order of the 2 dates in the subtraction MATTERS
