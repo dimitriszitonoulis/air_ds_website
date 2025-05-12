@@ -2,6 +2,7 @@
 
 <?php
 require_once __DIR__ . "/../../../config/config.php";
+require_once BASE_PATH . "client\includes\start_session.php";
 ?>
 
 <html>
@@ -15,7 +16,7 @@ require_once __DIR__ . "/../../../config/config.php";
 
 <body>
 
-<?php include_once BASE_PATH . "client/includes/header.php"; ?>
+<?php include BASE_PATH . "client/includes/header.php"; ?>
 
   <!-- <form id="registration-form" action="<?= BASE_URL ?>/server/services/auth/check_registration_errors.php"> -->
   <form id="registration-form">
