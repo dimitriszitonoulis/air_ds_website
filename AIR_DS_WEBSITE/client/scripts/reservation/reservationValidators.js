@@ -1,5 +1,6 @@
 import {showError, clearError} from '../displayMessages.js' 
 
+// TODO must be fixed to validate what was fetched from the db
 export function isDateValid(tripDate, errMessageDiv) {
     // every time a change is made calculate the current time and the time given by the element 
     let currentDate = new Date();
@@ -190,54 +191,6 @@ export function isAiportValid(airportElements, errMessageDivs) {
     }
     // return areAirportsValid(airportElements, 0, 1, errMessageDivs);
 }
-
-
-
-function isAirportCorrect(airportElement, errMessageDiv) {
-    // save the airport values 
-    const airport = airportElement.value
-    if (!airport || airport === "-") {
-        showError(errMessageDiv, "Field must not be empty");
-        return false;
-    }
-
-
-    // get the parent of the current <select> Element (fieldset)
-    let fieldset = airportElements[currentAirportIndex].parentElement;
-
-    //check if the strings are empty
-    if (!currentAirport || !otherAirport) {
-        for (airport of airportElements) {
-            airport.title = "You must choose an airport";
-        }
-        return false;
-    }
-
-    // check that the aiports are not: "-"
-    if (currentAirport === '-' || otherAirport === "-") {
-        for (airport of airportElements) {
-            airport.title = "You must choose an airport";
-        }
-        return false;
-    }
-
-    // compare the value of the 2 aiport <select> elements
-    // if they are the same show error message ON BOTH
-    if (currentAirport === otherAirport) {
-        // add the warning inside the div
-        for (let errMessageDiv of errMessageDivs) {
-            showError(errMessageDiv, "the departure and the destination airport must be different")
-        }
-        return false;
-    }
-
-    // airport elements are different => clear error messages
-    for (let j = 0; j < errMessageDivs.length; j++)
-        clearError(errMessageDivs[j]);
-    return true;
-}
-
-
 
 function isNumber(i) {
     const regex = /^-?[0-9]+$/; //match all integers
