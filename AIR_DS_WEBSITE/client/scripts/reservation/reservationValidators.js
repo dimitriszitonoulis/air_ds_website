@@ -158,10 +158,10 @@ export function isAiportValid(airportElements, errMessageDivs) {
         const currentErrMessageDiv = errMessageDivs[current];
         const otherErrMessageDiv = errMessageDivs[other];
 
-        // check that the aiports are not: "-"
-        if (currentAirport === '-' || otherAirport === "-") {
-            for (errMessageDiv of errMessageDivs) {
-                showError(errMessageDivs, "You must choose an airport");
+        // both aiports must not be: "-"
+        if (currentAirport === '-' && otherAirport === "-") {
+            for (const errMessageDiv of errMessageDivs) {
+                showError(errMessageDiv, "You must choose an airport");
             }
             return false;
         }
