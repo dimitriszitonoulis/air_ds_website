@@ -4,7 +4,6 @@ export const fields = {
         errorId: ['departure-airport-error-message', 'destination-aiport-error-message'],
         event: 'change',
         validatorFunction: undefined,
-        // TODO maybe true
         isAsync: false, 
         isCollection: true
     },
@@ -13,6 +12,7 @@ export const fields = {
         errorId: 'date-error-message',
         event: 'change',
         validatorFunction: undefined,
+        // maybe true
         isAsync: false,
         isCollection: false
     },
