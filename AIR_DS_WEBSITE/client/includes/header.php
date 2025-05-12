@@ -1,9 +1,8 @@
 <?php
 require_once __DIR__ . "/../../config/config.php";
 require_once BASE_PATH . "config/config.php";
+// require_once BASE_PATH . "client\includes\start_session.php";
 ?>
-
-<!-- TODO implement logout logic (erase session variables) -->
 
 <header id="header">
   <nav>
