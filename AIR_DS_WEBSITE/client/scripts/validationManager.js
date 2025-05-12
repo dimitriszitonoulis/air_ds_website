@@ -36,10 +36,10 @@ export async function validateSubmitTime(fields) {
             errorElements = document.getElementById(field.errorId);
         }
 
-        const isAsync = field.isAsync;
+        // const isAsync = field.isAsync;
         let isValid = true;
 
-        if (isAsync) isValid = await field.validatorFunction(inputElements, errorElements);
+        if (field.isAsync) isValid = await field.validatorFunction(inputElements, errorElements);
         else isValid = field.validatorFunction(inputElements, errorElements);
 
         if (!isValid) 
@@ -61,26 +61,57 @@ export async function validateSubmitTime(fields) {
 * - isAsync: {boolean} true if the validator function is asynchronous false otherwise
 */
 export function validateRealTime(fields) {
+    let inputElements = 0;
+    let errorElements = 0;
+
     for (const key in fields) {
         const field = fields[key];
-        const inputElement = document.getElementById(field.inputId);
-        const errorElement = document.getElementById(field.errorId);
-        
-        inputElement.addEventListener(field.event, async (e) => {
-            if(field.isAsync) await field.validatorFunction(inputElement, errorElement);
-            else field.validatorFunction(inputElement, errorElement);
-        });
+        if (field.isCollection) {
+            inputElements = getCollection(field.inputId);
+            errorElements = getCollection(field.errorId);
+            applyEventListeners(inputElements, errorElements, field.event, field.isASync, field.validatorFunction, field.isCollection);
+        } else {           
+            inputElements = document.getElementById(field.inputId);
+            errorElements = document.getElementById(field.errorId);
+            // console.log(field.isAsync, field.validatorFunction, field.isCollection);
+            // console.log(field.event);
+            applyEventListeners(inputElements, errorElements, field.event, field.isAsync, field.validatorFunction, field.isCollection);
+        }
     }
 }
 
+function applyEventListeners(inputElements, errorElements, event, isAsync, validatorFunction, isCollection) {
+    /**
+     * Apply the event listener on each element of the collection
+     * ATTENTION!
+     * The validator function needs the whole collection as perameter 
+     * don't just pass it the element to which the eventListener is added 
+     */
+    if(isCollection) {
+        for (let i = 0; i < inputElements.length; i++) {
+            // apply the event listener to the current inputElement
+            inputElements[i].addEventListener(event, async (e) => {
+                // pass all the input elements (and error) of the collection to the event listener 
+                // (don't just pass the current element)
+                if(isAsync) await validatorFunction(inputElements, errorElements);
+                else validatorFunction(inputElements, errorElements);
+            })
+        }
+        return;
+    }
 
-
+    // if inputElement not a collection
+    inputElements.addEventListener(event, async (e) => {
+        if(isAsync) await validatorFunction(inputElements, errorElements);
+        else validatorFunction(inputElements, errorElements);
+    });
+}
 
 function getCollection(ids) {
     const elements = [];
     for (const current in ids) {
         const id = ids[current];
-        elements.push(getElementById(id));
+        elements.push(document.getElementById(id));
     }
     return elements;
 }
