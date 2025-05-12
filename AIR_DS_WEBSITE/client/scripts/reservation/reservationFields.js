@@ -1,4 +1,4 @@
-const fieldsValidation = {
+export const fields = {
     'airports': {
         inputId: ['departure-airport-input', 'destination-airport-input'],
         errorId: ['departure-airport-error-message', 'destination-aiport-error-message'],
