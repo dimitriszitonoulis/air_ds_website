@@ -1,7 +1,6 @@
 <?php 
 require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "client/includes/start_session.php"
-
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +50,6 @@ require_once BASE_PATH . "client/includes/start_session.php"
 
 <script>const BASE_URL = "<?= BASE_URL ?>";</script>
 <script type="module" src="<?= BASE_URL ?>client/scripts/auth/checkLoginErrors.js"></script>
-<!-- <script src="<?= BASE_URL ?>client/scripts/auth/logout.js"></script> -->
 </body>
 
 </html>
