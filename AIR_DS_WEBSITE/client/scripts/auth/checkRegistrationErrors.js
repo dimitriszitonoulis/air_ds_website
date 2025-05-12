@@ -10,7 +10,6 @@ import { showMessage, hideMessage, appendMessage, clearError, showError, showRed
  *      - @eventListener for the register button => submit time validation
  *      - @function setUpValidation() => real time validation
  */
-
 // take the necessary fields from fields global variable and add their validator fucntions
 // attention create shallow copy, do not modify the global variable
 const registerFields = {
@@ -20,6 +19,8 @@ const registerFields = {
     "password": { ...fields["password"], validatorFunction: isPasswordValid },
     "email": { ...fields["email"], validatorFunction: isEmailValid }
 }
+
+validateRealTime(registerFields);
 
 const registerBtn = document.getElementById('register-button');
 const registerBtnErrorDiv = document.getElementById('registration-button-error-message');
@@ -62,4 +63,3 @@ registerBtn.addEventListener('click', async (e) => {
     }
 });
 
-validateRealTime(registerFields);

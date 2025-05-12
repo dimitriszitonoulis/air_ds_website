@@ -3,6 +3,7 @@ import { fields } from "./reservationFields.js";
 import { isAiportValid, isDateValid, isTicketNumberValid } from "./reservationValidators.js";
 import { showError, clearError } from "../displayMessages.js";
 
+validateRealTime(reservationFields);
 
 const reservationFields = {
     'airports': {...fields['airports'], validatorFunction: isAiportValid},
@@ -45,7 +46,6 @@ purchaseBtn.addEventListener('click', async (e) => {
     }
 });
 
-validateRealTime(reservationFields);
 
 function getValues(reservationFields) {
     let values = {};
