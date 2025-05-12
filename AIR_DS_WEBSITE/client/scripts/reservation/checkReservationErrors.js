@@ -1,15 +1,16 @@
 import { validateRealTime, validateSubmitTime } from "../validationManager.js";
 import { fields } from "./reservationFields.js";
 import { isAiportValid, isDateValid, isTicketNumberValid } from "./reservationValidators.js";
-import { showError, clearError } from "../displayMessages.js";
+import { showError } from "../displayMessages.js";
 
-validateRealTime(reservationFields);
 
 const reservationFields = {
     'airports': {...fields['airports'], validatorFunction: isAiportValid},
     'date': {...fields['date'], validatorFunction: isDateValid},
     'ticket': {...fields['ticket'], validatorFunction: isTicketNumberValid}
 };
+
+validateRealTime(reservationFields);
 
 const purchaseBtn = document.getElementById('purchase-button');
 const purchaseBtnErrorDiv = document.getElementById('purchase-button-error-message');
@@ -26,21 +27,15 @@ purchaseBtn.addEventListener('click', async (e) => {
     // get the values from the form elements
     const values = getValues(reservationFields);
 
-    // TODO maybe modify to do something with error message
-    // const isRegistered = await registerUser(values, BASE_URL);
 
-    const isRegistered = false;
-    console.log(isRegistered);
+    console.log(document.getElementById(reservationFields.date.inputId).value);
 
-    if (isRegistered) {
-        // clear previous errors
-        clearError(purchaseBtnErrorDiv);
 
-        const message = `Registered sucessfully\n You will be redirected to the login page shortly`;
-        showMessage(purchaseBtnErrorDiv, "white", message);
 
-        // const redirectUrl = `${BASE_URL}/client/pages/auth/login.php`
-        // showRedirectMessage(purchaseBtnErrorDiv, ".", redirectUrl, 3, 1000);
+    if (isAllValid) {
+       const url = `${BASE_URL}client/pages/book_flight.php`
+       window.location.replace(url);
+       
     } else {
         showError(purchaseBtnErrorDiv, "Could not purchase tickets");
     }
