@@ -1,4 +1,5 @@
 <?php
+
 function get_response_message($fields){
     $failure_message = [
         "missing" => ["result" => false, "message" => "missing content", "http_response_code" => 400],
@@ -45,11 +46,6 @@ function get_response_message($fields){
             "success" => ["result" => true, "message" => "valid $field", "http_response_code" => 200]
         ];
     }
-    // if (array_key_exists("username", $fields)) {
-    //     $response_message['username'] = [
-            
-    //     ]
-    // }
     return $response_message;
 }
 
