@@ -19,6 +19,7 @@ function get_response_message($fields){
             "failure" => $failure_message,
             // return 200 because the request is valid based on what the client sent (no syntactical errors)
             "username_taken" => ["result" => false, "message" => "username is taken", "http_response_code" => 200],
+            "email_taken" =>  ["result" => false, "message" => "email is taken", "http_response_code" => 200],
             "success" => ["result" => true, "message" => "user registered"]
         ],
         "login" => [
@@ -36,7 +37,8 @@ function get_response_message($fields){
         $response_message[$field] = [
             "missing" => ["result" => false, "message" => "missing field: $field"],
             // maybe change to invalid and valid
-            "failure" => ["result" => false, "message" => "invalid $field"],
+            // "failure" => ["result" => false, "message" => "invalid $field"],
+            "invalid" => ["result" => false, "message" => "invalid $field"],
             "success" => ["result" => true, "message" => "valid $field"]
         ];
     }
