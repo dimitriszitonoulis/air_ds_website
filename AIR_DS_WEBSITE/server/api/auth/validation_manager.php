@@ -27,7 +27,7 @@ function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
     $is_payload_valid_response = is_payload_valid( $decoded_content, $field_names, $response_message);
     if (!$is_payload_valid_response["result"]) return $is_payload_valid_response;
 
-    $are_fields_valid_response = apply_validators($conn, $decoded_content, $fields,  $response_message, $is_login);
+    $are_fields_valid_response = apply_validators($conn, $decoded_content, $field_names,  $response_message, $is_login);
     if (!$are_fields_valid_response["result"]) return $are_fields_valid_response;
 
     // final response message if everything is alright
@@ -86,11 +86,12 @@ function is_payload_valid($decoded_content, $field_names, $response_message) {
 }
 
 //TODO write better documentation
-function apply_validators($conn, $decoded_content, $fields, $response_message, $is_login=false) {
+function apply_validators($conn, $decoded_content, $field_names, $response_message, $is_login=false) {
 
     $validators = get_validators();
 
-    // if the password is set this value is needed
+    // if the password field is set this value is needed
+    // check if username is ok
     $username = null;
     if (array_key_exists("username", $decoded_content)) {
         if (isset($decoded_content["username"])) {
@@ -104,21 +105,48 @@ function apply_validators($conn, $decoded_content, $fields, $response_message, $
         "conn" => $conn,
     ];
     
+
+
     // TODO maybe just loop through the field names
     // loop through all the fields, 
     // call their validators,
     // set the value of associative array $fields for the current field (is_valid is not used)
-    foreach ($fields as $current => $is_valid) {
+    // foreach ($fields as $current => $is_valid) {
+    //     // add the value of the current field to the validator function parameters
+    //     $params[$current] = $decoded_content[$current];
+    //     $fields[$current] = $validators[$current]($params);
+
+
+    //     // no need to unset the key it beacuse $params is pass by reference not value (does not add overhead)
+    //     // In no way must username be unset because it is needed  for password
+
+    //     // if a field is invalid do not continue with the other checks
+    //     if (!$fields[$current]) {
+    //         // for register
+    //         if (!$is_login) return $response_message[$current]["failure"];
+    //         // for login
+    //         return $response_message["login"]["failure"]["invalid"];
+    //     }
+    // }
+
+    // ---------------------------------------------------------------
+
+    // $field_names = array_keys($fields);
+
+    foreach ($field_names as $field) {
         // add the value of the current field to the validator function parameters
-        $params[$current] = $decoded_content[$current];
-        $fields[$current] = $validators[$current]($params);
+        $params[$field] = $decoded_content[$field];
+        // $fields[$field] = $validators[$field]($params);
+
+        $is_valid = $validators[$field]($params);
+
         // no need to unset the key it beacuse $params is pass by reference not value (does not add overhead)
         // In no way must username be unset because it is needed  for password
 
         // if a field is invalid do not continue with the other checks
-        if (!$fields[$current]) {
+        if (!$is_valid) {
             // for register
-            if (!$is_login) return $response_message[$current]["failure"];
+            if (!$is_login) return $response_message[$field]["failure"];
             // for login
             return $response_message["login"]["failure"]["invalid"];
         }
