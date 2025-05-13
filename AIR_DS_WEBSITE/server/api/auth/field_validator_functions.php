@@ -2,62 +2,67 @@
 require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_field_stored.php";
 
-
-/**
- * Summary of get_validators
- * An array containing key value pairs of authorization fields and their validator functions
- * @return array{
- *  email: (callable(mixed ):bool), 
- *  name: (callable(mixed ):bool), 
- *  password: (callable(mixed ):bool), 
- *  surname: (callable(mixed ):bool), 
- *  username: (callable(mixed ):bool)
- * }
- */
-function get_validators() {
-    return [
-        "name" => function ($params) { 
-            return is_name_valid($params["name"]);
-        },
-        "surname" => function ($params) { 
-            return is_name_valid($params["surname"]); 
-        },
-        "username" => function ($params) {
-            return is_username_syntax_valid($params["username"]);
-        },
-        "password" => function ($params) {
-            return is_password_syntax_valid($params["password"]); 
-        },
-        "email" => function ($params)  {
-            return is_email_valid($params["conn"], $params["email"]); 
-        }
-    ];
+function is_name_valid ($name, $response) {
+    if(!isset($name) || empty($name)) return $response['name']['missing'];
+    if(!is_only_letters($name)) return $response['name']['invalid'];
+    return $response['success'];
 }
 
-function is_name_valid ($name) {
-    if(!isset($name) || empty($name)) return false;
-    if(!is_only_letters($name)) return false;
-    return true;
+function is_username_valid_register ($conn, $username, $response) {
+    $is_syntax = is_username_syntax_valid($username, $response);
+    if (!$is_syntax['result']) return $is_syntax;
+
+    $is_stored = false;
+    // check if the username is taken
+    try {
+        $is_stored = db_is_username_stored($conn, $username);
+    } catch (Exception $e) {
+        return $response['failure']['nop'];
+
+    }
+
+    // is there another account with that username?
+    if ($is_stored) return $response['register']['username_taken'];
+
+    return $response['success'];
 }
 
-function is_username_syntax_valid($username) {
-    if (!isset($username) || empty($username)) return false;
-    if (!is_alphanumeric($username)) return false;
-    return true;
+//TODO maybe delete
+// syntactical validation for login will be done in this script
+// while validation of credentials will be done by hand in other script
+// function is_username_valid_login() {
+
+// }
+
+function is_username_syntax_valid($username, $response) {
+    if (!isset($username) || empty($username)) return $response['username']['missing'];
+    if (!is_alphanumeric($username)) return $response['username']['invalid'];
+    return $response['success'];
 }
 
-function is_password_syntax_valid ($password) {
-    if (!isset($password) || empty($password)) return false;
-    if (!contains_number($password)) return false;
-    if (strlen($password) < 4 || strlen($password) > 10)  return false;
-    return true;
+function is_password_syntax_valid ($password, $response) {
+    if (!isset($password) || empty($password)) return $response['password']['missing'];
+    if (!contains_number($password)) return $response['password']['invalid'];
+    if (strlen($password) < 4 || strlen($password) > 10) return $response['password']['invalid'];
+    return $response['success'];
 }
 
-function is_email_valid ($conn, $email) {
-    if (!isset($email) || empty($email)) return false;
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return false;
-    if (db_is_email_stored($conn, $email)) return false;
-    return true;
+function is_email_valid ($conn, $email, $response) {
+    if (!isset($email) || empty($email)) return $response['email']['missing'];
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return $response['email']['invalid'];
+
+     $is_stored = false;
+    // check if the username is taken
+    try {
+        $is_stored= db_is_email_stored($conn, $email);
+    } catch (Exception $e) {
+        return $response['failure']['nop'];
+
+    }
+    // is there another account with that email?
+    if ($is_stored) return $response['register']['email_taken'];
+
+    return $response['success'];
 }
 
 function is_only_letters ($txt) {
