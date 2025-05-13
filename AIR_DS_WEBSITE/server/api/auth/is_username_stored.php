@@ -3,6 +3,7 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/db_utils/db_connect.php";
 require_once BASE_PATH . "server/api/auth/validation_manager.php";
 require_once BASE_PATH . "server/database/services/auth/db_is_field_stored.php";
+require_once BASE_PATH . "server/api/auth/field_validator_functions.php";
 require_once BASE_PATH . "config/messages.php";
 
 is_username_stored();
@@ -29,34 +30,73 @@ function is_username_stored() {
     // get the name of the fields that come from the client
     $field_names = array_keys($decoded_content);
 
+    // what if the keys are not what I am expecting?
+    // get the name of the fields that come from the client
+    $field_names = array_keys($decoded_content);
+    $expected_fields = ["username"];
+
+    // modify response_message to also include messages for the expected fields
+    $response_message = get_response_message($expected_fields);
+    $validator_parameters = [   // parameters needed by some validators that cannot be provided by the validator manager
+        'conn' => $conn,
+        'response' => $response_message
+    ];          
+    $validators = get_validators_register();
+
     $response = null;
-    // response = ["result" => boolean, "message" => string]
-    $response = validate_fields($conn, $decoded_content, $field_names, false);
+    // response array like:  ["result" => boolean, "message" => string]
+    $response = validate_fields($conn, $decoded_content, $field_names, $expected_fields, $validator_parameters, $validators);
+
     // if a field is invalid
     if (!$response["result"]) {
-        http_response_code(400);
+        http_response_code($response['http_response_code']);
         echo json_encode($response);
         exit;
     }
+    
+    
+    
+    
+    
+    
 
-    // check if the username is inside the content sent by the client
-    $username = null;
-    if (array_key_exists("username", $decoded_content)) {
-        // if it is, then its value has already been validated,
-        // So no additional checks needed
-        $username = $decoded_content["username"];
-    }
 
-    // is the username stored?
-    try {
-        $is_username_stored = db_is_username_stored($conn, $username);
-    } catch (Exception $e) {
-        // if exception do nothing
-        $response = $response_message['failure']['nop'];
-        http_response_code(500);
-        echo json_encode($response);
-        exit;  
-    }
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    // // if a field is invalid
+    // if (!$response["result"]) {
+    //     http_response_code(400);
+    //     echo json_encode($response);
+    //     exit;
+    // }
+
+    // // check if the username is inside the content sent by the client
+    // $username = null;
+    // if (array_key_exists("username", $decoded_content)) {
+    //     // if it is, then its value has already been validated,
+    //     // So no additional checks needed
+    //     $username = $decoded_content["username"];
+    // }
+
+    // // is the username stored?
+    // try {
+    //     $is_username_stored = db_is_username_stored($conn, $username);
+    // } catch (Exception $e) {
+    //     // if exception do nothing
+    //     $response = $response_message['failure']['nop'];
+    //     http_response_code(500);
+    //     echo json_encode($response);
+    //     exit;  
+    // }
 
     // if the username is stored
     if($is_username_stored) {
@@ -70,4 +110,26 @@ function is_username_stored() {
     echo json_encode(["result" => false, "message" => "username is not stored"]);
     exit;
 }
+
+
+/**
+ * Summary of get_validators
+ * An array containing key value pairs of authorization fields and their validator functions
+ * @return array{
+ *  email: (callable(mixed ):bool), 
+ *  name: (callable(mixed ):bool), 
+ *  password: (callable(mixed ):bool), 
+ *  surname: (callable(mixed ):bool), 
+ *  username: (callable(mixed ):bool)
+ * }
+ */
+function get_validators_username() {
+    return [
+        "username" => function ($params) {
+             return is_username_valid_register ($params['conn'], $params['username'], $params['response']);
+        },
+    ];
+}
+
+
 ?>
