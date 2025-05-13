@@ -8,11 +8,12 @@ function drop_tables(){
         // this table has references to the primary keys of airports and users
         $conn->exec("
         DROP TABLE IF EXISTS reservations;
+        DROP TABLE IF EXISTS flights;
         DROP TABLE IF EXISTS airports;
         DROP TABLE IF EXISTS users;
         ");
     } catch(PDOException $e){
-        echo "FAiled to delete tables";
+        echo "Failed to delete tables";
         echo $e;
     }
 }

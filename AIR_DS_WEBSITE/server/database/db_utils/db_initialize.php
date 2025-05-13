@@ -1,37 +1,44 @@
 <?php
 // *****************************************************************************************************************************************
 // INITIALIZE DATABASE
-function db_initialize() {
+
+db_initialize();
+
+function db_initialize()
+{
     // ASSUMES THAT db_initialize AND db_connect.php ARE IN THE SAME FOLDER
     require_once 'db_connect.php';
 
     // create db
-    try{
+    try {
         // get the connection to the mySQL server
         $conn = db_connect_server();
         // get the config of the database in order to access its name
         $db_config = db_get_config();
-        $conn->exec("CREATE DATABASE IF NOT EXISTS {$db_config['db_name']}");    
-    } catch (PDOException $e){
+        $conn->exec("CREATE DATABASE IF NOT EXISTS {$db_config['db_name']}");
+    } catch (PDOException $e) {
         die("Database creation failed.\nCould not connect to server\n" . $e->getMessage());
     }
-    
-    //connect to db, add tables
-    try{
-        // get the connection to the mySQL server
-        $conn = db_connect(); 
-        insert_tables($conn);
-        add_airports(conn: $conn);
 
+    //connect to db, add tables
+    try {
+        // get the connection to the mySQL server
+        $conn = db_connect();
+        
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //  For development only
-        // include 'db_drop_tables.php';
+        // include_once 'db_drop_tables.php';
         // drop_tables();
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-    } catch (PDOException $e){
-        die("Database connection failed\n" . $e); 
-    }  
+        insert_tables($conn);
+        add_airports(conn: $conn);
+        add_flights($conn);
+
+       
+    } catch (PDOException $e) {
+        die("Database connection failed\n" . $e);
+    }
 }
 
 // *****************************************************************************************************************************************
@@ -42,7 +49,8 @@ function db_initialize() {
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // HELPER FUNCTIONS
-function insert_tables($conn){
+function insert_tables($conn)
+{
     //create table airports
     $conn->exec("
         CREATE TABLE IF NOT EXISTS airports(
@@ -59,7 +67,7 @@ function insert_tables($conn){
      * If he buys tickets for more people then the columns for username, password and email for those people will be NULL.
      * ATTENTION! check must be made so that a user without an account cannot make reservations for hiself or others
      * Username and email MUST be unique. 
-    */
+     */
     // TODO maybe hash passwords for security (the length of password should be changed to 255 to store the hashes)
     $conn->exec("
         CREATE TABLE IF NOT EXISTS users(
@@ -69,25 +77,39 @@ function insert_tables($conn){
         username VARCHAR(255) UNIQUE,
         password VARCHAR(10),       
         email VARCHAR(255) UNIQUE);"
-        );
+    );
 
     // create table reservations
     // TODO maybe add CURENT_TIMESTAMP as default value to departure_date
     $conn->exec("
-    CREATE TABLE IF NOT EXISTS reservations (
-    id INT AUTO_INCREMENT PRIMARY KEY, 
-    seat VARCHAR(3) NOT NULL,
-    departure_date DATETIME NOT NULL,
-    airportID VARCHAR(3) NOT NULL,
-    user_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (airportID) REFERENCES airports(code), 
-    FOREIGN KEY (user_id) REFERENCES users(id));"
+        CREATE TABLE IF NOT EXISTS reservations (
+        id INT AUTO_INCREMENT PRIMARY KEY, 
+        seat VARCHAR(3) NOT NULL,
+        departure_date DATETIME NOT NULL,
+        airportID VARCHAR(3) NOT NULL,
+        user_id INT UNSIGNED NOT NULL,
+        FOREIGN KEY (airportID) REFERENCES airports(code), 
+        FOREIGN KEY (user_id) REFERENCES users(id));"
+    );
+
+
+    // holds the table for the flights
+    $conn->exec("
+        CREATE TABLE IF NOT EXISTS flights(
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        date DATETIME NOT NULL,
+        departure_airport VARCHAR(3) NOT NULL,
+        destination_airport VARCHAR(3) NOT NULL,
+        FOREIGN KEY (departure_airport) REFERENCES airports(code),
+        FOREIGN KEY (destination_airport) REFERENCES airports(code)
+        );"
     );
 }
 
-function add_airports($conn){
-   try{
-    $conn->exec("
+function add_airports($conn)
+{
+    try {
+        $conn->exec("
     INSERT INTO 
         airports (name, code, latitude, longitude, fee)
     VALUES
@@ -98,10 +120,38 @@ function add_airports($conn){
         ('Larnaka International Airport', 'LCA', 34.8715, 33.6077, 150),
         ('Brussels Airport', 'BRU', 50.9002, 4.4859, 200);
         ");
-   } catch (PDOException $e){
+    } catch (PDOException $e) {
         // no operation
-   }
+    }
 }
-// -----------------------------------------------------------------------------------------------------------------------------------------
 
+function add_flights($conn)
+{
+    // $day = date('d');
+    $month = date('m');
+    $year = date('Y');
+ 
+    $flight_dates = [];
+    for ($day = 1; $day < 29; $day++) {
+        $flight_dates[$day] = date("Y-m-d", strtotime("{$year}-{$month}-{$day}"));
+    }
+
+    $stmt = $conn->query("SELECT code FROM airports;");
+    $airport_codes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // insert flights to and from every airport from the 1st up to the 28th day of the current month
+    foreach ($airport_codes as $departure_airport) {
+        foreach ($airport_codes as $destination_airport) {
+            // don't add flights for the same airport
+            if ($departure_airport['code'] === $destination_airport['code']) continue;
+
+            foreach ($flight_dates as $date) {
+                $conn->exec("   INSERT INTO flights (date, departure_airport, destination_airport)
+                                VALUES 
+                                ('{$date}', '{$departure_airport['code']}', '{$destination_airport['code']}');
+                ");
+            }
+        }
+    }
+}
 ?>
