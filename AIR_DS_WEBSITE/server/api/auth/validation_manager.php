@@ -89,15 +89,6 @@ function apply_validators($conn, $decoded_content, $fields, $response_message, $
 
     $validators = get_validators();
 
-    // if the password field is set this value is needed
-    // check if username is ok
-    $username = null;
-    if (array_key_exists("username", $decoded_content)) {
-        if (isset($decoded_content["username"])) {
-            $username = $decoded_content["username"];
-        }
-    }
-
     // TODO maybe move them in a function in field_validator_functions
     // some extra parameters needed by some of the validators
     $params = [
