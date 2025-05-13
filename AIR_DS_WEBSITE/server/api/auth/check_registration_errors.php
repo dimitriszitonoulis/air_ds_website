@@ -32,16 +32,9 @@ function check_registration_errors() {
     // get the name of the fields that come from the client
     $field_names = array_keys($decoded_content);
 
-    // array showing the validity of each field
-    // field name (string) => validity (boolean)
-    $fields =[];
-    foreach($field_names as $name) {
-        $fields[$name] = false;     //initialize as false
-    }
-
     $response = null;
     // response = ["result" => boolean, "message" => string]
-    $response = validate_fields($conn, $decoded_content, $fields, false);
+    $response = validate_fields($conn, $decoded_content, $field_names, false);
     // if a field is invalid
     if (!$response["result"]) {
         http_response_code(400);
@@ -54,8 +47,10 @@ function check_registration_errors() {
     if (array_key_exists("username", $decoded_content)) {
         // if it is, then its value has already been validated,
         // So no additional checks needed
-        $username = $decoded_content["username"];
+        $username = $decoded_content["username"];            
     }
+
+    // check if the username is taken
     try {
         $is_username_stored = db_is_username_stored($conn, $username);
     } catch (Exception $e) {
@@ -66,6 +61,9 @@ function check_registration_errors() {
         exit;  
     }
 
+    // echo json_encode($is_username_stored);
+
+    // FIXME returns true taken even though I enter a username no in the bd
     // if the username is not available
     if($is_username_stored) {
         $response = $response_message['register']['username_taken'];

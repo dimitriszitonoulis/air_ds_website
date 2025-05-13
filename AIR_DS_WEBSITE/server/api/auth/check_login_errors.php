@@ -33,16 +33,8 @@ function check_login_errors() {
     // get the name of the fields that come from the client
     $field_names = array_keys($decoded_content);
 
-    // array showing the validity of each field
-    // like: field name => validity (boolean)
-    // for now initialize all fields as false
-    $fields =[];
-    foreach($field_names as $name) {
-        $fields[$name] = false;
-    }
-
     $response = null;
-    $response = validate_fields($conn, $decoded_content, $fields, true);
+    $response = validate_fields($conn, $decoded_content, $field_names, true);
   
     if (!$response["result"]) {
         http_response_code(400);
@@ -52,7 +44,7 @@ function check_login_errors() {
 
     $username = null;
     $password = null;
-    if (array_key_exists("username", $fields)
+    if (array_key_exists("username", $field_names)
         && array_key_exists("password", $decoded_content)) {    
         $username = $decoded_content["username"];
         $password = $decoded_content["password"];

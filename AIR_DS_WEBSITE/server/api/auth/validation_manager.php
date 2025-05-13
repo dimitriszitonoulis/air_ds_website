@@ -4,6 +4,7 @@ require_once BASE_PATH . "server/database/db_utils/db_connect.php";
 require_once BASE_PATH . "server/api/auth/field_validator_functions.php";
 require_once BASE_PATH . "config/messages.php";
 
+// TODO change documentation
 /**
  * Summary of validate_fields
  * @param mixed $conn - the connection to the database
@@ -17,10 +18,8 @@ require_once BASE_PATH . "config/messages.php";
  * @param boolean $is_login - true if the validation is done for login, false if it is done for register
  * @return array{message: string, result: bool}
  */
-function validate_fields($conn, $decoded_content, $fields, $is_login=false) {
-    // fields is an array with key values like: field name => boolean 
-    // The name of the fields must be passed to the function that gets the response messages for those fields
-    $field_names = array_keys($fields);
+function validate_fields($conn, $decoded_content, $field_names, $is_login=false) {
+
     $response_message = get_response_message($field_names);
 
     // FIXME if all good it send generic positive response

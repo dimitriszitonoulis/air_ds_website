@@ -28,17 +28,10 @@ function is_username_stored() {
     // what if the keys are not what I am expecting?
     // get the name of the fields that come from the client
     $field_names = array_keys($decoded_content);
-    // array showing the validity of each field
-    // like: field name => validity (boolean)
-    // for now initialize all fields as false
-    $fields =[];
-    foreach($field_names as $name) {
-        $fields[$name] = false;
-    }
 
     $response = null;
     // response = ["result" => boolean, "message" => string]
-    $response = validate_fields($conn, $decoded_content, $fields, false);
+    $response = validate_fields($conn, $decoded_content, $field_names, false);
     // if a field is invalid
     if (!$response["result"]) {
         http_response_code(400);
@@ -46,13 +39,14 @@ function is_username_stored() {
         exit;
     }
 
-    $username = null;
     // check if the username is inside the content sent by the client
+    $username = null;
     if (array_key_exists("username", $decoded_content)) {
         // if it is, then its value has already been validated,
         // So no additional checks needed
         $username = $decoded_content["username"];
     }
+
     // is the username stored?
     try {
         $is_username_stored = db_is_username_stored($conn, $username);
