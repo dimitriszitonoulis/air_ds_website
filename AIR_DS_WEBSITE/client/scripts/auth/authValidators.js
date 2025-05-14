@@ -195,12 +195,8 @@ export function isEmailValid(emailInput, errMessageDiv) {
  * @returns {boolean} - true if the username does not exist in the database, false otherwise
  */
 async function isUsernameStored(username) {
-    // fetch from db
-    // const url = `${BASE_URL}/server/database/services/auth/db_is_username_stored.php`;
     const url = `${BASE_URL}server/api/auth/is_username_stored.php`;
 
-    // get all the usernames that match username 
-    // (are the same as username or have the pattern: <username><other_characters>)
     try {
         let response = await fetch(url, {
             method: "POST",
@@ -220,7 +216,6 @@ async function isUsernameStored(username) {
         console.log("Fetch succesful return data:", data)
 
         const is_stored = data['result'];
-        
         // if there is the same username in the database, this is false
         return is_stored;
 
