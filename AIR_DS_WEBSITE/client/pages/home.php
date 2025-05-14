@@ -50,7 +50,8 @@ db_initialize();
       <!-- departure date select field -->
       <fieldset>
         <label for="date-input">Select Departure Date</label>
-        <input type="datetime-local" id="date-input" name="date">
+        <select id="date-input" name="date"></select>
+        <!-- <input type="datetime-local" id="date-input" name="date"> -->
         <div id="date-error-message" class="error-message">Empty</div>
       </fieldset>
 
