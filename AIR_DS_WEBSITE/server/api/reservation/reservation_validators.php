@@ -13,14 +13,15 @@
  */
 function is_airport_code_valid($conn, $code, $response) {
     $is_stored = false;
-    // check if the username is taken
+
+    // check if the code is inside the database
     try {
         $is_stored = db_is_airport_code_stored($conn, $code);
     } catch (Exception $e) {
         return $response['failure']['nop'];
     }
-
-    // is there another account with that username?
+    
+    // if the airport code is not found
     if (!$is_stored) return $response['failure']['not_found'];
 
     return $response['success'];
