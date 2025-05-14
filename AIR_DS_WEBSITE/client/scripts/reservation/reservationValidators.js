@@ -66,6 +66,8 @@ export function isTicketNumberValid(numberOfTicketsElement, errMessageDiv) {
  * In order for the airports to be valid for reat time validation they must:
  *  - Not have the same value
  * 
+ * If the airports are not valid an error message is shown
+ * 
  * @param {Array} airportElements - array of HTML elements for the airport selection
  * @param {*} errMessageDivs - array of HTML elements containing the error message divs of the airport selection elements
  * @returns {boolean} - true if the airport fields are valid, otherwise false
@@ -73,8 +75,6 @@ export function isTicketNumberValid(numberOfTicketsElement, errMessageDiv) {
 export function isAiportValidRealTime(airportElements, errMessageDivs) {
     const aiportElementsLength = airportElements.length;
 
-    // TODO check if the early return cause problems with the validation
-    // add event listeners on both airport select elements
     for (let current = 0; current < aiportElementsLength; current++) {
         // there are 2 selection element for the airport codes
         // if currentAiport = 0, then (currentAiport + 1) % aiportElementsLength = (0 + 1) % 2 = 1
@@ -107,11 +107,14 @@ export function isAiportValidRealTime(airportElements, errMessageDivs) {
 }
 
 /**
- * Summary of isAirportValidSubmitTimxe
+ * Summary of isAirportValidSubmitTime
+ * 
  * Checks if the airports are valid at submit time
  * In order for the airports to be valid for submit time validation they must:
  *  - Be different than "-"
  *  - Not have the same value
+ * 
+ * If the airports are not valid an error message is shown
  *
  * @param {Array} airportElements - array of HTML elements for the airport selection
  * @param {*} errMessageDivs - array of HTML elements containing the error message divs of the airport selection elements
@@ -120,8 +123,6 @@ export function isAiportValidRealTime(airportElements, errMessageDivs) {
 export function isAirportValidSubmitTime(airportElements, errMessageDivs) {
     const aiportElementsLength = airportElements.length;
 
-    // TODO check if the early return cause problems with the validation
-    // add event listeners on both airport select elements
     for (let current = 0; current < aiportElementsLength; current++) {
         // there are 2 selection element for the airport codes
         // if currentAiport = 0, then (currentAiport + 1) % aiportElementsLength = (0 + 1) % 2 = 1
@@ -166,6 +167,53 @@ export function isAirportValidSubmitTime(airportElements, errMessageDivs) {
         clearError(errMessageDivs[j]);
     return true;
 }
+
+/**
+ * Summary of isAirportValidNoErrors
+ * Checks if the airports are valid at submit time
+ * In order for the airports to be valid for submit time validation they must:
+ *  - Be different than "-"
+ *  - Not have the same value
+ *
+ * If the airports are not valid NOTHING is shown
+ * 
+ * @param {Array} airportElements - array of HTML elements for the airport selection
+ * @param {*} errMessageDivs - array of HTML elements containing the error message divs of the airport selection elements
+ * @returns {boolean} - true if the airport fields are valid, otherwise false
+ */
+export function isAirportsValidNoMessages(airportElements) {
+    const aiportElementsLength = airportElements.length;
+
+    // TODO check if the early return cause problems with the validation
+    // add event listeners on both airport select elements
+    for (let current = 0; current < aiportElementsLength; current++) {
+        // there are 2 selection element for the airport codes
+        // if currentAiport = 0, then (currentAiport + 1) % aiportElementsLength = (0 + 1) % 2 = 1
+        // if currentAiport = 1, then (currentAiport + 1) % aiportElementsLength = (1 + 1) % 2 = 0
+        const other = (current + 1) % aiportElementsLength
+
+        // save the airport values 
+        const currentAirport = airportElements[current].value
+        const otherAirport = airportElements[other].value
+
+        // save the error message divs
+        const currentErrMessageDiv = errMessageDivs[current];
+        const otherErrMessageDiv = errMessageDivs[other];
+
+        // both aiports must not be: "-" at the same time
+        if (currentAirport === '-' && otherAirport === "-")return false;
+
+        // current airport must not be: "-"
+        if(currentAirport === "-") return false;
+
+        // compare the value of the 2 airport <select> elements
+        // if they are the same show error message ON BOTH
+        if (currentAirport === otherAirport) return false;
+    }
+
+    return true;
+}
+
 
 function isNumber(i) {
     const regex = /^-?[0-9]+$/; //match all integers
