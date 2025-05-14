@@ -6,9 +6,9 @@ require_once BASE_PATH . "server/database/services/auth/db_is_field_stored.php";
 require_once BASE_PATH . "server/api/auth/field_validator_functions.php";
 require_once BASE_PATH . "config/messages.php";
 
-is_username_stored();
+find_username();
 
-function is_username_stored() {
+function find_username() {
     header('Content-type: application/json');
     $response_message = get_response_message([]);
 
@@ -41,7 +41,7 @@ function is_username_stored() {
         'conn' => $conn,
         'response' => $response_message
     ];          
-    $validators = get_validators_register();
+    $validators = get_validators_username();
 
     $response = null;
     // response array like:  ["result" => boolean, "message" => string]
@@ -54,60 +54,20 @@ function is_username_stored() {
         exit;
     }
     
+    // the username has passed syntactical validations
+    $username = $decoded_content['username'];
     
-    
-    
-    
-    
+    $is_stored_response = is_username_stored($conn, $username, $response_message);
 
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    // // if a field is invalid
-    // if (!$response["result"]) {
-    //     http_response_code(400);
-    //     echo json_encode($response);
-    //     exit;
-    // }
-
-    // // check if the username is inside the content sent by the client
-    // $username = null;
-    // if (array_key_exists("username", $decoded_content)) {
-    //     // if it is, then its value has already been validated,
-    //     // So no additional checks needed
-    //     $username = $decoded_content["username"];
-    // }
-
-    // // is the username stored?
-    // try {
-    //     $is_username_stored = db_is_username_stored($conn, $username);
-    // } catch (Exception $e) {
-    //     // if exception do nothing
-    //     $response = $response_message['failure']['nop'];
-    //     http_response_code(500);
-    //     echo json_encode($response);
-    //     exit;  
-    // }
-
-    // if the username is stored
-    if($is_username_stored) {
-        $response = ['result' => true, 'message' => "username is stored"];
-        http_response_code(200);
-        echo json_encode($response);
+    if(!$is_stored_response['result']) {
+        http_response_code($response['http_response_code']);
+        echo json_encode($is_stored_response);
         exit;
     }
     
-    header('Content-Type: application/json');
-    echo json_encode(["result" => false, "message" => "username is not stored"]);
+    // TODO maybe add new response message to messages.php
+    http_response_code(200);    
+    echo json_encode(["result" => true, "message" => "username is stored"]);
     exit;
 }
 
@@ -126,8 +86,8 @@ function is_username_stored() {
 function get_validators_username() {
     return [
         "username" => function ($params) {
-             return is_username_valid_register ($params['conn'], $params['username'], $params['response']);
-        },
+             return is_username_syntax_valid ($params['username'], $params['response']);
+        }
     ];
 }
 
