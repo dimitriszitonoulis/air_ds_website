@@ -26,16 +26,16 @@ function db_initialize()
         
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //  For development only
-        include_once 'db_drop_tables.php';
-        drop_tables();
+        // include_once 'db_drop_tables.php';
+        // drop_tables();
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         insert_tables($conn);
+        
         // TODO uncomment the first time the db is created
         // include the script in index and redirect from index to the home page
-        
-        add_airports(conn: $conn);
-        add_flights($conn);
+        // add_airports(conn: $conn);
+        // add_flights($conn);
 
        
     } catch (PDOException $e) {
