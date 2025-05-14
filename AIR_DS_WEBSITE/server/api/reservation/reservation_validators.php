@@ -1,7 +1,6 @@
 <?php
 
 /**
- *
  * Summary of is_airport_code_correct
  * 
  * Checks if the supplied airport code is valid
@@ -12,7 +11,7 @@
  * @param mixed $code - the supplied code
  * @param mixed $response - array containing error messages
  */
-function is_airport_code_correct($conn, $code, $response) {
+function is_airport_code_valid($conn, $code, $response) {
     $is_stored = false;
     // check if the username is taken
     try {
