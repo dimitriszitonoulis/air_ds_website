@@ -7,6 +7,32 @@ require_once BASE_PATH . "config/messages.php";
 
 get_flight_dates();
 
+/**
+ * Summary of get_flight_dates
+ * 
+ * This functions is an AJAX end point
+ * 
+ *  It returns the dates for the flights between 2 airports
+ * 
+ * It is responsible to receive the fetch request be the client (departure and destination airport codes).
+ * Validate the input using the valition manager and validation functions.
+ * Call the function that returns the flight dates.
+ * Send the data back to the client.
+ * If at any point something goes wrong a return message is sent
+ * 
+ * Type of responses:
+ * Most of the responses of this function are reseponse_messages detailed in config/messages.php
+ * 
+ * The only exception to this rule is the success message if everything goes well.
+ * This message is an array like:
+ * [result => boolean,
+ *  message => string
+ *  http_response_code => int
+ *  dates => associative array:  [date => all the dates for the 2 aiports]
+ *  ]
+ * 
+ * @return never
+ */
 function get_flight_dates() {
     header('Content-Type: application/json');
 
