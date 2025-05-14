@@ -1,26 +1,14 @@
+getAirportCodes()
+
 async function getAirportCodes() {
-    // fetch airport codes from db
-    const url = `${BASE_URL}server/api/get_airports.php`;
-        let airports = "";
-    try {
-        const response = await fetch(url, {
-            headers:{
-                 'Content-Type': 'application/json'
-            }
-        })
-        if (!response.ok){
-            throw new Error("HTTP error " + response.status);
-        }
-        airports = await response.json();
-    } catch (error) {
-        console.error(error);
-        return airports;
-    }
+    
+    let airports = await fetch_airports();
+    console.log(airports);
     
     // get the select elements for the departure and destination airports
     const selectElements = document.getElementsByClassName('airport-selection');
     
-    // add an option element with value "--"
+    // add an option element with value "-"
     for (let selectElement of selectElements){
         let option = document.createElement('option');
         option.value = "-";
@@ -43,4 +31,34 @@ async function getAirportCodes() {
     }
 }
 
-getAirportCodes()
+/**
+ * Summary of fetch_airports()
+ * Fetches the server to get the the names and codes of the airports
+ * 
+ * @returns {object} - contains key value pairs like:
+ *  {
+ *      name: airport name,
+ *      code: airport code
+ *  }
+ */
+async function fetch_airports() {
+// fetch airport codes from db
+    const url = `${BASE_URL}server/api/get_airports.php`;
+    let airports = "";
+    try {
+        const response = await fetch(url, {
+            headers:{
+                 'Content-Type': 'application/json'
+            }
+        })
+        if (!response.ok){
+            throw new Error("HTTP error " + response.status);
+        }
+        airports = await response.json();
+        return airports;
+    } catch (error) {
+        console.error(error);
+        return airports;
+    }
+}
+
