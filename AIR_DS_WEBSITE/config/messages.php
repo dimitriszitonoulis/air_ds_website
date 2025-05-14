@@ -7,7 +7,8 @@ function get_response_message($fields){
         // invalid but syntactically correct
         "invalid" => ["result" => false, "message" => "invalid credentials", "http_response_code" => 200],
         "nop" => ["result" => false, "message" => "did not perform operation", "http_response_code" => 400],
-        "connection" => ["result" => false, "message" => "Could not establish connection", "http_response_code" => 500]
+        "connection" => ["result" => false, "message" => "Could not establish connection", "http_response_code" => 500],
+        "not_found" => ["result" => false, "message" => "item not found", "http_response_code" => 200]
     ];
 
     // very generic do not use unless no other choice where true must be returned\
