@@ -8,7 +8,7 @@ async function getAirportCodes() {
     const selectElements = document.getElementsByClassName('airport-selection');
     
     // add an option element with value "-"
-    for (const selectElement of selectElements){
+    for (const selectElement of selectElements) {
         let option = document.createElement('option');
         option.value = "-";
         option.innerText = "-";
@@ -40,9 +40,8 @@ async function getAirportCodes() {
  *      code: airport code
  *  }
  */
-async function fetch_airports() {
-// fetch airport codes from db
-    const url = `${BASE_URL}server/api/get_airports.php`;
+export async function fetch_airports() {
+    const url = `${BASE_URL}server/api/reservation/get_airports.php`;
     let airports = "";
     try {
         const response = await fetch(url, {
