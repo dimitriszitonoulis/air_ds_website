@@ -4,6 +4,7 @@ require_once BASE_PATH . "server/api/validation_manager.php";
 require_once BASE_PATH . "server/api/auth/login_user.php";
 require_once BASE_PATH . "config/messages.php";
 require_once BASE_PATH . "server/database/services/auth/db_are_credentials_correct.php";
+require_once BASE_PATH . "server/api/auth/auth_validators.php";
 
 // error_reporting(0);
 // ini_set('display_errors', 0);
@@ -55,15 +56,7 @@ function check_login_errors() {
         exit;
     }
 
-    // $username = null;
-    // $password = null;
-    // if (array_key_exists("username", $field_names)
-    //     && array_key_exists("password", $decoded_content)) {    
-    //     $username = $decoded_content["username"];
-    //     $password = $decoded_content["password"];
-    // }
-
-    // no need for checks, if they exist. if they didn't the validation above would fail
+    // no need to check if they exist. if they didn't the validation above would have failed
     $username = $decoded_content["username"];
     $password = $decoded_content["password"];
     $is_credentials_correct = false;
