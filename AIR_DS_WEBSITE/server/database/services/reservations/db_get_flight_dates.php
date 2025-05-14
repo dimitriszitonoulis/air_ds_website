@@ -25,6 +25,8 @@ function db_get_flight_dates($conn, $dep_code=null, $dest_code="null") {
 
     // get all the dates for flights between the 2 specified airports
     $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
+
+    return $result;
 }
 
 ?>
