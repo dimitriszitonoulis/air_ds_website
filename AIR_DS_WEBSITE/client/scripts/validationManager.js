@@ -107,6 +107,11 @@ function applyEventListeners(inputElements, errorElements, event, isAsync, valid
     });
 }
 
+/**
+ * 
+ * @param {Array} ids - an array containing ids as strings  
+ * @returns {Array} - an array containing all the dom elements that have the ids from the parameter array
+ */
 function getCollection(ids) {
     const elements = [];
     for (const current in ids) {
