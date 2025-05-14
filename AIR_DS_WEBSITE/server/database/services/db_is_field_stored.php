@@ -1,10 +1,7 @@
 <?php
-/**
- * @file
- * 
- */
 
 // checks if the given username is stored in the database
+
 function db_is_username_stored($conn, $username=null) {
     // if no username is provided
     if ($username === null) throw new InvalidArgumentException("Username must not be null.");
@@ -36,6 +33,7 @@ function db_is_username_stored($conn, $username=null) {
     return true;
 }
 
+// TODO add null as default value and throw exception
 function db_is_email_stored($conn, $email) {
     // query to be run
     // BINARY is used because the email is stored with collation utf8mb4_general_ci 
