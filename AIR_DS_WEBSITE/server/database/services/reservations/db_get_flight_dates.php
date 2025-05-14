@@ -5,7 +5,7 @@ function db_get_flight_dates($conn, $dep_code=null, $dest_code=null) {
     if ($dep_code === null) throw new InvalidArgumentException("Departure airport code must not be null.");
 
     // if no destination airport code is provided
-    if ($dest_code=== null) throw new InvalidArgumentException("Departure airport code must not be null.");
+    if ($dest_code === null) throw new InvalidArgumentException("Departure airport code must not be null.");
 
 
     $query = "  SELECT date
