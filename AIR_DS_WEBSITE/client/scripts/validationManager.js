@@ -73,8 +73,6 @@ export function validateRealTime(fields) {
         } else {           
             inputElements = document.getElementById(field.inputId);
             errorElements = document.getElementById(field.errorId);
-            // console.log(field.isAsync, field.validatorFunction, field.isCollection);
-            // console.log(field.event);
             applyEventListeners(inputElements, errorElements, field.event, field.isAsync, field.validatorFunction, field.isCollection);
         }
     }
