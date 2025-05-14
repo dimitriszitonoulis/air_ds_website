@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . "/../../config/config.php";
 require_once BASE_PATH . "server/database/db_utils/db_connect.php";
-require_once BASE_PATH . "server/api/auth/field_validator_functions.php";
+require_once BASE_PATH . "server/api/auth/auth_validators.php";
+require_once BASE_PATH . "server/api/reservation/reservation_validators.php";
+
 require_once BASE_PATH . "config/messages.php";
 
 // TODO change documentation
@@ -23,11 +25,6 @@ function validate_fields($conn, $decoded_content, $field_names, $expected_fields
     // TODO must be done using $expected_fields
     $response = get_response_message($expected_fields);
 
-    // return ['result' => false, "message" => $response, "http_response_code" => 200];
-
-
-    // return ['result' => false, "message" => $response_message, "http_response_code" => 200];
-
     $is_payload_valid_response = is_payload_valid(  $decoded_content, $field_names, $expected_fields, $response);
     if (!$is_payload_valid_response["result"]) return $is_payload_valid_response;
     
@@ -45,7 +42,7 @@ function validate_fields($conn, $decoded_content, $field_names, $expected_fields
  * @return bool - true if the name of the fields are what is expected, otherwise false
  */
 function is_expected_fields($names, $expected, $response) {
-     // array_diff() returns an array that contains all the elements in $names,
+    // array_diff() returns an array that contains all the elements in $names,
     // that do not exists inside expected names.
     // So, if array_diff() returns an empty array, every element of $names is also an element of $expected_names
     $is_expected = empty(array_diff($names, $expected));
@@ -93,32 +90,17 @@ function is_payload_valid($decoded_content, $field_names, $expected, $response) 
 
 //TODO write better documentation
 function apply_validators($decoded_content, $fields, $response, $validators, $params) {
-
-    // $validators = get_validators();
-
-    // TODO add these to every script that call the validator
-    // some extra parameters needed by some of the validators
-    // $params = [
-    //     "conn" => $conn,
-    //     "response_message" => $response_message  
-    // ];
-
-
-    $test_array = [];
-
     foreach ($fields as $field) {
         // add the value of the current field to the validator function parameters
         $params[$field] = $decoded_content[$field];
         $validator_response = $validators[$field]($params);
+
         // no need to unset the key it beacuse $params is pass by reference not value (does not add overhead)
         // In no way must username be unset because it is needed  for password
 
         // if a field is invalid do not continue with the other checks
         if (!$validator_response['result']) return $validator_response;
     }
- 
-    // return ['result' => false, "message" => $test_array, "http_response_code" => 200];
-
 
     return $response["success"];
 }
