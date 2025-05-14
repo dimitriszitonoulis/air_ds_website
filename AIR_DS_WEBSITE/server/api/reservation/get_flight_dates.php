@@ -5,9 +5,6 @@ require_once BASE_PATH . "server/api/reservation/reservation_validators.php";
 require_once BASE_PATH . "server/database/services/reservations/db_get_flight_dates.php";
 require_once BASE_PATH . "config/messages.php";
 
-// error_reporting(0);
-// ini_set('display_errors', 0);
-
 get_flight_dates();
 
 function get_flight_dates() {
@@ -63,7 +60,6 @@ function get_flight_dates() {
         exit;  
     }
 
-    // $response = $response_message['register']['success'];
     $response['dates'] = $flight_dates;
     http_response_code($response['http_response_code']);
     echo json_encode($response);
