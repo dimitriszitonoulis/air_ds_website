@@ -8,37 +8,38 @@ function is_name_valid ($name, $response) {
     return $response['success'];
 }
 
-function is_username_valid_register ($conn, $username, $response) {
+function is_username_valid_register($conn, $username, $response) {
     $is_syntax = is_username_syntax_valid($username, $response);
     if (!$is_syntax['result']) return $is_syntax;
 
-    $is_stored = false;
-    // check if the username is taken
-    try {
-        $is_stored = db_is_username_stored($conn, $username);
-    } catch (Exception $e) {
-        return $response['failure']['nop'];
-
-    }
-
-    // is there another account with that username?
-    if ($is_stored) return $response['register']['username_taken'];
+    $is_stored = is_username_stored($conn, $username, $response);
+    // if the username is stored return error message
+    if($is_stored['result']) return $response['register']['username_taken'];
 
     return $response['success'];
 }
-
-//TODO maybe delete
-// syntactical validation for login will be done in this script
-// while validation of credentials will be done by hand in other script
-// function is_username_valid_login() {
-
-// }
 
 function is_username_syntax_valid($username, $response) {
     if (!isset($username) || empty($username)) return $response['username']['missing'];
     if (!is_alphanumeric($username)) return $response['username']['invalid'];
     return $response['success'];
 }
+
+function is_username_stored($conn, $username, $response) {
+    $is_stored = false;
+    // check if the username is taken
+    try {
+        $is_stored = db_is_username_stored($conn, $username);
+    } catch (Exception $e) {
+        return $response['failure']['nop'];
+    }
+
+    // is there another account with that username?
+    if (!$is_stored) return $response['failure']['not_found'];
+
+    return $response['success'];
+}
+
 
 function is_password_syntax_valid ($password, $response) {
     if (!isset($password) || empty($password)) return $response['password']['missing'];
