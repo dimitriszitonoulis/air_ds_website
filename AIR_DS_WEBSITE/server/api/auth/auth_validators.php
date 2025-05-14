@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../../../config/config.php";
-require_once BASE_PATH . "server/database/services/auth/db_is_field_stored.php";
+require_once BASE_PATH . "server/database/services/db_is_field_stored.php";
 
 function is_name_valid ($name, $response) {
     if(!isset($name) || empty($name)) return $response['name']['missing'];
@@ -8,6 +8,18 @@ function is_name_valid ($name, $response) {
     return $response['success'];
 }
 
+/**
+ * Summary of is_username_valid_register
+ * 
+ * Checks if the supplied username is valid for registration
+ * A username is valid for registration if:
+ * - It has correct syntax
+ * - It does not already exist in the database (there is no other user with that username)
+ * 
+ * @param mixed $conn - the connection to the db
+ * @param mixed $username
+ * @param mixed $response - an array containing response messages
+ */
 function is_username_valid_register($conn, $username, $response) {
     $is_syntax = is_username_syntax_valid($username, $response);
     if (!$is_syntax['result']) return $is_syntax;
@@ -19,6 +31,17 @@ function is_username_valid_register($conn, $username, $response) {
     return $response['success'];
 }
 
+/**
+ * Summary of is_username_valid_register
+ * 
+ * Checks if the supplied username has valid syntax 
+ * A username is has valid syntax if:
+ * - It is set and it is not null
+ * - It only contains alphanumeric characters
+ * 
+ * @param mixed $username
+ * @param mixed $response - an array containing response messages
+ */
 function is_username_syntax_valid($username, $response) {
     if (!isset($username) || empty($username)) return $response['username']['missing'];
     if (!is_alphanumeric($username)) return $response['username']['invalid'];
