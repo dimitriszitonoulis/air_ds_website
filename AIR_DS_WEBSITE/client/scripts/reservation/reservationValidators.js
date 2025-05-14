@@ -60,9 +60,16 @@ export function isTicketNumberValid(numberOfTicketsElement, errMessageDiv) {
     return true;
 }
 
-// ------------------------------------------------------------
-// MY functions
-
+/**
+ * Summary of isAirportValidSubmitTime
+ * Checks if the airports are valid at submit time
+ * In order for the airports to be valid for reat time validation they must:
+ *  - Not have the same value
+ * 
+ * @param {Array} airportElements - array of HTML elements for the airport selection
+ * @param {*} errMessageDivs - array of HTML elements containing the error message divs of the airport selection elements
+ * @returns {boolean} - true if the airport fields are valid, otherwise false
+ */
 export function isAiportValidRealTime(airportElements, errMessageDivs) {
     const aiportElementsLength = airportElements.length;
 
@@ -99,6 +106,17 @@ export function isAiportValidRealTime(airportElements, errMessageDivs) {
     return true;
 }
 
+/**
+ * Summary of isAirportValidSubmitTimxe
+ * Checks if the airports are valid at submit time
+ * In order for the airports to be valid for submit time validation they must:
+ *  - Be different than "-"
+ *  - Not have the same value
+ *
+ * @param {Array} airportElements - array of HTML elements for the airport selection
+ * @param {*} errMessageDivs - array of HTML elements containing the error message divs of the airport selection elements
+ * @returns {boolean} - true if the airport fields are valid, otherwise false
+ */
 export function isAirportValidSubmitTime(airportElements, errMessageDivs) {
     const aiportElementsLength = airportElements.length;
 
