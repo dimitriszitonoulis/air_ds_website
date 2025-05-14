@@ -9,8 +9,8 @@ function drop_tables(){
         $conn->exec("
         DROP TABLE IF EXISTS reservations;
         DROP TABLE IF EXISTS flights;
-        DROP TABLE IF EXISTS airports;
         DROP TABLE IF EXISTS users;
+        DROP TABLE IF EXISTS airports;
         ");
     } catch(PDOException $e){
         echo "Failed to delete tables";

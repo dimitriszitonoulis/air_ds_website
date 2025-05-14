@@ -2,7 +2,6 @@
 // *****************************************************************************************************************************************
 // INITIALIZE DATABASE
 
-db_initialize();
 
 function db_initialize()
 {
@@ -27,11 +26,14 @@ function db_initialize()
         
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //  For development only
-        // include_once 'db_drop_tables.php';
-        // drop_tables();
+        include_once 'db_drop_tables.php';
+        drop_tables();
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         insert_tables($conn);
+        // TODO uncomment the first time the db is created
+        // include the script in index and redirect from index to the home page
+        
         add_airports(conn: $conn);
         add_flights($conn);
 
@@ -49,6 +51,7 @@ function db_initialize()
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // HELPER FUNCTIONS
+
 function insert_tables($conn)
 {
     //create table airports
@@ -79,31 +82,31 @@ function insert_tables($conn)
         email VARCHAR(255) UNIQUE);"
     );
 
+    // holds the table for the flights
+    $conn->exec("
+        CREATE TABLE IF NOT EXISTS flights(
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        date DATETIME NOT NULL,
+        departure_airport VARCHAR(3) NOT NULL ,
+        destination_airport VARCHAR(3) NOT NULL ,
+        FOREIGN KEY (departure_airport) REFERENCES airports(code),
+        FOREIGN KEY (destination_airport) REFERENCES airports(code)
+        );"
+    );
     // create table reservations
-    // TODO maybe add CURENT_TIMESTAMP as default value to departure_date
+    // TODO maybe add the flight id as foreign key instead of the aiport code
     $conn->exec("
         CREATE TABLE IF NOT EXISTS reservations (
         id INT AUTO_INCREMENT PRIMARY KEY, 
         seat VARCHAR(3) NOT NULL,
         departure_date DATETIME NOT NULL,
-        airportID VARCHAR(3) NOT NULL,
+        flight_id INT UNSIGNED NOT NULL,
         user_id INT UNSIGNED NOT NULL,
-        FOREIGN KEY (airportID) REFERENCES airports(code), 
+        FOREIGN KEY (flight_id) REFERENCES flights(id), 
         FOREIGN KEY (user_id) REFERENCES users(id));"
     );
 
-
-    // holds the table for the flights
-    $conn->exec("
-        CREATE TABLE IF NOT EXISTS flights(
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        date DATETIME NOT NULL,
-        departure_airport VARCHAR(3) NOT NULL,
-        destination_airport VARCHAR(3) NOT NULL,
-        FOREIGN KEY (departure_airport) REFERENCES airports(code),
-        FOREIGN KEY (destination_airport) REFERENCES airports(code)
-        );"
-    );
+    
 }
 
 function add_airports($conn)
@@ -143,10 +146,11 @@ function add_flights($conn)
     foreach ($airport_codes as $departure_airport) {
         foreach ($airport_codes as $destination_airport) {
             // don't add flights for the same airport
-            if ($departure_airport['code'] === $destination_airport['code']) continue;
+            if ($departure_airport['code'] === $destination_airport['code']) 
+                continue;
 
             foreach ($flight_dates as $date) {
-                $conn->exec("   INSERT INTO flights (date, departure_airport, destination_airport)
+                $conn->exec("   INSERT IGNORE INTO flights (date, departure_airport, destination_airport)
                                 VALUES 
                                 ('{$date}', '{$departure_airport['code']}', '{$destination_airport['code']}');
                 ");
