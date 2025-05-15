@@ -1,7 +1,14 @@
 /**
  * @fileoverview
  * 
- * This file contains functions that apply the validator functions to the fields they validate
+ * The functions in this file are responsible for applying the validator functions to the fields they validate
+ * There are 2 types of validation:
+ *  - Real time: when the user chooses something incorerct and an error message must be shown
+ *              e.x. the user enters negative integer for ticket number
+ *  - Submit time: The user has chosen something incorrect but the check must be performed when the 
+ *              <submit> button is clicked
+ *              e.x. when the user logs in and enters incorrect username they should be corrected when 
+ *                   they press the log in button (not as they are typing the username)
  * 
  */
 
@@ -16,14 +23,14 @@
  *  - event: {string} the event to pass on to the eventListener
  *  - validatorFunction: {function} the function that performs the validation checks
  *  - isAsync: {boolean} true if the validator function is asynchronous false otherwise
-* @returns {boolean} - true every field is valid, false otherwise
+ * @returns {boolean} - true every field is valid, false otherwise
  */
 export async function validateSubmitTime(fields) {
     let isAllValid = true;
     for (const key in fields) {
         const field = fields[key];
         let inputElements = 0;
-        let errorElements = 0
+        let errorElements = 0;
 
         // if mutliple fields must be examined by the same validator function (ex choice of airports)
         if (field.isCollection === true) {
@@ -42,8 +49,7 @@ export async function validateSubmitTime(fields) {
         if (field.isAsync) isValid = await field.validatorFunction(inputElements, errorElements);
         else isValid = field.validatorFunction(inputElements, errorElements);
 
-        if (!isValid) 
-            isAllValid = false;
+        if (!isValid) isAllValid = false;
     }
     return isAllValid;
 }
@@ -51,8 +57,7 @@ export async function validateSubmitTime(fields) {
 /**
 * This function performs:
 *  - Real time evaluation, by adding an event listener on the <input> element
-*  - Submit time evaluation, by returning true or false
-
+*
 *  @param {object} fields - An object containing:
 * - inputId: {string} the id of the <input> element on which the validation is applied
 * - errorId: {string} the id of the <div> element containing the error message for the <input> element
@@ -106,14 +111,17 @@ function applyEventListeners(inputElements, errorElements, event, isAsync, valid
 }
 
 /**
+ * Summary of getCollection
  * 
  * @param {Array} ids - an array containing ids as strings  
- * @returns {Array} - an array containing all the dom elements that have the ids from the parameter array
+ * @returns {Array} - an array containing all the document elements that have the ids from the parameter array
  */
 export function getCollection(ids) {
     const elements = [];
-    for (const current in ids) {
-        const id = ids[current];
+    // loop through the id array
+    for (const key in ids) {
+        const id = ids[key];
+        // get the element for the current id and append it to elements
         elements.push(document.getElementById(id));
     }
     return elements;
