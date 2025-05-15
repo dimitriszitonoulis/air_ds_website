@@ -1,7 +1,15 @@
 export const fields = {
     'airports': {
-        inputId: ['departure-airport-input', 'destination-airport-input'],
-        errorId: ['departure-airport-error-message', 'destination-aiport-error-message'],
+        // inputId: ['departure-airport-input', 'destination-airport-input'],
+        // errorId: ['departure-airport-error-message', 'destination-aiport-error-message'],
+        inputId: {
+            'departure': 'departure-airport-input',
+            'destination': 'destination-airport-input'
+        },
+        errorId: {
+            'departure': 'departure-airport-error-message',
+            'destination': 'destination-aiport-error-message'
+        },
         event: 'change',
         validatorFunction: undefined,
         isAsync: false, 
