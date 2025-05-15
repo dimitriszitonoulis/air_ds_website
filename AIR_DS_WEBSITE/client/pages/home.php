@@ -75,8 +75,7 @@ db_initialize();
 
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/getAirports.js"></script>
-  <script type="module" src="<?= BASE_URL ?>client/scripts/reservation/get_flight_dates.js"></script>
-  <!-- <script src="<?= BASE_URL ?>client/scripts/errorChecking.js"></script> -->
+  <script type="module" src="<?= BASE_URL ?>client/scripts/reservation/getFlightDates.js"></script>
 
   <script type="module" src="<?= BASE_URL ?>client/scripts/reservation/checkReservationErrors.js"></script>
   
