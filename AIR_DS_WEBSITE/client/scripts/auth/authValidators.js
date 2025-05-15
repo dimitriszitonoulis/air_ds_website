@@ -242,6 +242,7 @@ function containsATCharacter(text) {
 
 function isOnlyLetters(text) {
     const regex = /^[a-zA-Z]+$/;
+    // TODO see if this should be used
     // const regex1 = /^[\p{L}]+$/u; // allows letters from all alphabets
     return text.match(regex) !== null;
 }
