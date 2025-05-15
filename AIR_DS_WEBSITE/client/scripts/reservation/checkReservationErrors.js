@@ -3,7 +3,8 @@ import { fields } from "./reservationFields.js";
 import {  isAiportValidRealTime, isAirportValidSubmitTime, isDateValid, isTicketNumberValid } from "./reservationValidators.js";
 import { showError } from "../displayMessages.js";
 
-
+// set the validators for date and ticket elements
+// the validators for airports will be set later
 const reservationFields = {
     'date': { ...fields['date'], validatorFunction: isDateValid },
     'ticket': { ...fields['ticket'], validatorFunction: isTicketNumberValid }
@@ -11,16 +12,15 @@ const reservationFields = {
 
 // Real time validation
 reservationFields['airports'] = { ...fields['airports'], validatorFunction: isAiportValidRealTime };
-
-
 validateRealTime(reservationFields);
 
-
+// change validator for submit time validation
 reservationFields['airports'] = { ...fields['airports'], validatorFunction: isAirportValidSubmitTime };
-
 
 const purchaseBtn = document.getElementById('purchase-button');
 const purchaseBtnErrorDiv = document.getElementById('purchase-button-error-message');
+
+const homeForm = document.getElementById('purchase-tickets-form');
 
 purchaseBtn.addEventListener('click', async (e) => {
     // if the button is clicked without any field being checked do nothing
@@ -35,13 +35,10 @@ purchaseBtn.addEventListener('click', async (e) => {
     const values = getValues(reservationFields);
 
 
-    // console.log(document.getElementById(reservationFields.date.inputId).value);
-
-
-
     if (isAllValid) {
-        const url = `${BASE_URL}client/pages/book_flight.php`
-        window.location.replace(url);
+        homeForm.requestSubmit(); 
+        // const url = `${BASE_URL}client/pages/book_flight.php`
+        // window.location.replace(url);
 
     } else {
         showError(purchaseBtnErrorDiv, "Could not purchase tickets");
