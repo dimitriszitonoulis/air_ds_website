@@ -3,7 +3,10 @@
     margin-top: 0;
     margin-left: 0;
     margin-right: 0;
-    margin-bottom: 0;
+    margin-bottom: 5px;
+ 
+    height: 30px;
+    width: 100%;
 
     /* padding: 10%; */
     /* coloring */
@@ -13,10 +16,16 @@
 
 nav {
     /* place nav bar on top */
-    position: sticky;
-    top: 0;
-
+    /* top: 0; */
 
     /* contens alignment */
+    text-align: center;
+}
 
+/* apply only inside the nav bar  */
+nav > a {
+    padding-top: 20px;
+    padding-bottom: 10%;
+    padding-left: 5px;
+    padding-right: 5px;
 }

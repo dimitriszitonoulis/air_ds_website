@@ -5,11 +5,10 @@
     padding: 10px;
 
     /* position */
-    position: sticky;
     bottom: 0;
-
     margin-bottom: 0;
 
 
     display: block;
+    text-align: center;
 }
