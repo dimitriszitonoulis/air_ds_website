@@ -34,6 +34,7 @@ function db_initialize()
         
         // TODO uncomment the first time the db is created
         // include the script in index and redirect from index to the home page
+        // add_users($conn);
         // add_airports(conn: $conn);
         // add_flights($conn);
 
@@ -68,7 +69,7 @@ function insert_tables($conn)
     /*
      * A user can make a reservation and buy tickets for himself or more people.
      * If he buys tickets for more people then the columns for username, password and email for those people will be NULL.
-     * ATTENTION! check must be made so that a user without an account cannot make reservations for hiself or others
+     * ATTENTION! 
      * Username and email MUST be unique. 
      */
     // TODO maybe hash passwords for security (the length of password should be changed to 255 to store the hashes)
@@ -125,6 +126,31 @@ function add_airports($conn)
         ");
     } catch (PDOException $e) {
         // no operation
+    }
+}
+
+function add_users($conn) {
+
+    try {
+
+        $users = [
+            ['fname' => 'Giorgos', 'lname' => 'Georgiou', 'username' => 'giog', 'password' => '12345', 'email' => 'giog@gmail.com'],
+            ['fname' => 'Maria', 'lname' => 'Asimiou', 'username' => 'mar', 'password' => '12345', 'email' => 'mar@gmail.com'],
+            ['fname' => 'Mpampis', 'lname' => 'Mpampitos', 'username' => 'mpam', 'password' => '12345', 'email' => 'mpam@gmail.com'],
+            ['fname' => 'Anastasia', 'lname' => 'Anastasopoulou', 'username' => 'astasia', 'password' => '12345', 'email' => 'astasia@gmail.com'],
+            ['fname' => 'Nikos', 'lname' => 'Nikolopoulos', 'username' => 'nik', 'password' => '12345', 'email' => 'nik@gmail.com'],
+            ['fname' => 'Georgia', 'lname' => 'Georgiou', 'username' => 'geog', 'password' => '12345', 'email' => 'geog@gmail.com'],
+        ];
+
+
+        foreach ($users as $user) {
+            $conn->exec("   INSERT INTO users (fname, lname, username, password, email)
+                            VALUES 
+                            ('{$user['fname']}','{$user['lname']}','{$user['username']}','{$user['password']}','{$user['email']}');
+            ");
+        }
+    } catch (PDOException $e) {
+        //nop
     }
 }
 
