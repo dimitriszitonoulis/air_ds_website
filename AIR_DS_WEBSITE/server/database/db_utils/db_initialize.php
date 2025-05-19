@@ -26,8 +26,8 @@ function db_initialize()
 
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //  For development only
-        include_once 'db_drop_tables.php';
-        drop_tables();
+        // include_once 'db_drop_tables.php';
+        // drop_tables();
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         insert_tables($conn);
@@ -37,7 +37,7 @@ function db_initialize()
         // add_users($conn);
         // add_airports(conn: $conn);
         // add_flights($conn);
-        add_reservations($conn);
+        // add_reservations($conn);
 
     } catch (PDOException $e) {
         die("Database connection failed\n" . $e);
@@ -193,12 +193,12 @@ function add_flights($conn)
 function add_reservations($conn){
     $user_ids = null;
     $flights = null;
-    $seat_numbers = [];
+    $taken_seats = [];
     // $row_letters = ['A', 'B', 'C', 'D', 'E', 'F'];
     // $max_colums = 31;   // max seats per row
-
-    $row_letters = ['A', 'C', 'D', 'F'];
-    $max_colums = 31;   // max seats per row
+    $reservations = [];
+  
+    $taken_seat_letters = ['A', 'C', 'D', 'F'];
     $taken_seat_numbers = [1, 5, 14, 29];
 
     // get the user ids
@@ -219,32 +219,33 @@ function add_reservations($conn){
 
 
     // generate taken seats numbers
-    foreach ($row_letters as $letter) {
+    foreach ($taken_seat_letters as $letter) {
         foreach ($taken_seat_numbers as $number) {
-            $seat_numbers[] = "{$letter}-{$number}";
+            $taken_seats[] = "{$letter}-{$number}";
         }
     }
 
+    
 
     // generate array containing which user bought which seat
-    $reservations = [];
     $user_number = count($user_ids);
-    $seat_number = count($seat_numbers);
+    $seat_number = count($taken_seats);
     for ($i = 0; $i < $seat_number; $i++) {
-        // $user_ids is array of database(rows)
+        // $user_ids is an array containing arrays of length 0 (the user ids)
+        // assign each user some seats, does not matter which
         $user_id = $user_ids[$i % $user_number][0];
-
         // if the entry for seats of the current user does not exist intialize it
         if (!isset($reservations[$user_id])) {
             $reservations[$user_id] = [];
         }
-        $reservations[$user_id][] = $seat_numbers[$i];
+        $reservations[$user_id][] = $taken_seats[$i];
     }
 
     try {
+        // mark some seats from each flight as taken
         foreach ($flights as $flight) {
-            foreach ($reservations as $user_id => $seat_numbers) {
-                foreach ($seat_numbers as $seat) {
+            foreach ($reservations as $user_id => $taken_seats) {
+                foreach ($taken_seats as $seat) {
                     $query =
                     "   INSERT INTO 
                         reservations  (seat, departure_date, flight_id, user_id)
