@@ -44,6 +44,8 @@ function db_get_flight_dates($conn, $dep_code = null, $dest_code = null)
     return $result;
 }
 
+//TODO has similar code as db_is_seat_stored() in db_is_field_stored
+// if something is wrong here it is also propaly wrong there
 function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=null)
 {
     // if no departure airport code is provided
@@ -52,7 +54,7 @@ function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=nu
 
     // if no destination airport code is provided
     if ($dest_code === null)
-        throw new InvalidArgumentException("Departure airport code must not be null.");
+        throw new InvalidArgumentException("Destination airport code must not be null.");
 
     // if the departure date is null
     if ($dep_date === null)
@@ -66,7 +68,7 @@ function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=nu
         FROM 
             flights
         WHERE 
-            departure_airport = ':dep_code' AND destination_airport = ':dest_code' AND date = ':dep_date';
+            departure_airport = :dep_code AND destination_airport = :dest_code AND date = :dep_date;
     ";
     // prepare statement
     $stmt = $conn->prepare($query);
@@ -79,8 +81,7 @@ function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=nu
 
     // retrieve response (1 row with the flight id)
     $id_array = $stmt->fetchAll(PDO::FETCH_NUM);
-    // TODO check if it needs another [0]
-    $flight_id = $id_array[0]; // extract the id
+    $flight_id = $id_array[0][0]; // extract the id
 
     // find the taken seats from 
     $query =
