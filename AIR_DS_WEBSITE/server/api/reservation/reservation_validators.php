@@ -55,6 +55,7 @@ function is_airport_code_valid($conn, $code, $response) {
  * @param mixed $name - the name to be validated
  * @param mixed $response - an array containing response messages
  */
+// TODO has same name as auth validator, says that it is referenced. Check if it is true
 function is_name_valid ($name, $response) {
     if(!isset($name) || empty($name)) return $response['name']['missing'];
     if(!is_only_letters($name)) return $response['name']['invalid'];
