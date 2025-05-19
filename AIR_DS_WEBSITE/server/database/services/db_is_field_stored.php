@@ -10,10 +10,14 @@ function db_is_username_stored($conn, $username=null) {
     // BINARY is used because the username is stored with collation utf8mb4_general_ci 
     // which is case insensitive
     // either use BINARY or use collation utf8mb4_bin when creating the db
-    $query = "  SELECT username 
-                FROM users 
-                WHERE BINARY username = :username ;
-            ";
+    $query =
+    "   SELECT 
+            username 
+        FROM
+            users 
+        WHERE BINARY 
+            username = :username ;
+    ";
     
     // prepare the statement
     $stmt = $conn->prepare($query);
@@ -75,10 +79,14 @@ function db_is_airport_code_stored($conn, $code=null) {
     // BINARY is used because the username is stored with collation utf8mb4_general_ci 
     // which is case insensitive
     // either use BINARY or use collation utf8mb4_bin when creating the db
-    $query = "  SELECT code 
-                FROM airports
-                WHERE BINARY code = :code ;
-            ";
+    $query = 
+    "   SELECT 
+            code 
+        FROM 
+            airports
+        WHERE BINARY 
+            code = :code ;
+    ";
     
     // prepare the statement
     $stmt = $conn->prepare($query);
