@@ -1,7 +1,6 @@
 <?php
 
 // checks if the given username is stored in the database
-
 function db_is_username_stored($conn, $username=null) {
     // if no username is provided
     if ($username === null) throw new InvalidArgumentException("Username must not be null.");
@@ -50,7 +49,6 @@ function db_is_email_stored($conn, $email) {
             users 
         WHERE BINARY 
             email = :email 
-        ORDER BY CHAR_LENGTH(email);
     ";
     
     // prepare the statement
@@ -133,7 +131,7 @@ function db_is_seat_stored($conn, $seat, $dep_code, $dest_code, $dep_date){
         FROM 
             flights
         WHERE 
-            departure_airport = ':dep_code' AND destination_airport = ':dest_code' AND date = ':dep_date';
+            departure_airport = :dep_code AND destination_airport = :dest_code AND date = :dep_date;
     ";
     // prepare statement
     $stmt = $conn->prepare($query);
@@ -146,8 +144,7 @@ function db_is_seat_stored($conn, $seat, $dep_code, $dest_code, $dep_date){
 
     // retrieve response (1 row with the flight id)
     $id_array = $stmt->fetchAll(PDO::FETCH_NUM);
-    // TODO check if it needs another [0]
-    $flight_id = $id_array[0]; // extract the id
+    $flight_id = $id_array[0][0]; // extract the id
 
     // find the taken seats from 
     $query =
@@ -156,7 +153,7 @@ function db_is_seat_stored($conn, $seat, $dep_code, $dest_code, $dep_date){
         FROM 
             reservations
         WHERE
-            flight_id = ':flight_id' AND seat = ':seat';
+            flight_id = :flight_id AND seat = :seat;
     ";
     // prepare the stament
     $stmt = $conn->prepare($query);
