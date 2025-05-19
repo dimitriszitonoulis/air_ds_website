@@ -12,6 +12,7 @@ function drop_tables(){
         DROP TABLE IF EXISTS users;
         DROP TABLE IF EXISTS airports;
         ");
+       
     } catch(PDOException $e){
         echo "Failed to delete tables";
         echo $e;
