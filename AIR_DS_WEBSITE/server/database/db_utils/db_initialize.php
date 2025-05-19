@@ -23,7 +23,7 @@ function db_initialize()
     try {
         // get the connection to the mySQL server
         $conn = db_connect();
-        
+
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //  For development only
         include_once 'db_drop_tables.php';
@@ -31,14 +31,14 @@ function db_initialize()
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         insert_tables($conn);
-        
+
         // TODO uncomment the first time the db is created
         // include the script in index and redirect from index to the home page
-        add_users($conn);
-        add_airports(conn: $conn);
-        add_flights($conn);
+        // add_users($conn);
+        // add_airports(conn: $conn);
+        // add_flights($conn);
+        add_reservations($conn);
 
-       
     } catch (PDOException $e) {
         die("Database connection failed\n" . $e);
     }
@@ -99,7 +99,7 @@ function insert_tables($conn)
     $conn->exec("
         CREATE TABLE IF NOT EXISTS reservations (
         id INT AUTO_INCREMENT PRIMARY KEY, 
-        seat VARCHAR(3) NOT NULL,
+        seat VARCHAR(4) NOT NULL,
         departure_date DATETIME NOT NULL,
         flight_id INT UNSIGNED NOT NULL,
         user_id INT UNSIGNED NOT NULL,
@@ -107,29 +107,31 @@ function insert_tables($conn)
         FOREIGN KEY (user_id) REFERENCES users(id));"
     );
 
-    
+
 }
 
 function add_airports($conn)
 {
     try {
         $conn->exec(
-        "   INSERT INTO 
+            "   INSERT INTO 
                 airports (name, code, latitude, longitude, fee)
-            VALUES
+                VALUES
                 ('Athens International Airport ''Eleftherios Venizelos''', 'ATH', 37.937225, 23.945238, 150),
                 ('Paris Charles de Gaulle Airport', 'CDG', 49.009724, 2.547778, 200),
                 ('Leonardo da Vinci Rome Fiumicino Airport', 'FCO', 41.81080, 12.25090, 150),
                 ('Adolfo Suárez Madrid–Barajas Airport', 'MAD', 40.4895, 3.5643, 250),
                 ('Larnaka International Airport', 'LCA', 34.8715, 33.6077, 150),
                 ('Brussels Airport', 'BRU', 50.9002, 4.4859, 200);
-        ");
+        "
+        );
     } catch (PDOException $e) {
         // no operation
     }
 }
 
-function add_users($conn) {
+function add_users($conn)
+{
     try {
         $users = [
             ['fname' => 'Giorgos', 'lname' => 'Georgiou', 'username' => 'giog', 'password' => '12345', 'email' => 'giog@gmail.com'],
@@ -142,11 +144,12 @@ function add_users($conn) {
 
         foreach ($users as $user) {
             $conn->exec(
-            "   INSERT INTO
+                "   INSERT INTO
                     users (fname, lname, username, password, email)
-                VALUES 
+                    VALUES 
                     ('{$user['fname']}','{$user['lname']}','{$user['username']}','{$user['password']}','{$user['email']}');
-            ");
+            "
+            );
         }
     } catch (PDOException $e) {
         //nop
@@ -158,7 +161,7 @@ function add_flights($conn)
     // $day = date('d');
     $month = date('m');
     $year = date('Y');
- 
+
     $flight_dates = [];
     for ($day = 1; $day < 29; $day++) {
         $flight_dates[$day] = date("Y-m-d", strtotime("{$year}-{$month}-{$day}"));
@@ -171,18 +174,92 @@ function add_flights($conn)
     foreach ($airport_codes as $departure_airport) {
         foreach ($airport_codes as $destination_airport) {
             // don't add flights for the same airport
-            if ($departure_airport['code'] === $destination_airport['code']) 
+            if ($departure_airport['code'] === $destination_airport['code'])
                 continue;
 
             foreach ($flight_dates as $date) {
                 $conn->exec(
-                "   INSERT IGNORE INTO 
+                    "   INSERT IGNORE INTO 
                         flights (date, departure_airport, destination_airport)
                     VALUES 
                         ('{$date}', '{$departure_airport['code']}', '{$destination_airport['code']}');
-                ");
+                "
+                );
             }
         }
+    }
+}
+
+function add_reservations($conn){
+    $user_ids = null;
+    $flights = null;
+    $seat_numbers = [];
+    // $row_letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+    // $max_colums = 31;   // max seats per row
+
+    $row_letters = ['A', 'C', 'D', 'F'];
+    $max_colums = 31;   // max seats per row
+    $taken_seat_numbers = [1, 5, 14, 29];
+
+    // get the user ids
+    try {
+        $stmt = $conn->query("SELECT id from users;");
+        $user_ids = $stmt->fetchALL(PDO::FETCH_NUM);
+    } catch (PDOException $e) {
+        die("could not get user IDs" . $e);
+    }
+
+    // get the flight info
+    try {
+        $stmt = $conn->query("SELECT id, date from flights");
+        $flights = $stmt->fetchALL(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die("could not get flights" . $e);
+    }
+
+
+    // generate taken seats numbers
+    foreach ($row_letters as $letter) {
+        foreach ($taken_seat_numbers as $number) {
+            $seat_numbers[] = "{$letter}-{$number}";
+        }
+    }
+
+
+    // generate array containing which user bought which seat
+    $reservations = [];
+    $user_number = count($user_ids);
+    $seat_number = count($seat_numbers);
+    for ($i = 0; $i < $seat_number; $i++) {
+        // $user_ids is array of database(rows)
+        $user_id = $user_ids[$i % $user_number][0];
+
+        // if the entry for seats of the current user does not exist intialize it
+        if (!isset($reservations[$user_id])) {
+            $reservations[$user_id] = [];
+        }
+        $reservations[$user_id][] = $seat_numbers[$i];
+    }
+
+    try {
+        foreach ($flights as $flight) {
+            foreach ($reservations as $user_id => $seat_numbers) {
+                foreach ($seat_numbers as $seat) {
+                    $query =
+                    "   INSERT INTO 
+                        reservations  (seat, departure_date, flight_id, user_id)
+                        VALUES
+                        ('{$seat}', '{$flight['date']}', '{$flight['id']}', '{$user_id}');
+                    ";
+                    $stmt = $conn->prepare($query);
+                    // TODO maybe bind paremeters... 
+                    // But I enter the input...
+                    $stmt->execute();
+                }
+            }
+        }
+    } catch (PDOException $e) {
+        die("could not add reservations" . $e);
     }
 }
 
