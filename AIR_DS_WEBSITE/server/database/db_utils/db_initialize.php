@@ -26,17 +26,17 @@ function db_initialize()
         
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //  For development only
-        // include_once 'db_drop_tables.php';
-        // drop_tables();
+        include_once 'db_drop_tables.php';
+        drop_tables();
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         insert_tables($conn);
         
         // TODO uncomment the first time the db is created
         // include the script in index and redirect from index to the home page
-        // add_users($conn);
-        // add_airports(conn: $conn);
-        // add_flights($conn);
+        add_users($conn);
+        add_airports(conn: $conn);
+        add_flights($conn);
 
        
     } catch (PDOException $e) {
@@ -113,16 +113,16 @@ function insert_tables($conn)
 function add_airports($conn)
 {
     try {
-        $conn->exec("
-    INSERT INTO 
-        airports (name, code, latitude, longitude, fee)
-    VALUES
-        ('Athens International Airport ''Eleftherios Venizelos''', 'ATH', 37.937225, 23.945238, 150),
-        ('Paris Charles de Gaulle Airport', 'CDG', 49.009724, 2.547778, 200),
-        ('Leonardo da Vinci Rome Fiumicino Airport', 'FCO', 41.81080, 12.25090, 150),
-        ('Adolfo Suárez Madrid–Barajas Airport', 'MAD', 40.4895, 3.5643, 250),
-        ('Larnaka International Airport', 'LCA', 34.8715, 33.6077, 150),
-        ('Brussels Airport', 'BRU', 50.9002, 4.4859, 200);
+        $conn->exec(
+        "   INSERT INTO 
+                airports (name, code, latitude, longitude, fee)
+            VALUES
+                ('Athens International Airport ''Eleftherios Venizelos''', 'ATH', 37.937225, 23.945238, 150),
+                ('Paris Charles de Gaulle Airport', 'CDG', 49.009724, 2.547778, 200),
+                ('Leonardo da Vinci Rome Fiumicino Airport', 'FCO', 41.81080, 12.25090, 150),
+                ('Adolfo Suárez Madrid–Barajas Airport', 'MAD', 40.4895, 3.5643, 250),
+                ('Larnaka International Airport', 'LCA', 34.8715, 33.6077, 150),
+                ('Brussels Airport', 'BRU', 50.9002, 4.4859, 200);
         ");
     } catch (PDOException $e) {
         // no operation
@@ -130,9 +130,7 @@ function add_airports($conn)
 }
 
 function add_users($conn) {
-
     try {
-
         $users = [
             ['fname' => 'Giorgos', 'lname' => 'Georgiou', 'username' => 'giog', 'password' => '12345', 'email' => 'giog@gmail.com'],
             ['fname' => 'Maria', 'lname' => 'Asimiou', 'username' => 'mar', 'password' => '12345', 'email' => 'mar@gmail.com'],
@@ -142,11 +140,12 @@ function add_users($conn) {
             ['fname' => 'Georgia', 'lname' => 'Georgiou', 'username' => 'geog', 'password' => '12345', 'email' => 'geog@gmail.com'],
         ];
 
-
         foreach ($users as $user) {
-            $conn->exec("   INSERT INTO users (fname, lname, username, password, email)
-                            VALUES 
-                            ('{$user['fname']}','{$user['lname']}','{$user['username']}','{$user['password']}','{$user['email']}');
+            $conn->exec(
+            "   INSERT INTO
+                    users (fname, lname, username, password, email)
+                VALUES 
+                    ('{$user['fname']}','{$user['lname']}','{$user['username']}','{$user['password']}','{$user['email']}');
             ");
         }
     } catch (PDOException $e) {
@@ -176,12 +175,16 @@ function add_flights($conn)
                 continue;
 
             foreach ($flight_dates as $date) {
-                $conn->exec("   INSERT IGNORE INTO flights (date, departure_airport, destination_airport)
-                                VALUES 
-                                ('{$date}', '{$departure_airport['code']}', '{$destination_airport['code']}');
+                $conn->exec(
+                "   INSERT IGNORE INTO 
+                        flights (date, departure_airport, destination_airport)
+                    VALUES 
+                        ('{$date}', '{$departure_airport['code']}', '{$destination_airport['code']}');
                 ");
             }
         }
     }
 }
+
+
 ?>
