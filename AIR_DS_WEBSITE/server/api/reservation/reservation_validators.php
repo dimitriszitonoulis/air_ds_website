@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../../../config/config.php";
-require_once BASE_PATH . 'AIR_DS_WEBSITE\server\database\services\db_is_field_stored.php'; 
+require_once BASE_PATH . 'server\database\services\db_is_field_stored.php'; 
 
 
 /**
@@ -59,14 +59,15 @@ function is_airport_code_valid($conn, $code, $response) {
  * @param mixed $response - an array containing response messages
  */
 // TODO has same name as auth validator, says that it is referenced. Check if it is true
-function is_name_valid ($name, $response) {
+function is_name_valid_reservation ($name, $response) {
     if(!isset($name) || empty($name)) return $response['name']['missing'];
     if(!is_only_letters($name)) return $response['name']['invalid'];
     if (strlen($name) < 3 || strlen($name) > 20) return $response['name']['invalid'];
     return $response['success'];
 }
 
-//TODO check if the response message is correct
+// TODO check if the response message is correct
+// TODO what if 2 people (in the current reservation have the same seat?)
 function is_seat_valid($conn, $seat, $dep_code, $dest_code, $dep_date, $response) {
     if (!isset($seat) || empty($seat)) return $response['seat']['invalid'];
 
