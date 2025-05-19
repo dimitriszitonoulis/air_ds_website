@@ -39,11 +39,15 @@ function db_is_email_stored($conn, $email) {
     // BINARY is used because the email is stored with collation utf8mb4_general_ci 
     // which is case insensitive
     // either use BINARY or use collation utf8mb4_bin when creating the db
-    $query = "  SELECT email
-                FROM users 
-                WHERE BINARY email LIKE :email 
-                ORDER BY CHAR_LENGTH(email);
-            ";
+    $query = 
+    "   SELECT
+            email
+        FROM
+            users 
+        WHERE BINARY 
+            email = :email 
+        ORDER BY CHAR_LENGTH(email);
+    ";
     
     // prepare the statement
     $stmt = $conn->prepare($query);
