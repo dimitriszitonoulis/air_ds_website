@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . "/../../../config/config.php";
+require_once BASE_PATH . 'AIR_DS_WEBSITE\server\database\services\db_is_field_stored.php'; 
+
 
 /**
  * Summary of is_airport_code_correct
@@ -60,6 +63,34 @@ function is_name_valid ($name, $response) {
     if(!isset($name) || empty($name)) return $response['name']['missing'];
     if(!is_only_letters($name)) return $response['name']['invalid'];
     if (strlen($name) < 3 || strlen($name) > 20) return $response['name']['invalid'];
+    return $response['success'];
+}
+
+//TODO check if the response message is correct
+function is_seat_valid($conn, $seat, $dep_code, $dest_code, $dep_date, $response) {
+    if (!isset($seat) || empty($seat)) return $response['seat']['invalid'];
+
+    $seat_letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+    $seat_max_number = 31;
+
+    // each seat has a code like: <seat letter>-<seat number> ex A-22
+    $seat_code = $seat.explode("-", $seat);
+
+    // is the letter valid?
+    if (!in_array($seat_code[0], $seat_letters)) return $response['seat']['invalid'];
+
+    // is the seat number valid
+    if ($seat_code > $seat_max_number) return $response['seat']['invalid'];
+
+    $is_stored = false;
+    try {
+        $is_stored = db_is_seat_stored($conn, $seat, $dep_code, $dest_code, $dep_date);
+    } catch (Exception $e) {
+        return $response['failure']['nop'];
+    }
+    // if the seat is stored for the specific flight, another user has booked it
+    if ($is_stored) return $response['seat']['invalid'];
+
     return $response['success'];
 }
 ?>
