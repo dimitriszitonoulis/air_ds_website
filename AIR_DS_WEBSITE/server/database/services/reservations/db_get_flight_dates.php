@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * Summary of db_get_flight_dates
+ * 
+ * Function that returns the dates for flights between 2 airports
+ * 
+ * @param mixed $conn - trhe connection to the database
+ * @param mixed $dep_code - the code of the departure airport
+ * @param mixed $dest_code - the code of the destination airport
+ * @throws \InvalidArgumentException - if any of the parameters are null
+ */
 function db_get_flight_dates($conn, $dep_code = null, $dest_code = null)
 {
     // if no departure airport code is provided
@@ -35,7 +44,7 @@ function db_get_flight_dates($conn, $dep_code = null, $dest_code = null)
     return $result;
 }
 
-function db_get_taken_seats($conn, $dep_code, $dest_code, $dep_date)
+function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=null)
 {
     // if no departure airport code is provided
     if ($dep_code === null)
