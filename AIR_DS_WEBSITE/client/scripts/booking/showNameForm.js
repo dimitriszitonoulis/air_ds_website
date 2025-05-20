@@ -2,12 +2,13 @@
 // TODO add the variable from php
 // get the number of tickets from the home form
 // default value for now
-const ticketNum = 5;
+const TICKET_NUMBER = 5;
 
 // create as many fieldsets as the tickets
-let fieldsetNum = 1;
+let extraPassengers = 0;
 
-fieldsetNum += ticketNum;
+// the first one is the registered user
+extraPassengers = TICKET_NUMBER - 1;
 
 addInfoFieldSets();
 
@@ -19,7 +20,7 @@ function addInfoFieldSets() {
 
     // there is already the default fieldset for the user with the account
     // add fieldsets for the rest of the users
-    for (let counter = 1; counter < fieldsetNum; counter++) {
+    for (let counter = 1; counter <= extraPassengers; counter++) {
         const fieldset = document.createElement('fieldset');
 
         // create necessary fields (input and label for name, surname, error message)
