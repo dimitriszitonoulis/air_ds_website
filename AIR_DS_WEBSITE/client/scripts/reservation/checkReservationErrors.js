@@ -28,9 +28,12 @@ purchaseBtn.addEventListener('click', async (e) => {
 
     const isAllValid = await validateSubmitTime(reservationFields);
 
+    // TODO uncomment later
     // if a field is invalid do nothing
     // if (!isAllValid) return;
 
+    // TODO maybe remove
+    // I think that all the values get sent with post so no need to have this here
     // get the values from the form elements
     const values = getValues(reservationFields);
 
