@@ -1,41 +1,65 @@
-import { showError, clearError } from '../displayMessages';
+import { showError, clearError } from '../displayMessages.js';
 
-// checks if the names are valid
-export function isNameValidBooking(nameElements, errMessageDivs) {
-    const nameElementsLength = nameElements.length;
 
-    isAllValid = true;
 
-    for (let current = 0; current < nameElementsLength; current++) {
-        const name = nameElements[current].value;
-
+/**
+ * 
+ * This function performs real time valition to the supplied name
+ * A name is valid if:
+ *  - It is not null
+ *  - It only contains letters
+ *  - It has no more than 20 and no less than 3 characters
+ * 
+ * 
+ * 
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * ATTENTION
+ * this function is also used for the validation of the surname
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * 
+ * 
+ * @param {Array} nameElements - an array of HTML input elements containing the name values
+ * @param {Array} errMessageDivs - An array of the HTML elements for the error messages
+ * @returns 
+ */
+export function isNameValid(nameElement, errMessageDiv) {
+    const name = nameElement.value;
         if (!name) {
-            showError(errMessageDiv, "Field must not be empty");
-            isAllValid = false;
-            continue;
-        }
-
-        // if name contains something other than letters
-        if (!isOnlyLetters(name)) {
-            showError(errMessageDiv, 'This field must only contain letters');
-            isAllValid = false;
-            continue;
-        }
-
-        if (name.length < 3 || name.length > 20) {
-            showError(errMessageDiv, 'Name and Surname must be between 3 and 20 characters');
-            isAllValid = false;
-            continue;
-        }
-
-        // all good
-        clearError(errMessageDiv);
+        showError(errMessageDiv, "Name and Surname must not be empty");
+        return false;
     }
 
-    // if all fields are valid then this variable is true
-    return isAllValid;
+    // if name contains something other than letters
+    if (!isOnlyLetters(name)) {
+        showError(errMessageDiv, 'Name and Surname must only contain letters');
+        return false;
+    }
 
+    if (name.length < 3 || name.length > 20) {
+        showError(errMessageDiv, 'Name and Surname must be between 3 and 20 characters');
+        return false
+    }
+
+    // all good
+    clearError(errMessageDiv);
+    return true;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function isOnlyLetters(text) {
