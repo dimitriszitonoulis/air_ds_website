@@ -34,10 +34,12 @@ purchaseBtn.addEventListener('click', async (e) => {
 
     // TODO maybe remove
     // I think that all the values get sent with post so no need to have this here
+    // ALSO if this is removed maybe the check above is not needed
     // get the values from the form elements
     const values = getValues(reservationFields);
 
     if (isAllValid) {
+        // TODO maybe put clear error here
         homeForm.requestSubmit(); 
         // const url = `${BASE_URL}client/pages/book_flight.php`
         // window.location.replace(url);
