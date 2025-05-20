@@ -56,15 +56,13 @@ require_once BASE_PATH . "client\includes\start_session.php";
       <form id="seat-form">
         <fieldset>
           <!-- TODO maybe fill it with php
-           and then when taling the values with js dont take this value -->
+           and then when taking the values with js dont take this value -->
           <label class="ticket-info-label" for="name">Name</label>
           <input type="text" id="name-0" class="name">
 
           <label class="ticket-info-label" for="surname">Surname</label>
           <input type="text" id="surname-0" class="surname">
-          <!-- TODO add label -->
-          <!-- <input type="text" id="seat-1"> -->
-          <!-- <select id="ticket-info1" class="ticket-info" name=""></select> -->
+
           <div id="fieldset-error-message-0" class="error-message">Empty</div>
 
           <!-- div  for the seat -->
@@ -73,6 +71,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
             <!-- id is needed to fill the seat dynamically -->
             <span id="seat-info-0" class="seat-info">Seat</span>
             <span id="seat-0">--</span>
+            <div id="seat-error-message-0" class="error-message">Empty</div>
           </div>
         </fieldset>
 
