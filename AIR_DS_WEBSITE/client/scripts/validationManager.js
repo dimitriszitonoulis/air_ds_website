@@ -111,7 +111,7 @@ function applyEventListeners(inputElements, errorElements, event, isAsync, valid
 }
 
 /**
- * Summary of getCollection
+ *  Function that returns array containing the DOM elements with the specified id 
  * 
  * @param {Array} ids - an array containing ids as strings  
  * @returns {Array} - an array containing all the document elements that have the ids from the parameter array
