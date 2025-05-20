@@ -71,7 +71,6 @@ require_once BASE_PATH . "client\includes\start_session.php";
             <!-- id is needed to fill the seat dynamically -->
             <span id="seat-info-0" class="seat-info">Seat</span>
             <span id="seat-0">--</span>
-            <div id="seat-error-message-0" class="error-message">Empty</div>
           </div>
         </fieldset>
 
@@ -84,10 +83,10 @@ require_once BASE_PATH . "client\includes\start_session.php";
 
 
         <!-- TODO change id of button to somethin more fitting -->
-        <fieldset id="choose-seats-button-fieldset">
+        <div id="choose-seats-div">
           <input type="submit" id="choose-seats-button" name="choose-seats-button" value="Choose seats">
-          <div id="choose-seats-button-error-message" class="error-message"></div>
-        </fieldset>
+          <div id="choose-seats-button-error-message" class="error-message">Empty</div>
+        </div>
       </form>
     </container>
 
