@@ -26,7 +26,7 @@ db_initialize();
 
     <!-- TODO maybe delete the ids from the labels -->
 
-    <form id="purchase-tickets-form" action="" method="post">
+    <form id="purchase-tickets-form" action="<?= BASE_URL ?>client/pages/book_flight.php" method="post">
       <!-- <form id="form"> -->
 
       <!-- departure aiport select field -->
@@ -76,7 +76,6 @@ db_initialize();
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/getAirports.js"></script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/reservation/getFlightDates.js"></script>
-
   <script type="module" src="<?= BASE_URL ?>client/scripts/reservation/checkReservationErrors.js"></script>
   
 </body>
