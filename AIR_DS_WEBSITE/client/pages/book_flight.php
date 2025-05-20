@@ -82,7 +82,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
         </fieldset> -->
 
 
-        <!-- TODO change id of button to somethin more fitting -->
+        <!-- TODO change id of button to something more fitting -->
         <div id="choose-seats-div">
           <input type="submit" id="choose-seats-button" name="choose-seats-button" value="Choose seats">
           <div id="choose-seats-button-error-message" class="error-message">Empty</div>
@@ -100,6 +100,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
 
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/booking/showNameForm.js"></script>
+  <script type="module" src="<?= BASE_URL ?>client/scripts/booking/bookingMain.js"></script>
   <!-- <script type="module" src="<?= BASE_URL ?>"></script> -->
 
 </body>
