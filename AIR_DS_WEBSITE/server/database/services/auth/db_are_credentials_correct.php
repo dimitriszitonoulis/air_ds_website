@@ -1,5 +1,6 @@
 <?php
 
+// TODO maybe move to db_get_user_info.php
 // checks if the password is correct for the given username
 function db_are_credentials_correct($conn, $username=null, $password=null) {
     // if credentials not provided
