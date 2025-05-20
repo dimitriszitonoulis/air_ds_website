@@ -58,13 +58,22 @@ require_once BASE_PATH . "client\includes\start_session.php";
           <!-- TODO maybe fill it with php
            and then when taling the values with js dont take this value -->
           <label class="ticket-info-label" for="name">Name</label>
-          <input type="text" id="name-1" class="name">
+          <input type="text" id="name-0" class="name">
 
           <label class="ticket-info-label" for="surname">Surname</label>
-          <input type="text" id="last-name-1" class="surname">
-
+          <input type="text" id="surname-0" class="surname">
+          <!-- TODO add label -->
+          <!-- <input type="text" id="seat-1"> -->
           <!-- <select id="ticket-info1" class="ticket-info" name=""></select> -->
-          <div id="fieldset-1-error-message" class="error-message">Empty</div>
+          <div id="fieldset-error-message-0" class="error-message">Empty</div>
+
+          <!-- div  for the seat -->
+           <!-- it will be hidden at first and appear when all the names are filled -->
+          <div id="seat-field-0">
+            <!-- id is needed to fill the seat dynamically -->
+            <span id="seat-info-0" class="seat-info">Seat</span>
+            <span id="seat-0">--</span>
+          </div>
         </fieldset>
 
 
@@ -76,9 +85,9 @@ require_once BASE_PATH . "client\includes\start_session.php";
 
 
         <!-- TODO change id of button to somethin more fitting -->
-        <fieldset id="submit-button-fieldset">
-          <input type="submit" id="submit-button" name="submit-button" value="Submit">
-          <div id="registration-button-error-message" class="error-message"></div>
+        <fieldset id="choose-seats-button-fieldset">
+          <input type="submit" id="choose-seats-button" name="choose-seats-button" value="Choose seats">
+          <div id="choose-seats-button-error-message" class="error-message"></div>
         </fieldset>
       </form>
     </container>
