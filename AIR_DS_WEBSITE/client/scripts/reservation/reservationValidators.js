@@ -69,7 +69,7 @@ export function isTicketNumberValid(numberOfTicketsElement, errMessageDiv) {
  * If the airports are not valid an error message is shown
  * 
  * @param {Array} airportElements - array of HTML elements for the airport selection
- * @param {*} errMessageDivs - array of HTML elements containing the error message divs of the airport selection elements
+ * @param {Array} errMessageDivs - array of HTML elements containing the error message divs of the airport selection elements
  * @returns {boolean} - true if the airport fields are valid, otherwise false
  */
 export function isAiportValidRealTime(airportElements, errMessageDivs) {
