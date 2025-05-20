@@ -1,4 +1,3 @@
-// TODO maybe add the isCollection attribute
 export const fields = {
     'name': {
         inputId: 'name-input',
