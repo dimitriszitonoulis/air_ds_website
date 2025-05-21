@@ -19,6 +19,9 @@ function get_validators_reservation() {
         },
         "dest_code" => function ($params)  {
             return is_airport_code_valid($params["conn"], $params["dest_code"], $params['response']); 
+        },
+        "dep_date" => function ($params) {
+            return is_departure_date_valid($params["conn"], $params["dep_code"], $params['dest_code'], $params['dep_date'], $params['response']);
         }
     ];
 }
@@ -114,4 +117,22 @@ function is_seat_valid($conn, $seat, $dep_code, $dest_code, $dep_date, $response
 
     return $response['success'];
 }
-?>
+
+function is_departure_date_valid($conn, $dep_code, $dest_code, $dep_date, $response) {
+    
+    $today = date("Y-m-d");
+    
+    // get current date and departure date in seconds
+    $today_sec = strtotime($today);
+    $dep_date_sec = strtotime($dep_date);
+
+    $difference = $today_sec - $dep_date_sec;
+    if ($difference <= 0) return $response['dep_date']['invalid'];
+
+    $is_stored = db_is_date_stored($conn, $dep_code, $dest_code, $dep_date);
+    if (!$is_stored) return $response['dep_date']['invalid'];
+
+    // TODO maybe check if the flight for the specific date has empty seats
+
+    return $response['success'];
+}
