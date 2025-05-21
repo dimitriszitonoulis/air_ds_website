@@ -2,6 +2,38 @@
 require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/services/db_is_field_stored.php";
 
+/**
+ * Summary of get_validators
+ * An array containing key value pairs of authorization fields and their validator functions
+ * @return array{
+ *  email: (callable(mixed ):bool), 
+ *  name: (callable(mixed ):bool), 
+ *  password: (callable(mixed ):bool), 
+ *  surname: (callable(mixed ):bool), 
+ *  username: (callable(mixed ):bool)
+ * }
+ */
+function get_validators_register() {
+    return [
+        "name" => function ($params) {
+            return is_name_valid($params["name"], $params['response']);
+        },
+        "surname" => function ($params) { 
+            return is_name_valid($params["surname"], $params['response']); 
+        },
+        "username" => function ($params) {
+            return is_username_valid_register($params["conn"], $params["username"], $params['response']);
+        },
+        "password" => function ($params) {
+            return is_password_syntax_valid($params["password"], $params['response']); 
+        },
+        "email" => function ($params)  {
+            return is_email_valid($params["conn"], $params["email"], $params['response']); 
+        }
+    ];
+}
+
+
 function is_name_valid ($name, $response) {
     if(!isset($name) || empty($name)) return $response['name']['missing'];
     if(!is_only_letters($name)) return $response['name']['invalid'];
