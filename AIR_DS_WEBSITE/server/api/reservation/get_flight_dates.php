@@ -102,22 +102,4 @@ function get_flight_dates() {
     exit;  
 }
 
-/**
- * Summary of get_validators
- * An array containing key value pairs of authorization fields and their validator functions
- * @return array{
- *  dep: (callable(mixed ):bool), 
- *  dest: (callable(mixed ):bool), 
- * }
- */
-function get_validators_reservation() {
-    return [
-        "dep" => function ($params)  {
-            return is_airport_code_valid($params["conn"], $params["dep"], $params['response']); 
-        },
-        "dest" => function ($params)  {
-            return is_airport_code_valid($params["conn"], $params["dest"], $params['response']); 
-        }
-    ];
-}
 ?>
