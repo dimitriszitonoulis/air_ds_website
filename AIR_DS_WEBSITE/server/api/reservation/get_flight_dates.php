@@ -11,7 +11,7 @@ get_flight_dates();
 /**
  * Summary of get_flight_dates
  * 
- * This functions is an AJAX end point
+ * This function is an AJAX end point
  * 
  *  It returns the dates for the flights between 2 airports
  * 
