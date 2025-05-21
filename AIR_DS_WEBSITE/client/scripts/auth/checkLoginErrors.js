@@ -8,8 +8,6 @@ import { showError, clearError, showMessage, showRedirectMessage } from "../disp
 // attention create shallow copy, do not modify the global variable
 const loginFields = {
     "username": { ...fields["username"], validatorFunction: isUsernameValidLogin },
-    //    "username": {...fields["username"], validatorFunction: isUsernameInputValid},
-    //    "password": {...fields["password"], validatorFunction: isPasswordValidLogin}
     "password": { ...fields["password"], validatorFunction: isPasswordValid }
 };
 
@@ -41,7 +39,6 @@ loginBtn.addEventListener('click', async (e) => {
 
     // TODO maybe modify to do something with error message
     const isLoggedIn = await loginUser(values, BASE_URL);
-    // let isLoggedIn = await loginUser(values, BASE_URL);
 
     // TODO remove
     // isLoggedIn = true;
@@ -58,6 +55,5 @@ loginBtn.addEventListener('click', async (e) => {
         showRedirectMessage(loginBtnErrorDiv, ".", redirectUrl, 3, 1000);
     } else {
         showError(loginBtnErrorDiv, "Invalid credentials")
-        // console.error("registration failed")
     }
 });
