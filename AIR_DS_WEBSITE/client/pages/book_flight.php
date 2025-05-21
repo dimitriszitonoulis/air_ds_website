@@ -58,10 +58,10 @@ require_once BASE_PATH . "client\includes\start_session.php";
           <!-- TODO maybe fill it with php
            and then when taking the values with js dont take this value -->
           <label class="ticket-info-label" for="name">Name</label>
-          <input type="text" id="name-0" class="name">
+          <input type="text" id="name-0" class="name" readonly>
 
           <label class="ticket-info-label" for="surname">Surname</label>
-          <input type="text" id="surname-0" class="surname">
+          <input type="text" id="surname-0" class="surname" readonly>
 
           <div id="fieldset-error-message-0" class="error-message">Empty</div>
 
@@ -84,7 +84,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
 
         <!-- TODO change id of button to something more fitting -->
         <div id="choose-seats-div">
-          <input type="submit" id="choose-seats-button" name="choose-seats-button" value="Choose seats">
+          <input type="button" id="choose-seats-button" name="choose-seats-button" value="Choose seats">
           <div id="choose-seats-button-error-message" class="error-message">Empty</div>
         </div>
       </form>
