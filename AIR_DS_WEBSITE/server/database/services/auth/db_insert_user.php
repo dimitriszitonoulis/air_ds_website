@@ -1,7 +1,7 @@
 <?php
 function db_insert_user($conn, $user_data) {
     // the query that inserts the new user
-    $query = "  INSERT INTO users(fname, lname, username, password, email) 
+    $query = "  INSERT INTO users(name, surname, username, password, email) 
                 VALUES (:name, :surname, :username, :password, :email)
             ";    
     // prepare the statement
