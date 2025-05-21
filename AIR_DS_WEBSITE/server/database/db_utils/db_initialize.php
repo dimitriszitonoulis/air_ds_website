@@ -100,7 +100,6 @@ function insert_tables($conn)
         CREATE TABLE IF NOT EXISTS reservations (
         id INT AUTO_INCREMENT PRIMARY KEY, 
         seat VARCHAR(4) NOT NULL,
-        departure_date DATETIME NOT NULL,
         flight_id INT UNSIGNED NOT NULL,
         user_id INT UNSIGNED NOT NULL,
         FOREIGN KEY (flight_id) REFERENCES flights(id), 
@@ -211,7 +210,7 @@ function add_reservations($conn){
 
     // get the flight info
     try {
-        $stmt = $conn->query("SELECT id, date from flights");
+        $stmt = $conn->query("SELECT id FROM flights");
         $flights = $stmt->fetchALL(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         die("could not get flights" . $e);
@@ -248,9 +247,9 @@ function add_reservations($conn){
                 foreach ($taken_seats as $seat) {
                     $query =
                     "   INSERT INTO 
-                        reservations  (seat, departure_date, flight_id, user_id)
+                        reservations  (seat, flight_id, user_id)
                         VALUES
-                        ('{$seat}', '{$flight['date']}', '{$flight['id']}', '{$user_id}');
+                        ('{$seat}', '{$flight['id']}', '{$user_id}');
                     ";
                     $stmt = $conn->prepare($query);
                     // TODO maybe bind paremeters... 
