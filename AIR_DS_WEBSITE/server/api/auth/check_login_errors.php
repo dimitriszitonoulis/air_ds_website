@@ -96,7 +96,7 @@ function check_login_errors() {
     exit;  
 }
 
-
+// TODO move to auth validators
 function get_validators_login() {
     return [
         "username" => function ($params) {
