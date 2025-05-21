@@ -1,6 +1,4 @@
 <?php
-// TODO receive user name from api and check it here
-
 require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "config/messages.php";
 require_once BASE_PATH . "server/database/db_utils/db_connect.php";
@@ -8,9 +6,40 @@ require_once BASE_PATH . "server/api/validation_manager.php";
 require_once BASE_PATH . "server/api/auth/auth_validators.php";
 require_once BASE_PATH . "server/database/services/auth/db_get_full_name.php";
 
+// AJAX ENDPOINT
 
 get_full_name();
 
+/**
+ * Summary of get_full_name
+ * 
+ * This function is an AJAX endpoint
+ * 
+ * It receives a user's username and returns their name and surname.
+ * The username is a JSON like: {username: <username_value>}
+ * 
+ * It is responsible to receive the fetch request be the client (username).
+ * Validate the input using the valition manager and validation functions.
+ * Call the function that returns the user's full name.
+ * Send the data back to the client.
+ * 
+ * If at any point something goes wrong a return message is sent
+ * 
+ * Type of responses:
+ * Most of the responses of this function are response_messages detailed in config/messages.php
+ * 
+ * The only exception to this rule is the success message if everything goes well.
+ * This message is an array like:
+ * [
+ *  result => boolean,
+ *  message => string
+ *  http_response_code => int
+ *  name => string
+ *  surname => string
+ * ] 
+ *  
+ * @return never
+ */
 function get_full_name() {
     header('Content-Type: application/json');
 
