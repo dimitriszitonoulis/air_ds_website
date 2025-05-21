@@ -33,6 +33,26 @@ function get_validators_register() {
     ];
 }
 
+// Similar as validators but only checks syntax not availbility
+function get_syntax_validators() {
+    return [
+        "name" => function ($params) {
+            return is_name_valid($params["name"], $params['response']);
+        },
+        "surname" => function ($params) { 
+            return is_name_valid($params["surname"], $params['response']); 
+        },
+        "username" => function ($params) {
+            return is_username_syntax_valid($params["username"], $params['response']);
+        },
+        "password" => function ($params) {
+            return is_password_syntax_valid($params["password"], $params['response']); 
+        },
+        "email" => function ($params)  {
+            return is_email_valid($params["conn"], $params["email"], $params['response']); 
+        }
+    ];
+}
 
 function is_name_valid ($name, $response) {
     if(!isset($name) || empty($name)) return $response['name']['missing'];
