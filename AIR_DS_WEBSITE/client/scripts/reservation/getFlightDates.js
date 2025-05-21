@@ -96,8 +96,8 @@ async function fetchFlights(depCode, destCode) {
             body: JSON.stringify({
                 // dep: depcode,
                 // dest: destcode
-                "dep": depCode,
-                "dest": destCode
+                "dep_code": depCode,
+                "dest_code": destCode
             })
         });
 

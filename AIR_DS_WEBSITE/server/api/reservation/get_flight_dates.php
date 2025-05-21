@@ -65,7 +65,7 @@ function get_flight_dates() {
     // what if the keys are not what I am expecting?
     // get the name of the fields that come from the client
     $field_names = array_keys($decoded_content);
-    $expected_fields = ["dep", "dest"];
+    $expected_fields = ["dep_code", "dest_code"];
 
     // modify response_message to also include messages for the expected fields
     $response_message = get_response_message($expected_fields);
@@ -88,7 +88,7 @@ function get_flight_dates() {
    
     // if this point is reached all the fields are valid
     try {
-        $flight_dates = db_get_flight_dates($conn, $decoded_content['dep'], $decoded_content['dest']);
+        $flight_dates = db_get_flight_dates($conn, $decoded_content['dep_code'], $decoded_content['dest_code']);
     } catch (Exception $e) {
         $response = $response_message['failure']['nop'];
         http_response_code($response['http_response_code']);

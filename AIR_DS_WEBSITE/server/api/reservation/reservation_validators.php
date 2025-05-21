@@ -14,11 +14,11 @@ require_once BASE_PATH . 'server\database\services\db_is_field_stored.php';
  */
 function get_validators_reservation() {
     return [
-        "dep" => function ($params)  {
-            return is_airport_code_valid($params["conn"], $params["dep"], $params['response']); 
+        "dep_code" => function ($params)  {
+            return is_airport_code_valid($params["conn"], $params["dep_code"], $params['response']); 
         },
-        "dest" => function ($params)  {
-            return is_airport_code_valid($params["conn"], $params["dest"], $params['response']); 
+        "dest_code" => function ($params)  {
+            return is_airport_code_valid($params["conn"], $params["dest_code"], $params['response']); 
         }
     ];
 }
