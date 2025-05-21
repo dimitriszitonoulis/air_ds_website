@@ -13,24 +13,33 @@ get_flight_dates();
  * 
  * This function is an AJAX end point
  * 
- *  It returns the dates for the flights between 2 airports
+ * It receives the codes of 2 airports and returns the dates for the flights between them.
+ * 
+ * The airport codes are received as a JSON like: 
+ * {
+ *  dep: <departure airport code>,
+ *  dest: <destination airport code
+ * }
+ * 
  * 
  * It is responsible to receive the fetch request be the client (departure and destination airport codes).
  * Validate the input using the valition manager and validation functions.
  * Call the function that returns the flight dates.
  * Send the data back to the client.
+ * 
  * If at any point something goes wrong a return message is sent
  * 
  * Type of responses:
- * Most of the responses of this function are reseponse_messages detailed in config/messages.php
+ * Most of the responses of this function are response_messages detailed in config/messages.php
  * 
  * The only exception to this rule is the success message if everything goes well.
  * This message is an array like:
- * [result => boolean,
+ * [
+ *  result => boolean,
  *  message => string
  *  http_response_code => int
  *  dates => associative array:  [date => all the dates for the 2 aiports]
- *  ]
+ * ]
  * 
  * @return never
  */
