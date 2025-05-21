@@ -80,45 +80,6 @@ async function getFlights() {
             }
         })
     )
-
-
-
-
-    // console.log('validatorFunction:', airportFields.validatorFunction);
-    // console.log(airportFields);
-
-    // const are_airports_valid = await validateSubmitTime(airportFields);
-
-    // if (!are_airports_valid) {
-    //     return;
-    // }
-
-    // // get airports
-    // const depAirport = document.getElementById(airportFields.inputId[0]).value;
-    // const destAirport = document.getElementById(airportFields.inputId[1]).value;
-
-    // // get codes
-    // const depCode = getCode(depAirport);
-    // const destCode= getCode(destAirport);
-
-    // let response = await fetchFlights(depCode, destCode);
-
-    // // TODO maybe implement logic in case of error
-    // if (!response['result']){
-    //     return ;
-    // }
-
-
-    // // add the airport codes to the select elements
-
-    // // add the dates to the select element
-    // for (const date of response['dates']) {
-    //     option = document.createElement('option');
-    //     option.value = `${date}`;
-    //     option.innerHTML = `${date}`;
-    //     // append option to the select elements 
-    //     dateSelect.appendChild(option.cloneNode(true));
-    // }
 }
 
 
