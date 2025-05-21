@@ -26,18 +26,18 @@ function db_initialize()
 
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //  For development only
-        // include_once 'db_drop_tables.php';
-        // drop_tables();
+        include_once 'db_drop_tables.php';
+        drop_tables();
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         insert_tables($conn);
 
         // TODO uncomment the first time the db is created
         // include the script in index and redirect from index to the home page
-        // add_users($conn);
-        // add_airports(conn: $conn);
-        // add_flights($conn);
-        // add_reservations($conn);
+        add_users($conn);
+        add_airports(conn: $conn);
+        add_flights($conn);
+        add_reservations($conn);
 
     } catch (PDOException $e) {
         die("Database connection failed\n" . $e);
@@ -76,8 +76,8 @@ function insert_tables($conn)
     $conn->exec("
         CREATE TABLE IF NOT EXISTS users(
         id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        fname VARCHAR(20) NOT NULL,
-        lname VARCHAR (20) NOT NULL,
+        name VARCHAR(20) NOT NULL,
+        surname VARCHAR (20) NOT NULL,
         username VARCHAR(255) UNIQUE,
         password VARCHAR(10),       
         email VARCHAR(255) UNIQUE);"
@@ -134,20 +134,20 @@ function add_users($conn)
 {
     try {
         $users = [
-            ['fname' => 'Giorgos', 'lname' => 'Georgiou', 'username' => 'giog', 'password' => '12345', 'email' => 'giog@gmail.com'],
-            ['fname' => 'Maria', 'lname' => 'Asimiou', 'username' => 'mar', 'password' => '12345', 'email' => 'mar@gmail.com'],
-            ['fname' => 'Mpampis', 'lname' => 'Mpampitos', 'username' => 'mpam', 'password' => '12345', 'email' => 'mpam@gmail.com'],
-            ['fname' => 'Anastasia', 'lname' => 'Anastasopoulou', 'username' => 'astasia', 'password' => '12345', 'email' => 'astasia@gmail.com'],
-            ['fname' => 'Nikos', 'lname' => 'Nikolopoulos', 'username' => 'nik', 'password' => '12345', 'email' => 'nik@gmail.com'],
-            ['fname' => 'Georgia', 'lname' => 'Georgiou', 'username' => 'geog', 'password' => '12345', 'email' => 'geog@gmail.com'],
+            ['name' => 'Giorgos', 'surname' => 'Georgiou', 'username' => 'giog', 'password' => '12345', 'email' => 'giog@gmail.com'],
+            ['name' => 'Maria', 'surname' => 'Asimiou', 'username' => 'mar', 'password' => '12345', 'email' => 'mar@gmail.com'],
+            ['name' => 'Mpampis', 'surname' => 'Mpampitos', 'username' => 'mpam', 'password' => '12345', 'email' => 'mpam@gmail.com'],
+            ['name' => 'Anastasia', 'surname' => 'Anastasopoulou', 'username' => 'astasia', 'password' => '12345', 'email' => 'astasia@gmail.com'],
+            ['name' => 'Nikos', 'surname' => 'Nikolopoulos', 'username' => 'nik', 'password' => '12345', 'email' => 'nik@gmail.com'],
+            ['name' => 'Georgia', 'surname' => 'Georgiou', 'username' => 'geog', 'password' => '12345', 'email' => 'geog@gmail.com'],
         ];
 
         foreach ($users as $user) {
             $conn->exec(
                 "   INSERT INTO
-                    users (fname, lname, username, password, email)
+                    users (name, surname, username, password, email)
                     VALUES 
-                    ('{$user['fname']}','{$user['lname']}','{$user['username']}','{$user['password']}','{$user['email']}');
+                    ('{$user['name']}','{$user['surname']}','{$user['username']}','{$user['password']}','{$user['email']}');
             "
             );
         }
