@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../../../config/config.php";
+require_once BASE_PATH . "server/database/db_utils/db_connect.php";
 require_once BASE_PATH . "server/api/validation_manager.php";
 require_once BASE_PATH . "server/api/auth/login_user.php";
 require_once BASE_PATH . "config/messages.php";
