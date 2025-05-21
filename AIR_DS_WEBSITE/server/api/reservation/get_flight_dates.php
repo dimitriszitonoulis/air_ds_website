@@ -3,7 +3,7 @@ require_once __DIR__ . "/../../../config/config.php";
 require_once BASE_PATH . "server/database/db_utils/db_connect.php";
 require_once BASE_PATH . "server/api/validation_manager.php";
 require_once BASE_PATH . "server/api/reservation/reservation_validators.php";
-require_once BASE_PATH . "server/database/services/reservations/db_get_flight_dates.php";
+require_once BASE_PATH . "server/database/services/reservations/db_get_flight_info.php";
 require_once BASE_PATH . "config/messages.php";
 
 get_flight_dates();
