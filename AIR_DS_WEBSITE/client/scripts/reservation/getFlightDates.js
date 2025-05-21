@@ -66,7 +66,6 @@ async function getFlights() {
 
             let response = await fetchFlights(depCode, destCode);
 
-            // TODO maybe implement logic in case of error
             if (!response['result']) {
                 return;
             }
