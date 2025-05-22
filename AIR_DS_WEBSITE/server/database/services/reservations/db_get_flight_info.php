@@ -98,8 +98,8 @@ function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=nu
     $stmt->bindParam(':flight_id', $flight_id, PDO::PARAM_STR);
     $stmt->execute();
 
-    // TODO maybe fetch num
-    $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
+    // group all the rows of the response itno a single array
+    $result = $stmt->fetchALL(PDO::FETCH_COLUMN);
 
     return $result;
 }
