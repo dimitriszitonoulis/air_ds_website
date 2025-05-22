@@ -1,0 +1,96 @@
+
+// TODO add the variable from php
+// get the number of tickets from the home form
+// default value for now
+const TICKET_NUMBER = 5;
+
+// create as many fieldsets as the tickets
+let extraPassengers = 0;
+
+// the first one is the registered user
+extraPassengers = TICKET_NUMBER - 1;
+
+addInfoFieldSets();
+
+
+function addInfoFieldSets() {
+    const seatForm = document.getElementById('seat-form');
+    // TODO maybe change the layout and the div in the book_flight page
+    const chooseSeatsDiv = document.getElementById('choose-seats-div');
+
+    // there is already the default fieldset for the user with the account
+    // add fieldsets for the rest of the users
+    for (let counter = 1; counter <= extraPassengers; counter++) {
+        const fieldset = document.createElement('fieldset');
+
+        // create necessary fields (input and label for name, surname, error message)
+        const nameLabel = document.createElement('label');
+        const nameInput = document.createElement('input');
+        const surnameLabel = document.createElement('label');
+        const surnameInput = document.createElement('input');
+        const errorMessageDiv = document.createElement('div');
+        
+        // configure the fields attributes
+        const nameFieldId = `name-${counter}`;
+        const surnameFieldId = `surname-${counter}`;
+        const errorFieldId = `fieldset-error-message-${counter}`
+        const errorFieldClass = `error-message`;
+
+        // set the fields
+        setLabel(nameLabel, nameFieldId, "Name");
+        setInput(nameInput, nameFieldId, "name", "text");
+        setLabel(surnameLabel, surnameFieldId, "Surname");
+        setInput(surnameInput, surnameFieldId, "surname", "text");
+        setErrorMessage(errorMessageDiv, errorFieldId, errorFieldClass, "Empty")
+
+        // append the elements to the fieldset
+        fieldset.appendChild(nameLabel);
+        fieldset.appendChild(nameInput);
+        fieldset.appendChild(surnameLabel);
+        fieldset.appendChild(surnameInput);
+        fieldset.appendChild(errorMessageDiv);
+
+        // create necessary fields for the seat
+        const seatDiv = document.createElement('div');
+        const seatLabel = document.createElement('span');
+        const seatInput = document.createElement('span');
+        
+        // configure and set field attributes
+        seatLabel.id = `seat-info-${counter}`;
+        seatLabel.innerText = 'Seat';
+        seatInput.id = `seat-${counter}`;
+        seatInput.innerText = '--';
+
+        seatDiv.appendChild(seatLabel);
+        seatDiv.appendChild(seatInput);
+
+        // append seat field to fieldset
+        fieldset.appendChild(seatDiv);
+
+        // append the fieldset to the form
+        seatForm.insertBefore(fieldset, chooseSeatsDiv);
+    }
+}
+
+
+
+
+// sets label attributes
+function setLabel(label, forName, innerText) {
+    if (forName) label.htmlFor = forName;
+    if (innerText) label.innerText = innerText;
+}
+
+//sets input attributes
+function setInput(input, id, className, type) {
+    if (id) input.id = id;
+    if (className) input.className = className;
+    if (type) input.type = type;
+}
+
+//sets error message attributes
+function setErrorMessage(div, id, className, innerTextValue) {
+    if (id) div.id = id;
+    if (className) div.className = className;
+    if (innerTextValue) div.innerText = innerTextValue;
+}
