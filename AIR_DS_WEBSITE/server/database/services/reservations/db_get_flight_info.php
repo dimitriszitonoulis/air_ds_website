@@ -116,7 +116,7 @@ function db_get_airport_information($conn, $dep_code = null, $dest_code = null) 
 
     $query =
     "   SELECT
-           latitude, longitude, fee
+           code, latitude, longitude, fee
         FROM 
            airports 
         WHERE 
