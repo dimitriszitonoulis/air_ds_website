@@ -55,8 +55,8 @@ export function addInfoFieldSets(ticket_number) {
 
         // create necessary fields for the seat
         const seatDiv = document.createElement('div');
-        const seatLabel = document.createElement('span');
-        const seatInput = document.createElement('span');
+        const seatLabel = document.createElement('div');
+        const seatInput = document.createElement('div');
         
         // configure and set field attributes
         seatLabel.id = `seat-info-label-${counter}`;
