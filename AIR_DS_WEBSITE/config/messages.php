@@ -3,6 +3,7 @@
 function get_response_message($fields){
     $failure_message = [
         "missing" => ["result" => false, "message" => "missing content", "http_response_code" => 400],
+        "more" => ["result" => false, "message" => "more fields than expected", "http_response_code" => 400],
         
         // invalid but syntactically correct
         "invalid" => ["result" => false, "message" => "invalid credentials", "http_response_code" => 200],
