@@ -8,7 +8,6 @@ require_once BASE_PATH . "server/database/services/reservations/db_get_flight_in
 
 get_airport_info();
 
-// TODO update what type of information is received about the 2 airports
 
 /**
  * Summary of get_airport_info
@@ -48,6 +47,8 @@ get_airport_info();
  */
 function get_airport_info (){
     header('Content-Type: application/json');
+
+// TODO update what type of information is received about the 2 airports
 
     $response_message = get_response_message([]);
 
