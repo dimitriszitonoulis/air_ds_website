@@ -22,7 +22,6 @@ require_once BASE_PATH . "config/messages.php";
  */
 function validate_fields($conn, $decoded_content, $field_names, $expected_fields, $validator_params, $validators) {
 
-    // TODO must be done using $expected_fields
     $response = get_response_message($expected_fields);
 
     $is_payload_valid_response = is_payload_valid(  $decoded_content, $field_names, $expected_fields, $response);
