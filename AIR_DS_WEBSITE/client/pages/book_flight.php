@@ -44,6 +44,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/header.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/form.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/footer.css">
+  <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/seat_map.css">
 </head>
 
 <body>
@@ -90,19 +91,18 @@ require_once BASE_PATH . "client\includes\start_session.php";
       </form>
     </container>
 
-    <container id="seat-map-container">
+    <div id="seat-map-container">
+      <div id="plane-body">
 
-    </container>
+      </div>
+    </div>
   </main>
 
 
   <?php include_once BASE_PATH . 'client/includes/footer.php' ?>
 
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
-  <script type="module" src="<?= BASE_URL ?>client/scripts/booking/showNameForm.js"></script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/booking/bookingMain.js"></script>
-  <!-- <script type="module" src="<?= BASE_URL ?>"></script> -->
-
 </body>
 
 </html>
