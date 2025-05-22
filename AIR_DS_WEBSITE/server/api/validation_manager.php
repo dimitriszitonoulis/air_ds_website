@@ -76,15 +76,21 @@ function is_payload_valid($decoded_content, $field_names, $expected, $response) 
  * @return bool - true if the name of the fields are what is expected, otherwise false
  */
 function is_expected_fields($names, $expected, $response) {
-    // array_diff() returns an array that contains all the elements in $names,
-    // that do not exists inside expected names.
-    // So, if array_diff() returns an empty array, every element of $names is also an element of $expected_names
-    $is_expected = empty(array_diff($names, $expected));
+    // array_diff() returns an array that contains all the elements in the 1st array,
+    // that do not exists inside the 2nd array.
+    // So, if array_diff() returns an empty array, every element of the 1st array exists in the 2nd array
 
-    // What if instead of missing the user supplies more fields?
-    // TODO maybe add new message for this case
-    if (!$is_expected) return $response['failure']['missing'];
-    
+    // do the $names contain more field names than expected
+    $is_more = empty(array_diff($names, $expected));
+    if ($is_more) return $response['failure']['more'];
+
+    // do the $names contain less field names than expected
+    $is_less = empty(array_diff($expected, $names));
+    if ($is_less) return $response['failure']['missing'];
+
+    //TODO deleter later
+    // return ['result' => false, "message" => ["less" => array_diff($names, $expected), "more" => array_diff($expected, $names)] ,"http_response_code" => 200];
+
     return $response['success'];
 }
 
