@@ -3,9 +3,11 @@ import { validateRealTime, validateSubmitTime } from '../validationManager.js';
 import { isNameValid } from "./bookingValidators.js";
 import { showError } from "../displayMessages.js";
 import { getFullName, getTakenSeats } from "./getBookingInfo.js";
+import { createSeatMap } from "./createSeatMap.js";
+import { addInfoFieldSets } from "./showNameForm.js";
 
 // TODO delete later
-const TICKET_NUMBER = 5;
+const TICKET_NUMBER = 2;
 const USERNAME = "giog";    // the username must be taken from the session variable
 const DEPARTURE_AIRPORT = "ATH";
 const DESTINATION_AIRPORT = "BRU";
@@ -24,7 +26,7 @@ registeredUserSurnameField.value = fullName['surname'];
 const seatForm = document.getElementById('seat-form');
 
 
-
+addInfoFieldSets(TICKET_NUMBER);
 
 // fill the fields with information about the HTML elements containing 
 addFullNames(TICKET_NUMBER, fields);
@@ -66,7 +68,7 @@ chooseSeatsBtn.addEventListener('click', (e) => {
 
         let takenSeats = getTakenSeats(values, BASE_URL);
         
-        console.log(takenSeats);
+        // createSeatMap(takenSeats);
 
         // pass them to seat map function 
         // show seat map
