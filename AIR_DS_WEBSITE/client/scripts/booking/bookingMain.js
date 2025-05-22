@@ -2,7 +2,7 @@ import { addFullNames, fields } from "./bookingFields.js";
 import { validateRealTime, validateSubmitTime } from '../validationManager.js';
 import { isNameValid } from "./bookingValidators.js";
 import { showError } from "../displayMessages.js";
-import { getFullName, getTakenSeats } from "./getBookingInfo.js";
+import { getAirportInfo, getFullName, getTakenSeats } from "./getBookingInfo.js";
 import { createSeatMap } from "./createSeatMap.js";
 import { addInfoFieldSets } from "./showNameForm.js";
 
@@ -17,7 +17,7 @@ const DATE = "2025-05-25 00:00:00";
 //--------------------------------------------------------------------------------
 //                          ADD INFO ABOUT REGISTERED USER
 // Take the name and surname of the registered user from the db
-const fullName = await getFullName({'username': USERNAME}, BASE_URL);
+const fullName = await getFullName({ 'username': USERNAME }, BASE_URL);
 
 // fill the registered user's information
 const registeredUserNameField = document.getElementById('name-0');
@@ -28,7 +28,7 @@ registeredUserSurnameField.value = fullName['surname'];
 
 
 const seatForm = document.getElementById('seat-form');
-    
+
 
 // ------------------------------------------------------------------------------
 //                                  ADD SEAT MAP
@@ -57,7 +57,7 @@ addInfoFieldSets(TICKET_NUMBER);
 // fill the fields with information about the HTML elements containing 
 addFullNames(TICKET_NUMBER, fields);
 
-const bookingFields = {...fields};
+const bookingFields = { ...fields };
 
 // assign validator function to names and surnames
 // the same validator function is used for the names and surnames
@@ -87,12 +87,12 @@ isAllValid = true;
 chooseSeatsBtn.addEventListener('click', async (e) => {
     // if the button is clicked without any field being checked do nothing 
     // e.preventDefault();
-    
+
     // const isAllValid = validateSubmitTime(bookingFields);
     // isAllValid = validateSubmitTime(bookingFields); //TODO uncomment later
 
     if (isAllValid) {
- 
+
         // show seatmap
         // planeBody.style.visibility = "visible";
         // TODO decide which to hide and which to unhide
@@ -114,7 +114,7 @@ let selectedSeats = [];
 //TODO maybe only add the event listeners if the validation has succeded
 // use query selector to be able to user for each afterwards
 const passengerFieldsets = document.querySelectorAll(".passenger-info");
-passengerFieldsets.forEach((curFieldset) => 
+passengerFieldsets.forEach((curFieldset) =>
     curFieldset.addEventListener('click', (e) => {
 
         // if the current fieldset is already selected de-select it 
@@ -130,9 +130,9 @@ passengerFieldsets.forEach((curFieldset) =>
 
         // if the current fieldset is pressed remove the colors from the others
         passengerFieldsets.forEach((fieldset) => fieldset.style.backgroundColor = "");
-        
+
         // make current fieldset green
-        curFieldset.style.backgroundColor = "#93C572";  
+        curFieldset.style.backgroundColor = "#93C572";
         // store the seat info div that is child of the current fieldset
         curSeatDiv = curFieldset.querySelector(".seat-info");
 
@@ -144,7 +144,7 @@ passengerFieldsets.forEach((curFieldset) =>
 
 //select all the seats inside the seat map
 const seats = planeBody.querySelectorAll(".seat");
-seats.forEach((seat) => 
+seats.forEach((seat) =>
     seat.addEventListener('click', (e) => {
 
 
@@ -170,7 +170,7 @@ seats.forEach((seat) =>
         if (curSeatDiv.innerText !== "--") {
             return;
         }
-        
+
 
         // if a seat is selected by another passenger,
         // do not re-select it
@@ -191,6 +191,45 @@ seats.forEach((seat) =>
 
 //-----------------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------------
+//                                  SHOW FLIGHT INFO
+
+// get info about distances from the db
+const airport_codes = {
+    "dep_code": DEPARTURE_AIRPORT,
+    "dest_code": DESTINATION_AIRPORT
+}
+
+const info = await getAirportInfo(airport_codes, BASE_URL);
+console.log(info);
+
+
+distance = getDistance()
+
+
+
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; // Earth's radius in meters
+
+    const f1 = degToRad(lat1);
+    const f2 = degToRad(lat2);
+    const Df = degToRad(lat2 - lat1);
+    const Dth = degToRad(lon2 - lon1);
+
+    const a = Math.sin(Df / 2) ** 2 + (Math.cos(f1) * Math.cos(f2) * Math.sin(Dth / 2) ** 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const d = R * c;
+
+    return d;
+}
+
+const degToRad = (deg) => { return (deg * Math.PI) / 180.0; };
+
+
+
+//-----------------------------------------------------------------------------------
 
 
 
