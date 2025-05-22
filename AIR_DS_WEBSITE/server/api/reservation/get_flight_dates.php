@@ -17,20 +17,20 @@ get_flight_dates();
  * 
  * The airport codes are received as a JSON like: 
  * {
- *  dep: <departure airport code>,
- *  dest: <destination airport code
+ *  dep_code: <departure airport code>,
+ *  dest_code: <destination airport code>
  * }
  * 
  * 
- * It is responsible to receive the fetch request be the client (departure and destination airport codes).
+ * It is responsible to receive the fetch request by the client (departure and destination airport codes).
  * Validate the input using the valition manager and validation functions.
  * Call the function that returns the flight dates.
  * Send the data back to the client.
  * 
- * If at any point something goes wrong a return message is sent
+ * If at any point something goes wrong an error message is sent
  * 
  * Type of responses:
- * Most of the responses of this function are response_messages detailed in config/messages.php
+ * The responses of this function are response_messages detailed in config/messages.php
  * 
  * The only exception to this rule is the success message if everything goes well.
  * This message is an array like:
