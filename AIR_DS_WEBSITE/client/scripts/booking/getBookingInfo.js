@@ -35,8 +35,6 @@ export async function getTakenSeats (values, BASE_URL) {
             body: JSON.stringify(values)
         });
 
-        console.log(await response.text());
-
         const data = await response.json();
 
         if (!response.ok) {
