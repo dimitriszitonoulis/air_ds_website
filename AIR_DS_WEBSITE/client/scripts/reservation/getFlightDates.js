@@ -71,6 +71,9 @@ async function getFlights() {
             }
 
             // add the dates to the select element
+            // this code is inside the event listener so that the dates change each time an airport changes
+            // another way to do it is by adding an eventListener to date field for clicking,
+            // however there would be a small delay before the dates being added
             for (const date of response['dates']) {
                 option = document.createElement('option');
                 option.value = `${date}`;
