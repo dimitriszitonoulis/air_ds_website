@@ -24,6 +24,7 @@ export function addInfoFieldSets(ticket_number) {
     // add fieldsets for the rest of the users
     for (let counter = 1; counter <= extraPassengers; counter++) {
         const fieldset = document.createElement('fieldset');
+        fieldset.className = "passenger-info";
 
         // create necessary fields (input and label for name, surname, error message)
         const nameLabel = document.createElement('label');
@@ -58,9 +59,11 @@ export function addInfoFieldSets(ticket_number) {
         const seatInput = document.createElement('span');
         
         // configure and set field attributes
-        seatLabel.id = `seat-info-${counter}`;
+        seatLabel.id = `seat-info-label-${counter}`;
+        seatLabel.className = 'seat-info-label';
         seatLabel.innerText = 'Seat';
         seatInput.id = `seat-${counter}`;
+        seatInput.className = 'seat-info';
         seatInput.innerText = '--';
 
         seatDiv.appendChild(seatLabel);
