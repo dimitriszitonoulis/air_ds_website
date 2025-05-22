@@ -25,7 +25,7 @@ get_taken_seats();
  * 
  * 
  * It is responsible to receive the fetch request by the client (departure code, destination code, and flight date).
- * Validate the input using the valition manager and validation functions.
+ * Validate the input using the validation manager and validation functions.
  * Call the function that returns the taken seats.
  * Send the data back to the client.
  * 
