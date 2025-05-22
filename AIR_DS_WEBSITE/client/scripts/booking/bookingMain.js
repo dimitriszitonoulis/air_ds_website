@@ -14,22 +14,24 @@ const DESTINATION_AIRPORT = "BRU";
 const DATE = "2025-05-25 00:00:00";
 
 
+//--------------------------------------------------------------------------------
+//                          ADD INFO ABOUT REGISTERED USER
 // Take the name and surname of the registered user from the db
 const fullName = await getFullName({'username': USERNAME}, BASE_URL);
-
-
-
-
-
 
 // fill the registered user's information
 const registeredUserNameField = document.getElementById('name-0');
 const registeredUserSurnameField = document.getElementById('surname-0');
 registeredUserNameField.value = fullName['name'];
 registeredUserSurnameField.value = fullName['surname'];
+//--------------------------------------------------------------------------------
+
 
 const seatForm = document.getElementById('seat-form');
-      
+    
+
+// ------------------------------------------------------------------------------
+//                                  ADD SEAT MAP
 // create the seatmap
 const values = {
     "dep_code": DEPARTURE_AIRPORT,
@@ -39,6 +41,15 @@ const values = {
 let takenSeats = await getTakenSeats(values, BASE_URL);     // get taken seats 
 createSeatMap(takenSeats);                                  // pass them to seat map function 
 const planeBody = document.getElementById('plane-body');    // get the plane body div
+const seatmapContainer = document.getElementById('seat-map-container');
+// TODO uncomment later
+// seatmapContainer.style.display = "none";
+
+// ------------------------------------------------------------------------------
+
+
+// ------------------------------------------------------------------------------
+//                  ADD INFO ABOUT THE REST OF THE PEOPLE
 
 // add  fielsets for the rest of the users
 addInfoFieldSets(TICKET_NUMBER);
@@ -53,6 +64,10 @@ const bookingFields = {...fields};
 for (const currentField in bookingFields) {
     bookingFields[currentField].validatorFunction = isNameValid;
 }
+
+// ------------------------------------------------------------------------------
+
+
 
 
 // only validate names and surnames if the customer chose to buy more that 1 ticket
@@ -81,20 +96,22 @@ const chooseSeatsErrorDiv = document.getElementById('choose-seats-button-error-m
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 let isAllValid = false;
+isAllValid = true;
 
 chooseSeatsBtn.addEventListener('click', async (e) => {
     // if the button is clicked without any field being checked do nothing 
     // e.preventDefault();
     
     // const isAllValid = validateSubmitTime(bookingFields);
-    isAllValid = validateSubmitTime(bookingFields);
+    // isAllValid = validateSubmitTime(bookingFields); //TODO uncomment later
 
-    // TODO uncomment later
-    // if (isAllValid) {
-    if (true) {
+    if (isAllValid) {
  
         // show seatmap
-        planeBody.style.visibility = "visible";
+        // planeBody.style.visibility = "visible";
+        // TODO decide which to hide and which to unhide
+        planeBody.style.display = "flex";
+        seatmapContainer.style.display = "flex";
 
     } else {
         showError(chooseSeatsErrorDiv, "Could not process names");
