@@ -126,7 +126,7 @@ function is_departure_date_valid($conn, $dep_code, $dest_code, $dep_date, $respo
     $today_sec = strtotime($today);
     $dep_date_sec = strtotime($dep_date);
 
-    $difference = $today_sec - $dep_date_sec;
+    $difference = $dep_date_sec - $today_sec;
     if ($difference <= 0) return $response['dep_date']['invalid'];
 
     $is_stored = db_is_date_stored($conn, $dep_code, $dest_code, $dep_date);
