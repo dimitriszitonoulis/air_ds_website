@@ -1,3 +1,13 @@
+/**
+ * 
+ * This function gets the username of a registered user and returns their name and surname
+ * 
+ * values = {"username": <username value>}
+ * 
+ * @param {object} values - object containing the username of a user
+ * @param {String} BASE_URL - a string containing the base url
+ * @returns {object} - an object like: {'name': <name>, 'surname': <surname>}
+ */
 export async function getFullName(values, BASE_URL) {
    const url = `${BASE_URL}server/api/auth/get_user_info.php`;
 
@@ -24,6 +34,21 @@ export async function getFullName(values, BASE_URL) {
     }
 }
 
+/**
+ * 
+ * This function gets the departure airport code, the destination arirport code and the deparure date and 
+ * returns the taken seats for the flight specified by those values
+ * 
+ * values = {
+ *      'dep_code': <departure airtport code>,
+ *      'dest_code': <destination airport code>
+ *      'dep_date': <departure date>
+ * }
+ * 
+ * @param {object} values - object containing the departure airport code, the destination airport code, the departure date
+ * @param {String} BASE_URL - a string containing the base url
+ * @returns {object} - an object like: {'name': <name>, 'surname': <surname>}
+ */
 export async function getTakenSeats (values, BASE_URL) {
 
     const url = `${BASE_URL}server/api/reservation/get_taken_seats.php`;
