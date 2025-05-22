@@ -25,9 +25,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
  
 #plane-body {
+
+  visibility: hidden;
+
+
   overflow: scroll;
   /* TODO readjust later when the main screen is configured */
   /* spacing */
