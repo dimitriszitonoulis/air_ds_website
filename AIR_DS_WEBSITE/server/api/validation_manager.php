@@ -73,7 +73,7 @@ function is_payload_valid($decoded_content, $field_names, $expected, $response) 
  * Summary of is_expected_fields
  * checks if the fields received are expected
  * @param mixed $names - an array containing the names of the fields
- * @return bool - true if the name of the fields are what is expected, otherwise false
+ * @return mixed - true if the name of the fields are what is expected, otherwise false
  */
 function is_expected_fields($names, $expected, $response) {
     // array_diff() returns an array that contains all the elements in the 1st array,
