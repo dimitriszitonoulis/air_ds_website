@@ -2,18 +2,20 @@
 // TODO add the variable from php
 // get the number of tickets from the home form
 // default value for now
-const TICKET_NUMBER = 5;
-
-// create as many fieldsets as the tickets
-let extraPassengers = 0;
-
-// the first one is the registered user
-extraPassengers = TICKET_NUMBER - 1;
-
-addInfoFieldSets();
+// const TICKET_NUMBER = 5;
 
 
-function addInfoFieldSets() {
+// addInfoFieldSets();
+
+
+export function addInfoFieldSets(ticket_number) {
+    // create as many fieldsets as the tickets
+    let extraPassengers = 0;
+
+    // the first one is the registered user
+    extraPassengers = ticket_number - 1;
+
+
     const seatForm = document.getElementById('seat-form');
     // TODO maybe change the layout and the div in the book_flight page
     const chooseSeatsDiv = document.getElementById('choose-seats-div');
