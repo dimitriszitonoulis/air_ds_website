@@ -79,9 +79,9 @@ function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=nu
     // execute query
     $stmt->execute();
 
-    // retrieve response (1 row with the flight id)
-    $id_array = $stmt->fetchAll(PDO::FETCH_NUM);
-    $flight_id = $id_array[0][0]; // extract the id
+    // retrieve response (first fetched column)
+    $flight_id = $stmt->fetchColumn(0);
+
 
     // find the taken seats from 
     $query =
