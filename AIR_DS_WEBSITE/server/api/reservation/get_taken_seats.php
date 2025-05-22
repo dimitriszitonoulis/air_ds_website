@@ -10,6 +10,39 @@ get_taken_seats();
 
 /**
  * Summary of get_taken_seats
+ * 
+ * This function is an AJAX end point
+ * 
+ * It receives the codes of 2 airports and the date of a flight between them
+ * It returns the taken seats for that specific flight.
+ * 
+ * The airport codes and the date are received as a JSON like: 
+ * {
+ *  dep_code: <departure airport code>,
+ *  dest_code: <destination airport code>,
+ *  dep_date: <departure date>
+ * }
+ * 
+ * 
+ * It is responsible to receive the fetch request by the client (departure code, destination code, and flight date).
+ * Validate the input using the valition manager and validation functions.
+ * Call the function that returns the taken seats.
+ * Send the data back to the client.
+ * 
+ * If at any point something goes wrong an error message is sent
+ * 
+ * Type of responses:
+ * The responses of this function are response_messages detailed in config/messages.php
+ * 
+ * The only exception to this rule is the success message if everything goes well.
+ * This message is an array like:
+ * [
+ *  result => boolean,
+ *  message => string
+ *  http_response_code => int
+ *  seats => array containing the taken seats of the flights as strings
+ * ]
+ * 
  * @return never
  */
 function get_taken_seats (){
@@ -34,12 +67,7 @@ function get_taken_seats (){
     // what if the keys are not what I am expecting?
     // get the name of the fields that come from the client
     $field_names = array_keys($decoded_content);
-    $expected_fields = ["dep_code", "dest_code", "dep_date"];
-
-    // TODO delete later
-    // echo json_encode(['result' => false, "message" =>$expected_fields, "message2" => $field_names,"http_response_code" => 200]);
-    // exit;
-    
+    $expected_fields = ["dep_code", "dest_code", "dep_date"];   
 
     // modify response_message to also include messages for the expected fields
     $response_message = get_response_message($expected_fields);
@@ -76,6 +104,4 @@ function get_taken_seats (){
     echo json_encode($response);
     exit;  
 }
-
-
 ?>
