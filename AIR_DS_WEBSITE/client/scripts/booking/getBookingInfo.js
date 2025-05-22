@@ -45,8 +45,8 @@ export async function getTakenSeats (values, BASE_URL) {
         console.log("Fetch succesful return data:", data)
 
         // if the user is registered this is true, otherwise false
-        return data['result'];
-
+        return data['seats'];
+        
     } catch (error) {
         console.error("Error fetching data: ", error);
         return false;
