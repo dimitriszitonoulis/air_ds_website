@@ -38,7 +38,7 @@ get_flight_dates();
  *  result => boolean,
  *  message => string
  *  http_response_code => int
- *  dates => associative array:  [date => all the dates for the 2 aiports]
+ *  dates => array containing the dates of the flights as strings
  * ]
  * 
  * @return never
