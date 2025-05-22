@@ -2,9 +2,6 @@ export const fields = {
 
 }
 
-
-
-
 // add entries to the booking fields
 // the ticket number is used to get the amount of names and surnames needed
 export function addFullNames(ticketNumber, fields) {
