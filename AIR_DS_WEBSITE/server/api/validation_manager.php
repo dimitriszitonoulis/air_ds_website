@@ -82,14 +82,12 @@ function is_expected_fields($names, $expected, $response) {
 
     // do the $names contain more field names than expected
     $is_more = empty(array_diff($names, $expected));
-    if ($is_more) return $response['failure']['more'];
+    if (!$is_more) return $response['failure']['more'];
 
     // do the $names contain less field names than expected
     $is_less = empty(array_diff($expected, $names));
-    if ($is_less) return $response['failure']['missing'];
+    if (!$is_less) return $response['failure']['missing'];
 
-    //TODO deleter later
-    // return ['result' => false, "message" => ["less" => array_diff($names, $expected), "more" => array_diff($expected, $names)] ,"http_response_code" => 200];
 
     return $response['success'];
 }
