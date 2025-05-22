@@ -36,24 +36,6 @@ function validate_fields($conn, $decoded_content, $field_names, $expected_fields
 }
 
 /**
- * Summary of is_expected_fields
- * checks if the fields received are expected
- * @param mixed $names - an array containing the names of the fields
- * @return bool - true if the name of the fields are what is expected, otherwise false
- */
-function is_expected_fields($names, $expected, $response) {
-    // array_diff() returns an array that contains all the elements in $names,
-    // that do not exists inside expected names.
-    // So, if array_diff() returns an empty array, every element of $names is also an element of $expected_names
-    $is_expected = empty(array_diff($names, $expected));
-
-    // What if instead of missing the user supplies more fields?
-    // TODO maybe add new message for this case
-    if (!$is_expected) return $response['failure']['missing'];
-    return $response['success'];
-}
-
-/**
  * Summary of is_payload_valid
  * 
  * Checks if what is received from AJAX request is valid (not empty and the expected fields arrived)
@@ -86,6 +68,25 @@ function is_payload_valid($decoded_content, $field_names, $expected, $response) 
             return $response[$field]['missing'];
     }
     return $response["success"];
+}
+
+/**
+ * Summary of is_expected_fields
+ * checks if the fields received are expected
+ * @param mixed $names - an array containing the names of the fields
+ * @return bool - true if the name of the fields are what is expected, otherwise false
+ */
+function is_expected_fields($names, $expected, $response) {
+    // array_diff() returns an array that contains all the elements in $names,
+    // that do not exists inside expected names.
+    // So, if array_diff() returns an empty array, every element of $names is also an element of $expected_names
+    $is_expected = empty(array_diff($names, $expected));
+
+    // What if instead of missing the user supplies more fields?
+    // TODO maybe add new message for this case
+    if (!$is_expected) return $response['failure']['missing'];
+    
+    return $response['success'];
 }
 
 //TODO write better documentation
