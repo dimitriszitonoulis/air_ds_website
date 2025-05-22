@@ -30,8 +30,10 @@ body {
  
 #plane-body {
 
-  visibility: hidden;
+  /* visibility: hidden; */
 
+  /* Do this through js */
+  /* display:none; */
 
   overflow: scroll;
   /* TODO readjust later when the main screen is configured */
@@ -45,7 +47,7 @@ body {
   border-width: 1px;
 
   /* alignment of items in plane body */
-  display: flex;
+  /* display: flex; */
   /* justify-content: space-around; */
   justify-content: space-evenly;
 
@@ -76,7 +78,7 @@ body {
   
 }
 
-.seat, .seat-number, .rowLetter{
+.seat, .seat-number, .taken-seat,.rowLetter{
   border: solid;
   border-radius: 4px; /* must change for smaller screens */
   border-width: 1px;

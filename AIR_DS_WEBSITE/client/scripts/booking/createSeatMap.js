@@ -131,6 +131,7 @@ function setSeat(currentSeat, id, isMiddleRow, isLegSeat, isFront, isTaken = fal
 
     if (isTaken) {
         seat.style.backgroundColor = "#d92725";
+        seat.className = "taken-seat";
     }
 
     return seat;
