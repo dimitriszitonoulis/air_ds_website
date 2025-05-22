@@ -75,7 +75,7 @@ export function validateRealTime(fields) {
             inputElements = getCollection(field.inputId);
             errorElements = getCollection(field.errorId);
             applyEventListeners(inputElements, errorElements, field.event, field.isASync, field.validatorFunction, field.isCollection);
-        } else {           
+        } else { 
             inputElements = document.getElementById(field.inputId);
             errorElements = document.getElementById(field.errorId);
             applyEventListeners(inputElements, errorElements, field.event, field.isAsync, field.validatorFunction, field.isCollection);
