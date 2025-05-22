@@ -84,7 +84,7 @@ export async function getTakenSeats (values, BASE_URL) {
  * }
 */
 export async function getAirportInfo(values, BASE_URL) {
-    const url = `${BASE_URL}server/api/reservation/get_taken_seats.php`;
+    const url = `${BASE_URL}server/api/reservation/get_airport_info.php`;
 
     try {
         const response = await fetch(url, {
@@ -103,7 +103,7 @@ export async function getAirportInfo(values, BASE_URL) {
         console.log("Fetch succesful return data:", data)
 
         // if the user is registered this is true, otherwise false
-        return data;
+        return data['airport_info'];
         
     } catch (error) {
         console.error("Error fetching data: ", error);
