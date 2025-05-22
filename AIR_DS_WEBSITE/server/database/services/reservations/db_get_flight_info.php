@@ -90,12 +90,13 @@ function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=nu
         FROM 
             reservations
         WHERE
-            flight_id = ':flight_id';
+            flight_id = :flight_id;
     ";
     // prepare the stament
     $stmt = $conn->prepare($query);
     // bind parameters
     $stmt->bindParam(':flight_id', $flight_id, PDO::PARAM_STR);
+    $stmt->execute();
 
     // TODO maybe fetch num
     $result = $stmt->fetchALL(PDO::FETCH_ASSOC);

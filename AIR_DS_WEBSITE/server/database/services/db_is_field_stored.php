@@ -160,6 +160,7 @@ function db_is_seat_stored($conn, $seat=null, $dep_code=null, $dest_code=null, $
     // bind parameters
     $stmt->bindParam(':flight_id', $flight_id, PDO::PARAM_STR);
     $stmt->bindParam(':seat', $seat, PDO::PARAM_STR);
+    $stmt->execute();
 
     // TODO maybe fetch num
     $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
