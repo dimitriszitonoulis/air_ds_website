@@ -1,6 +1,4 @@
-export const fields = {
-
-}
+export const fields = {}
 
 // add entries to the booking fields
 // the ticket number is used to get the amount of names and surnames needed
@@ -29,31 +27,3 @@ export function addFullNames(ticketNumber, fields) {
         fields[`surname-${i}`]['isCollection'] = false;
     }
 }
-
-// export function addnameids(ticket_number, fields) {
-//     const peoplenum = ticket_number;
-    
-//     // the first user is the one with the account
-//     // start adding the other users
-//     for(let i = 1; i < peoplenum; i++) {
-//         // both name and surname share the same error message div
-//         fields['names']['inputid'][`name-${i}`] = `name-${i}`;
-//         fields['names']['errorid'][`name-${i}`] = `fieldset-error-message-${i}`;
-
-//         fields['surnames']['inputid'][`surname-${i}`] = `surname-${i}`;
-//         fields['surnames']['errorid'][`surname-${i}`] = `fieldset-error-message-${i}`;
-//     }
-
-
-// }
-
-function addSeatIDs(TICKET_NUMBER, fields) {
-
-}
-
-// addFullNames(5, fields);
-
-// console.log(fields)
-
-
-
