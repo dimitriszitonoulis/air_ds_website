@@ -3,7 +3,7 @@ import { validateRealTime, validateSubmitTime } from '../validationManager.js';
 import { isNameValid } from "./bookingValidators.js";
 import { showError } from "../displayMessages.js";
 import { getAirportInfo, getFullName, getTakenSeats } from "./getBookingInfo.js";
-import { createSeatMap } from "./createSeatMap.js";
+import { createSeatMap, showSeatMap } from "./createSeatMap.js";
 import { addInfoFieldSets, fillUserInfo } from "./showNameForm.js";
 
 // TODO delete later
@@ -14,48 +14,66 @@ const DESTINATION_AIRPORT = "BRU";
 const DATE = "2025-05-25 00:00:00";
 
 const planeBody = document.getElementById('plane-body');    // get the plane body div
-const seatmapContainer = document.getElementById('seat-map-container');
 // TODO uncomment later
 // seatmapContainer.style.display = "none";
 
+// THESE MUST BE GLOBAL
+// for seat selection
 let curSeatDiv = null;
 let selectedSeats = [];
 
 
 
-// get info about distances from the db
-const airport_codes = {
-    "dep_code": DEPARTURE_AIRPORT,
-    "dest_code": DESTINATION_AIRPORT
+main()
+
+async function main () {
+    // get info about distances from the db
+    const airport_codes = {
+        "dep_code": DEPARTURE_AIRPORT,
+        "dest_code": DESTINATION_AIRPORT
+    }
+    const info = await getAirportInfo(airport_codes, BASE_URL);
+    const airInfo1 = info[0];
+    const airInfo2 = info[1];
+    const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
+    const fee = parseFloat((airInfo1['fee'] + airInfo2['fee']).toFixed(2));
+    const flightCost = parseFloat((distance / 10).toFixed(2));
+    const seatCostTable =  { 
+        "leg": 20, 
+        "front": 10, 
+        "other": 0 
+    };
+    
+    setUpPassengers(USERNAME, TICKET_NUMBER, fields, BASE_URL);
+
+    await setUpSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);
+
+    setUpFieldValidation();
+
+    const passengerFieldsets = document.querySelectorAll(".passenger-info-fieldset");
+    // array containing information about each passenger,
+    // their seat and the cost of their ticket
+    let tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
+
+    // TODO delete later
+    tickets = [
+        {
+            "name": "nghjke",
+            "surname": "hgfdh",
+            "seat": "sfvsfdgv",
+            "seatCost": "csdfa",
+            "total": "asdfsdfa"
+        },
+        {
+            "name": "ndjgfhghj",
+            "surname": "fghjfghjh",
+            "seat": "qewrv",
+            "seatCost": "nbcva",
+            "total": "ahjkl"
+        }
+    ];
+    addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, distance, fee, flightCost, tickets)
 }
-const info = await getAirportInfo(airport_codes, BASE_URL);
-const airInfo1 = info[0];
-const airInfo2 = info[1];
-const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
-const fee = parseFloat((airInfo1['fee'] + airInfo2['fee']).toFixed(2));
-const flightCost = parseFloat((distance / 10).toFixed(2));
-const seatCostTable =  { 
-    "leg": 20, 
-    "front": 10, 
-    "other": 0 
-};
-
-
-
-setUpPassengers(USERNAME, TICKET_NUMBER, fields, BASE_URL);
-
-await setUpSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);
-
-
-// fillUserInfo(USERNAME, BASE_URL);
-
-// // add  fielsets for the rest of the users
-// addInfoFieldSets(TICKET_NUMBER);
-
-// // fill the fields with information about the HTML elements containing 
-// addFullNames(TICKET_NUMBER, fields);
-
-
 
 
 function setUpPassengers(username, ticketNumber, fields, baseUrl) {
@@ -68,7 +86,7 @@ async function setUpSeatMap (depAirport, destAirport, depDate) {
     await createSeatMap(depAirport, destAirport, depDate);    // pass them to seat map function 
     // after the seatmap is created select all the seats 
     const seats = planeBody.querySelectorAll(".seat");
-    
+
     seats.forEach((seat) => 
         seat.addEventListener('click', (e) => {
             // if no passengers are selected nop
@@ -106,69 +124,63 @@ async function setUpSeatMap (depAirport, destAirport, depDate) {
 
 }
 
+function setUpFieldValidation(passengerFieldsets) {
+    const bookingFields = { ...fields };
 
-// ------------------------------------------------------------------------------
-//                              VALIDATE NAME FIELDS
-
-const bookingFields = { ...fields };
-
-// assign validator function to names and surnames
-// the same validator function is used for the names and surnames
-for (const currentField in bookingFields) {
-    bookingFields[currentField].validatorFunction = isNameValid;
-}
-
-// only validate names and surnames if the customer chose to buy more that 1 ticket
-// if they bought only one ticket then the name and surname have passed validation
-// when the customer registered,
-// no need to redo check
-// if (bookingFields !== null)
-validateRealTime(bookingFields);
-
-const chooseSeatsBtn = document.getElementById('choose-seats-button');
-const chooseSeatsErrorDiv = document.getElementById('choose-seats-button-error-message');
-
-
-let isAllValid = false;
-isAllValid = true;
-
-chooseSeatsBtn.addEventListener('click', async (e) => {
-    // if the button is clicked without any field being checked do nothing 
-    // e.preventDefault();
-
-    // const isAllValid = validateSubmitTime(bookingFields);
-    // isAllValid = validateSubmitTime(bookingFields); //TODO uncomment later
-
-    if (isAllValid) {
-
-        // show seatmap
-        // planeBody.style.visibility = "visible";
-        // TODO maybe make fields readonly now
-        // TODO decide which to hide and which to unhide
-        planeBody.style.display = "flex";
-        seatmapContainer.style.display = "flex";
-
-    } else {
-        showError(chooseSeatsErrorDiv, "Could not process names");
+    // assign validator function to names and surnames
+    // the same validator function is used for the names and surnames
+    for (const currentField in bookingFields) {
+        bookingFields[currentField].validatorFunction = isNameValid;
     }
 
-})
+    // only validate names and surnames if the customer chose to buy more that 1 ticket
+    // if they bought only one ticket then the name and surname have passed validation
+    // when the customer registered,
+    // no need to redo check
+    // if (bookingFields !== null)
+    validateRealTime(bookingFields);
+
+    const chooseSeatsBtn = document.getElementById('choose-seats-button');
+    const chooseSeatsErrorDiv = document.getElementById('choose-seats-button-error-message');
 
 
+    // let isAllValid = false;
+    //TODO remove later
+    // isAllValid = true;
 
+    chooseSeatsBtn.addEventListener('click', async (e) => {
+        // if the button is clicked without any field being checked do nothing 
+        // e.preventDefault();
+        //TODO uncomment later
+        const isAllValid = await validateSubmitTime(bookingFields);
+        // isAllValid = validateSubmitTime(bookingFields); 
 
+        if (isAllValid) {
 
-//-----------------------------------------------------------------------------------
-//                                   SELECT SEAT CODE
+            // show seatmap
+            // TODO maybe make fields readonly now
+            showSeatMap();
+            const passengerFieldsets = document.querySelectorAll(".passenger-info-fieldset");
+            setUpPassengerSelection(passengerFieldsets);
 
+        } else {
+            showError(chooseSeatsErrorDiv, "Could not process names");
+        }
 
-const passengerFieldsets = document.querySelectorAll(".passenger-info-fieldset");
-//select all the seats inside the seat map
+    })
+ 
+}
 
+// this variable must be declared after the passenger fieldsets are set
 
-chooseSeat(passengerFieldsets);
+function setUpPassengerSelection(passengerFieldsets) {
+    // make name and surname read only
+    const name = document.querySelectorAll('.name')
+                                    .forEach((input) => input.readOnly = true);
+    const surname = document.querySelectorAll('.surname')
+                                    .forEach((input) => input.readOnly = true);
 
-function chooseSeat(passengerFieldsets) {
+    // add event listeners to all passenger fieldsets
     passengerFieldsets.forEach((curFieldset) =>
         curFieldset.addEventListener('click', (e) => {
             // if the current fieldset is already selected de-select it 
@@ -177,7 +189,6 @@ function chooseSeat(passengerFieldsets) {
                 curSeatDiv = null;
                 return;
             }
-
             // TODO when the last information button is clicked for the price  
             // do not forget to clear all the green colors 
 
@@ -191,19 +202,11 @@ function chooseSeat(passengerFieldsets) {
             curSeatDiv = curFieldset.querySelector(".seat-info");
         })
     );
-
-
 }
 
-//-----------------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------------
-//                                  SHOW FLIGHT INFO
 
-// array containing information about each passenger,
-// their seat and the cost of their ticket
-let tickets = [];
-setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
+// let tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
 
 function getDistance(lat1, lon1, lat2, lon2) {
     const degToRad = (deg) => (deg * Math.PI) / 180.0;
@@ -223,6 +226,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
+    let tickets = [];
     // get info about each passenger
     passengerFieldsets.forEach((fs) => {
         const name = fs.querySelector('.name').value;
@@ -258,32 +262,10 @@ function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
         // set the total for the current ticket
         current['total'] = fee + flightCost + current['seatCost'];
     });
+
+    return tickets;
 }
 
-
-
-
-//-----------------------------------------------------------------------------------
-
-// TODO delete later
-tickets = [
-    {
-        "name": "nghjke",
-        "surname": "hgfdh",
-        "seat": "sfvsfdgv",
-        "seatCost": "csdfa",
-        "total": "asdfsdfa"
-    },
-    {
-        "name": "ndjgfhghj",
-        "surname": "fghjfghjh",
-        "seat": "qewrv",
-        "seatCost": "nbcva",
-        "total": "ahjkl"
-    }
-];
-
-addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, distance, fee, flightCost, tickets)
 
 function addPricingInfo(depAirport, destAirport, date, distance, fee, flightCost, tickets) {
 
@@ -291,7 +273,6 @@ function addPricingInfo(depAirport, destAirport, date, distance, fee, flightCost
     for (const ticket in tickets) {
         total += ticket['total'];
     }
-
 
     const table = document.getElementById('passenger-info-table');
 
@@ -322,10 +303,6 @@ function addPricingInfo(depAirport, destAirport, date, distance, fee, flightCost
         table.appendChild(row);
     }
 }
-
-
-
-
 
 
 
