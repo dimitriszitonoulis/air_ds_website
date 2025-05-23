@@ -23,45 +23,48 @@ require_once BASE_PATH . "client\includes\start_session.php";
     <h2> Register </h2>
 
     <form id="registration-form">
-      <!-- name field -->
       <fieldset>
-        <label for="name-input">Name</label>
-        <input type="text" id="name-input" name="name" required>
-        <div id="name-input-error-message" class="error-message">Empty</div>
-      </fieldset>
+        <!-- name field -->
+        <div class="field">
+          <label for="name-input">Name</label>
+          <input type="text" id="name-input" name="name" required>
+          <div id="name-input-error-message" class="error-message">Empty</div>
+        </div>
 
-      <!-- surname field -->
-      <fieldset>
-        <label for="surname-input">Surname</label>
-        <input type="text" id="surname-input" name="surname" required>
-        <div id="surname-input-error-message" class="error-message">Empty</div>
-      </fieldset>
+        <!-- surname field -->
+        <div class="field">
+          <label for="surname-input">Surname</label>
+          <input type="text" id="surname-input" name="surname" required>
+          <div id="surname-input-error-message" class="error-message">Empty</div>
+        </div class="field">
 
-      <!-- username field -->
-      <fieldset>
-        <label for="username-input">Username</label>
-        <input type="text" id="username-input" name="username" required>
-        <div id="username-input-error-message" class="error-message">Empty</div>
-      </fieldset>
+        <!-- username field -->
+        <div class="field">
+          <label for="username-input">Username</label>
+          <input type="text" id="username-input" name="username" required>
+          <div id="username-input-error-message" class="error-message">Empty</div>
+        </div>
 
-      <!-- password field -->
-      <fieldset>
-        <label for="password-input">Password</label>
-        <input type="password" id="password-input" name="password" required>
-        <div id="password-input-error-message" class="error-message">Empty</div>
-      </fieldset>
+        <!-- password field -->
+        <div class="field">
+          <label for="password-input">Password</label>
+          <input type="password" id="password-input" name="password" required>
+          <div id="password-input-error-message" class="error-message">Empty</div>
+        </div>
 
-      <!-- email field -->
-      <fieldset>
-        <label for="email-input">Email</label>
-        <input type="email" id="email-input" name="email" required>
-        <div id="email-input-error-message" class="error-message">Empty</div>
-      </fieldset>
+        <!-- email field -->
+        <div class="field">
+          <label for="email-input">Email</label>
+          <input type="email" id="email-input" name="email" required>
+          <div id="email-input-error-message" class="error-message">Empty</div>
+        </div>
 
-      <fieldset id="register-button-fieldset">
-        <input type="submit" id="register-button" name="register-button" value="Register">
-        <div id="registration-button-error-message" class="error-message"></div>
+        <div id="register-button-fieldset" class="field">
+          <input type="submit" id="register-button" name="register-button" value="Register">
+          <div id="registration-button-error-message" class="error-message"></div>
+        </div>
       </fieldset>
+      
     </form>
   </main>
 
