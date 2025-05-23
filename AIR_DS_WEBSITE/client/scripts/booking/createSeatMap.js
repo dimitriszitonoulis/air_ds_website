@@ -1,3 +1,5 @@
+import { getTakenSeats } from "./getBookingInfo.js";
+
 /**
  * This function creates and add the seat map to the DOM
  * The seat map is seperated into upper, lower rows (grouped together in a div) 
@@ -15,10 +17,16 @@
  * the ids have the format: <row letter>-<seat number>
  * ex A-10 -> is the 10th seat of the last row (row lettering is backwards)
  */
-export function createSeatMap(takenSeats) {
-    // TODO this will be function parameter, for now keep empty
-    // contains the ids of the taken seats
-    // const takenSeats = ['A-13'];    
+export async function createSeatMap(depAirport, destAirport, depDate) {
+    
+    const values = {
+        "dep_code": depAirport,
+        "dest_code": destAirport,
+        "dep_date": depDate
+    };
+    let takenSeats = await getTakenSeats(values, BASE_URL);     // get taken seats 
+
+
 
     const planeBody = document.getElementById('plane-body');
 

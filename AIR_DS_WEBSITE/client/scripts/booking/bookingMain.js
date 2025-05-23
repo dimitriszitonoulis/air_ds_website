@@ -16,30 +16,37 @@ const DATE = "2025-05-25 00:00:00";
 
 //--------------------------------------------------------------------------------
 //                          ADD INFO ABOUT REGISTERED USER
-// Take the name and surname of the registered user from the db
-const fullName = await getFullName({ 'username': USERNAME }, BASE_URL);
 
-// fill the registered user's information
-const registeredUserNameField = document.getElementById('name-0');
-const registeredUserSurnameField = document.getElementById('surname-0');
-registeredUserNameField.value = fullName['name'];
-registeredUserSurnameField.value = fullName['surname'];
+
+fillUserInfo(USERNAME, BASE_URL);
+
+async function fillUserInfo(username, baseUrl) {
+    // Take the name and surname of the registered user from the db
+    const fullName = await getFullName({ 'username': USERNAME }, BASE_URL);
+
+    // fill the registered user's information
+    const registeredUserNameField = document.getElementById('name-0');
+    const registeredUserSurnameField = document.getElementById('surname-0');
+    registeredUserNameField.value = fullName['name'];
+    registeredUserSurnameField.value = fullName['surname'];
+}
 //--------------------------------------------------------------------------------
 
 
-const seatForm = document.getElementById('seat-form');
+const seatForm = document.getElementById('form-div');
 
 
 // ------------------------------------------------------------------------------
 //                                  ADD SEAT MAP
 // create the seatmap
-const values = {
-    "dep_code": DEPARTURE_AIRPORT,
-    "dest_code": DESTINATION_AIRPORT,
-    "dep_date": DATE
-};
-let takenSeats = await getTakenSeats(values, BASE_URL);     // get taken seats 
-createSeatMap(takenSeats);                                  // pass them to seat map function 
+// const values = {
+//     "dep_code": DEPARTURE_AIRPORT,
+//     "dest_code": DESTINATION_AIRPORT,
+//     "dep_date": DATE
+// };
+// let takenSeats = await getTakenSeats(values, BASE_URL);     // get taken seats 
+createSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);    // pass them to seat map function 
+
 const planeBody = document.getElementById('plane-body');    // get the plane body div
 const seatmapContainer = document.getElementById('seat-map-container');
 // TODO uncomment later
@@ -57,6 +64,11 @@ addInfoFieldSets(TICKET_NUMBER);
 // fill the fields with information about the HTML elements containing 
 addFullNames(TICKET_NUMBER, fields);
 
+// ------------------------------------------------------------------------------
+
+
+// ------------------------------------------------------------------------------
+//                              VALIDATE NAME FIELDS
 const bookingFields = { ...fields };
 
 // assign validator function to names and surnames
@@ -64,11 +76,6 @@ const bookingFields = { ...fields };
 for (const currentField in bookingFields) {
     bookingFields[currentField].validatorFunction = isNameValid;
 }
-
-// ------------------------------------------------------------------------------
-
-
-
 
 // only validate names and surnames if the customer chose to buy more that 1 ticket
 // if they bought only one ticket then the name and surname have passed validation
@@ -95,6 +102,7 @@ chooseSeatsBtn.addEventListener('click', async (e) => {
 
         // show seatmap
         // planeBody.style.visibility = "visible";
+        // TODO maybe make fields readonly now
         // TODO decide which to hide and which to unhide
         planeBody.style.display = "flex";
         seatmapContainer.style.display = "flex";
@@ -104,6 +112,9 @@ chooseSeatsBtn.addEventListener('click', async (e) => {
     }
 
 })
+
+// ------------------------------------------------------------------------------
+
 
 //-----------------------------------------------------------------------------------
 //                                   SELECT SEAT CODE
@@ -221,10 +232,13 @@ function getDistance(lat1, lon1, lat2, lon2) {
     return d / 1000; // return distance in km
 }
 
-
-const fee = airInfo1['fee'] + airInfo2['fee'];
-const flightCost = distance / 10;
-const seatCostTable =  { "leg": 20, "front": 10, "other": 0 };
+const fee = parseFloat((airInfo1['fee'] + airInfo2['fee']).toFixed(2));
+const flightCost = parseFloat((distance / 10).toFixed(2));
+const seatCostTable =  { 
+    "leg": 20, 
+    "front": 10, 
+    "other": 0 
+};
 
 // array containing information about each passenger,
 // their seat and the cost of their ticket
@@ -274,12 +288,62 @@ let total = 0;
 for (const ticket in tickets) {
     total += ticket['total'];
 }
+// console.log(total);
+
 
 
 //-----------------------------------------------------------------------------------
 
+tickets = [
+    {
+        "name": "nghjke",
+        "surname": "hgfdh",
+        "seat": "sfvsfdgv",
+        "seatCost": "csdfa",
+        "total": "asdfsdfa"
+    },
+    {
+        "name": "ndjgfhghj",
+        "surname": "fghjfghjh",
+        "seat": "qewrv",
+        "seatCost": "nbcva",
+        "total": "ahjkl"
+    }
+];
 
+addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, distance, fee, flightCost, tickets)
 
+function addPricingInfo(depAirport, destAirport, date, distance, fee, flightCost, tickets) {
+
+    const table = document.getElementById('passenger-info-table');
+
+    // get the columns for the flight information
+    const depCol = document.getElementById('departure-airport')
+    const destCol= document.getElementById('destination-airport');
+    const depDateCol= document.getElementById('departure-date');
+    const distCol = document.getElementById('distance');
+    const feeCol = document.getElementById('fee');
+    const costCol = document.getElementById('flight-cost');
+
+    // fill the columns with the flight information
+    depCol.innerText = depAirport;
+    destCol.innerText = destAirport;
+    depDateCol.innerText = date;
+    distCol.innerText = distance; 
+    feeCol.innerText = fee;
+    costCol.innerText = flightCost;
+
+    for (const i in tickets) {
+        const ticket = tickets[i];
+        const row = document.createElement('tr');
+        for(const field in ticket){
+            const col = document.createElement('td');
+            col.innerText  = ticket[field];
+            row.appendChild(col);
+        }
+        table.appendChild(row);
+    }
+}
 
 
 
