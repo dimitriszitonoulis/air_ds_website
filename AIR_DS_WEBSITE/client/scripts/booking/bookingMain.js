@@ -114,71 +114,77 @@ let selectedSeats = [];
 //TODO maybe only add the event listeners if the validation has succeded
 // use query selector to be able to user for each afterwards
 const passengerFieldsets = document.querySelectorAll(".passenger-info");
-passengerFieldsets.forEach((curFieldset) =>
-    curFieldset.addEventListener('click', (e) => {
-
-        // if the current fieldset is already selected de-select it 
-        if (curSeatDiv === curFieldset.querySelector(".seat-info")) {
-            curFieldset.style.backgroundColor = "";
-            curSeatDiv = null;
-            // curUserId = null;
-            return;
-        }
-
-        // TODO when the last information button is clicked for the price  
-        // do not forget to clear all the green colors 
-
-        // if the current fieldset is pressed remove the colors from the others
-        passengerFieldsets.forEach((fieldset) => fieldset.style.backgroundColor = "");
-
-        // make current fieldset green
-        curFieldset.style.backgroundColor = "#93C572";
-        // store the seat info div that is child of the current fieldset
-        curSeatDiv = curFieldset.querySelector(".seat-info");
-        // curSeatDiv = null;
-        // curUserId = curFieldset
-        // console.log(curUserId);
-
-    })
-);
-
 //select all the seats inside the seat map
 const seats = planeBody.querySelectorAll(".seat");
-seats.forEach((seat) =>
-    seat.addEventListener('click', (e) => {
-        // if no passengers are selected nop
-        // ONLY when a passenger is selected, can a seat be selected
-        if (curSeatDiv === null) return;
 
-        // if the user tries to select a seat for a specific person,
-        // and they click 2 times on the same seat, de-select the seat
-        if (curSeatDiv.innerText === seat.id) {
-            seat.style.backgroundColor = "";
-            curSeatDiv.innerText = "--";
-            const i = selectedSeats.indexOf(seat.id);   // find index of element to be removed
-            selectedSeats.splice(i, 1);                 // remove 1 element from  selectedSeats at the selected index
-            return;
-        }
+chooseSeat(passengerFieldsets, seats);
 
-        // if the seat for the current passenger already has a value, 
-        // and the same passenger tries to select another seat, do not let them
-        // They MUST  first deselect that  seat and then choose another
-        if (curSeatDiv.innerText !== "--") {
-            return;
-        }
+function chooseSeat(passengerFieldsets, seats) {
+    passengerFieldsets.forEach((curFieldset) =>
+        curFieldset.addEventListener('click', (e) => {
 
-        // if a seat is selected by another passenger,
-        // do not re-select it
-        if (selectedSeats.includes(seat.id)) {
-            console.log("already included");
-            return;
-        }
+            // if the current fieldset is already selected de-select it 
+            if (curSeatDiv === curFieldset.querySelector(".seat-info")) {
+                curFieldset.style.backgroundColor = "";
+                curSeatDiv = null;
+                // curUserId = null;
+                return;
+            }
 
-        seat.style.backgroundColor = "#93C572";
-        curSeatDiv.innerText = seat.id;
-        selectedSeats.push(seat.id);
-        // curSeatDiv = null;     // otherwise 1 passenger can choose multiple seats
-}));
+            // TODO when the last information button is clicked for the price  
+            // do not forget to clear all the green colors 
+
+            // if the current fieldset is pressed remove the colors from the others
+            passengerFieldsets.forEach((fieldset) => fieldset.style.backgroundColor = "");
+
+            // make current fieldset green
+            curFieldset.style.backgroundColor = "#93C572";
+            // store the seat info div that is child of the current fieldset
+            curSeatDiv = curFieldset.querySelector(".seat-info");
+            // curSeatDiv = null;
+            // curUserId = curFieldset
+            // console.log(curUserId);
+
+        })
+    );
+
+    seats.forEach((seat) =>
+        seat.addEventListener('click', (e) => {
+            // if no passengers are selected nop
+            // ONLY when a passenger is selected, can a seat be selected
+            if (curSeatDiv === null) return;
+
+            // if the user tries to select a seat for a specific person,
+            // and they click 2 times on the same seat, de-select the seat
+            if (curSeatDiv.innerText === seat.id) {
+                seat.style.backgroundColor = "";
+                curSeatDiv.innerText = "--";
+                const i = selectedSeats.indexOf(seat.id);   // find index of element to be removed
+                selectedSeats.splice(i, 1);                 // remove 1 element from  selectedSeats at the selected index
+                return;
+            }
+
+            // if the seat for the current passenger already has a value, 
+            // and the same passenger tries to select another seat, do not let them
+            // They MUST  first deselect that  seat and then choose another
+            if (curSeatDiv.innerText !== "--") {
+                return;
+            }
+
+            // if a seat is selected by another passenger,
+            // do not re-select it
+            if (selectedSeats.includes(seat.id)) {
+                console.log("already included");
+                return;
+            }
+
+            seat.style.backgroundColor = "#93C572";
+            curSeatDiv.innerText = seat.id;
+            selectedSeats.push(seat.id);
+            // curSeatDiv = null;     // otherwise 1 passenger can choose multiple seats
+    }));
+
+}
 
 //-----------------------------------------------------------------------------------
 
