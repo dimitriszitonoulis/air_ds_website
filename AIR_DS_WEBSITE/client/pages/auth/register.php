@@ -21,7 +21,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
   <main>
 
     <h2> Register </h2>
-
+  
     <form id="registration-form">
       <fieldset>
         <!-- name field -->
