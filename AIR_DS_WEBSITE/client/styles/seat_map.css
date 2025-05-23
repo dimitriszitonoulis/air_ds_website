@@ -1,11 +1,3 @@
-/* html,
-body {
-  height: 100%;
-  width: 100%;
-  margin: 0%;
-  background-color: slategray;
-
-} */
 
 
 #seat-map-container {
@@ -20,30 +12,26 @@ body {
   border-color: black;
   border-width: 1px;
 
-
   /* alignment of plane body*/
-  display: flex;
+  /* this is turned into flex by js */
+  display: none;    
+  /* display:flex; */
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
  
 #plane-body {
-
-  /* visibility: hidden; */
-
-  /* Do this through js */
-  /* display:none; */
-
   overflow: scroll;
   /* TODO readjust later when the main screen is configured */
   /* spacing */
   height: 60%;
   width: 70%;
+  background-color: white;
 
   /* border */
-  border: solid;
-  border-color: black;
+  border:solid;
+  border-color: white;
   border-width: 1px;
 
   /* alignment of items in plane body */
@@ -63,9 +51,6 @@ body {
 */
 .row {
   /* TODO delete later */
-  border:solid;
-  border-color: white;
-  border-width: 1px;
 
 
   /* alignment of seats in each row */
