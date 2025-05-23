@@ -38,17 +38,30 @@ const seatCostTable =  {
 };
 
 
-fillUserInfo(USERNAME, BASE_URL);
+
+setUpPassengers(USERNAME, TICKET_NUMBER, fields, BASE_URL);
+// fillUserInfo(USERNAME, BASE_URL);
+
+// // add  fielsets for the rest of the users
+// addInfoFieldSets(TICKET_NUMBER);
+
+// // fill the fields with information about the HTML elements containing 
+// addFullNames(TICKET_NUMBER, fields);
+
 
 await createSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);    // pass them to seat map function 
 
-// add  fielsets for the rest of the users
-addInfoFieldSets(TICKET_NUMBER);
 
-// fill the fields with information about the HTML elements containing 
-addFullNames(TICKET_NUMBER, fields);
+function setUpPassengers(username, ticketNumber, fields, baseUrl) {
+    // fill info about the registered user
+    fillUserInfo(username, baseUrl);
 
+    // add  fielsets for the rest of the users
+    addInfoFieldSets(ticketNumber);
 
+    // fill the fields with information about the HTML elements containing 
+    addFullNames(ticketNumber, fields);
+}
 
 async function fillUserInfo(username, baseUrl) {
     // Take the name and surname of the registered user from the db
@@ -190,6 +203,16 @@ function chooseSeat(passengerFieldsets, seats) {
 //                                  SHOW FLIGHT INFO
 
 
+
+
+
+// array containing information about each passenger,
+// their seat and the cost of their ticket
+let tickets = [];
+setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
+
+
+
 function getDistance(lat1, lon1, lat2, lon2) {
     const degToRad = (deg) => (deg * Math.PI) / 180.0;
 
@@ -206,18 +229,6 @@ function getDistance(lat1, lon1, lat2, lon2) {
 
     return d / 1000; // return distance in km
 }
-
-
-// array containing information about each passenger,
-// their seat and the cost of their ticket
-let tickets = [];
-setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
-
-let total = 0;
-for (const ticket in tickets) {
-    total += ticket['total'];
-}
-
 
 function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
     // get info about each passenger
@@ -260,10 +271,9 @@ function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
 
 
 
-
 //-----------------------------------------------------------------------------------
 
-
+// TODO delete later
 tickets = [
     {
         "name": "nghjke",
@@ -284,6 +294,12 @@ tickets = [
 addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, distance, fee, flightCost, tickets)
 
 function addPricingInfo(depAirport, destAirport, date, distance, fee, flightCost, tickets) {
+
+    let total = 0;
+    for (const ticket in tickets) {
+        total += ticket['total'];
+    }
+
 
     const table = document.getElementById('passenger-info-table');
 
