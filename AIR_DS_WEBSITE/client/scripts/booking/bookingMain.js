@@ -135,7 +135,7 @@ passengerFieldsets.forEach((curFieldset) =>
         curFieldset.style.backgroundColor = "#93C572";
         // store the seat info div that is child of the current fieldset
         curSeatDiv = curFieldset.querySelector(".seat-info");
-
+        // curSeatDiv = null;
         // curUserId = curFieldset
         // console.log(curUserId);
 
@@ -146,8 +146,6 @@ passengerFieldsets.forEach((curFieldset) =>
 const seats = planeBody.querySelectorAll(".seat");
 seats.forEach((seat) =>
     seat.addEventListener('click', (e) => {
-
-
         // if no passengers are selected nop
         // ONLY when a passenger is selected, can a seat be selected
         if (curSeatDiv === null) return;
@@ -158,15 +156,13 @@ seats.forEach((seat) =>
             seat.style.backgroundColor = "";
             curSeatDiv.innerText = "--";
             const i = selectedSeats.indexOf(seat.id);   // find index of element to be removed
-            selectedSeats.splice(i, 1);                 // remove 1 element at the selected index
+            selectedSeats.splice(i, 1);                 // remove 1 element from  selectedSeats at the selected index
             return;
         }
 
-        // if a seat is already selected, and the user tries to select another seat
-        // without deselecting first, do nothing
-
         // if the seat for the current passenger already has a value, 
         // and the same passenger tries to select another seat, do not let them
+        // They MUST  first deselect that  seat and then choose another
         if (curSeatDiv.innerText !== "--") {
             return;
         }
@@ -183,7 +179,7 @@ seats.forEach((seat) =>
         seat.style.backgroundColor = "#93C572";
         curSeatDiv.innerText = seat.id;
         selectedSeats.push(seat.id);
-        curSeatDiv = null;     // otherwise 1 passenger can choose multiple seats
+        // curSeatDiv = null;     // otherwise 1 passenger can choose multiple seats
 
         console.log(selectedSeats);
     })
