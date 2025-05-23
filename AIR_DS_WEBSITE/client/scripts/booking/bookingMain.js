@@ -167,7 +167,6 @@ seats.forEach((seat) =>
             return;
         }
 
-
         // if a seat is selected by another passenger,
         // do not re-select it
         if (selectedSeats.includes(seat.id)) {
@@ -175,15 +174,11 @@ seats.forEach((seat) =>
             return;
         }
 
-
         seat.style.backgroundColor = "#93C572";
         curSeatDiv.innerText = seat.id;
         selectedSeats.push(seat.id);
         // curSeatDiv = null;     // otherwise 1 passenger can choose multiple seats
-
-        console.log(selectedSeats);
-    })
-);
+}));
 
 //-----------------------------------------------------------------------------------
 
@@ -199,10 +194,13 @@ const airport_codes = {
 const info = await getAirportInfo(airport_codes, BASE_URL);
 console.log(info);
 
+const airInfo1 = info[0];
+const airInfo2 = info[1];
 
-distance = getDistance()
+function degToRad (deg) { return (deg * Math.PI) / 180.0; };
 
-
+const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
+console.log(distance);
 
 function getDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // Earth's radius in meters
@@ -221,7 +219,6 @@ function getDistance(lat1, lon1, lat2, lon2) {
     return d;
 }
 
-const degToRad = (deg) => { return (deg * Math.PI) / 180.0; };
 
 
 
