@@ -1,5 +1,16 @@
 import { getTakenSeats } from "./getBookingInfo.js";
 
+
+export function showSeatMap() {
+    const seatmapContainer = document.getElementById('seat-map-container');
+    seatmapContainer.style.display = "flex";
+}
+
+export function hideSeatMap() {
+    const seatmapContainer = document.getElementById('seat-map-container');
+    seatmapContainer.style.display = "none";
+}
+
 /**
  * This function creates and add the seat map to the DOM
  * The seat map is seperated into upper, lower rows (grouped together in a div) 
@@ -18,16 +29,14 @@ import { getTakenSeats } from "./getBookingInfo.js";
  * ex A-10 -> is the 10th seat of the last row (row lettering is backwards)
  */
 export async function createSeatMap(depAirport, destAirport, depDate) {
-    
+
     const values = {
         "dep_code": depAirport,
         "dest_code": destAirport,
         "dep_date": depDate
     };
     let takenSeats = await getTakenSeats(values, BASE_URL);     // get taken seats 
-
-
-
+    
     const planeBody = document.getElementById('plane-body');
 
     // number of rows including number row
