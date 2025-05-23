@@ -18,6 +18,11 @@ const seatmapContainer = document.getElementById('seat-map-container');
 // TODO uncomment later
 // seatmapContainer.style.display = "none";
 
+let curSeatDiv = null;
+let selectedSeats = [];
+
+
+
 // get info about distances from the db
 const airport_codes = {
     "dep_code": DEPARTURE_AIRPORT,
@@ -27,8 +32,6 @@ const info = await getAirportInfo(airport_codes, BASE_URL);
 const airInfo1 = info[0];
 const airInfo2 = info[1];
 const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
-
-
 const fee = parseFloat((airInfo1['fee'] + airInfo2['fee']).toFixed(2));
 const flightCost = parseFloat((distance / 10).toFixed(2));
 const seatCostTable =  { 
@@ -40,6 +43,10 @@ const seatCostTable =  {
 
 
 setUpPassengers(USERNAME, TICKET_NUMBER, fields, BASE_URL);
+
+await setUpSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);
+
+
 // fillUserInfo(USERNAME, BASE_URL);
 
 // // add  fielsets for the rest of the users
@@ -49,22 +56,55 @@ setUpPassengers(USERNAME, TICKET_NUMBER, fields, BASE_URL);
 // addFullNames(TICKET_NUMBER, fields);
 
 
-await createSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);    // pass them to seat map function 
 
 
 function setUpPassengers(username, ticketNumber, fields, baseUrl) {
-    // fill info about the registered user
-    fillUserInfo(username, baseUrl);
-
-    // add  fielsets for the rest of the users
-    addInfoFieldSets(ticketNumber);
-
-    // fill the fields with information about the HTML elements containing 
-    addFullNames(ticketNumber, fields);
+    fillUserInfo(username, baseUrl);    // fill info about the registered user
+    addInfoFieldSets(ticketNumber);     // add  fielsets for the rest of the users
+    addFullNames(ticketNumber, fields); // fill the fields with information about the HTML elements containing 
 }
 
+async function setUpSeatMap (depAirport, destAirport, depDate) {
+    await createSeatMap(depAirport, destAirport, depDate);    // pass them to seat map function 
+    // after the seatmap is created select all the seats 
+    const seats = planeBody.querySelectorAll(".seat");
+    
+    seats.forEach((seat) => 
+        seat.addEventListener('click', (e) => {
+            // if no passengers are selected nop
+            // ONLY when a passenger is selected, can a seat be selected
+            if (curSeatDiv === null) return;
 
+            // if the user tries to select a seat for a specific person,
+            // and they click 2 times on the same seat, de-select the seat
+            if (curSeatDiv.innerText === seat.id) {
+                seat.style.backgroundColor = "";
+                curSeatDiv.innerText = "--";
+                const i = selectedSeats.indexOf(seat.id);   // find index of element to be removed
+                selectedSeats.splice(i, 1);                 // remove 1 element from  selectedSeats at the selected index
+                return;
+            }
 
+            // if the seat for the current passenger already has a value, 
+            // and the same passenger tries to select another seat, do not let them
+            // They MUST  first deselect that  seat and then choose another
+            if (curSeatDiv.innerText !== "--") {
+                return;
+            }
+
+            // if a seat is selected by another passenger,
+            // do not re-select it
+            if (selectedSeats.includes(seat.id)) {
+                console.log("already included");
+                return;
+            }
+
+            seat.style.backgroundColor = "#93C572";
+            curSeatDiv.innerText = seat.id;
+            selectedSeats.push(seat.id);
+    }));
+
+}
 
 
 // ------------------------------------------------------------------------------
@@ -120,17 +160,15 @@ chooseSeatsBtn.addEventListener('click', async (e) => {
 
 //-----------------------------------------------------------------------------------
 //                                   SELECT SEAT CODE
-let curSeatDiv = null;
-let selectedSeats = [];
+
 
 const passengerFieldsets = document.querySelectorAll(".passenger-info-fieldset");
 //select all the seats inside the seat map
-const seats = planeBody.querySelectorAll(".seat");
 
 
-chooseSeat(passengerFieldsets, seats);
+chooseSeat(passengerFieldsets);
 
-function chooseSeat(passengerFieldsets, seats) {
+function chooseSeat(passengerFieldsets) {
     passengerFieldsets.forEach((curFieldset) =>
         curFieldset.addEventListener('click', (e) => {
             // if the current fieldset is already selected de-select it 
@@ -154,40 +192,7 @@ function chooseSeat(passengerFieldsets, seats) {
         })
     );
 
-    seats.forEach((seat) => 
-        seat.addEventListener('click', (e) => {
-            // if no passengers are selected nop
-            // ONLY when a passenger is selected, can a seat be selected
-            if (curSeatDiv === null) return;
 
-            // if the user tries to select a seat for a specific person,
-            // and they click 2 times on the same seat, de-select the seat
-            if (curSeatDiv.innerText === seat.id) {
-                seat.style.backgroundColor = "";
-                curSeatDiv.innerText = "--";
-                const i = selectedSeats.indexOf(seat.id);   // find index of element to be removed
-                selectedSeats.splice(i, 1);                 // remove 1 element from  selectedSeats at the selected index
-                return;
-            }
-
-            // if the seat for the current passenger already has a value, 
-            // and the same passenger tries to select another seat, do not let them
-            // They MUST  first deselect that  seat and then choose another
-            if (curSeatDiv.innerText !== "--") {
-                return;
-            }
-
-            // if a seat is selected by another passenger,
-            // do not re-select it
-            if (selectedSeats.includes(seat.id)) {
-                console.log("already included");
-                return;
-            }
-
-            seat.style.backgroundColor = "#93C572";
-            curSeatDiv.innerText = seat.id;
-            selectedSeats.push(seat.id);
-    }));
 }
 
 //-----------------------------------------------------------------------------------
