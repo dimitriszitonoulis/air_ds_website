@@ -23,24 +23,27 @@ require_once BASE_PATH . "client/includes/start_session.php"
     <h2>Login/Register</h2>
 
     <form action="">
-      <!-- username field -->
       <fieldset>
-        <label for="username-input">Username</label>
-        <input type="text" id="username-input" name="username" required>
-        <div id="username-input-error-message" class="error-message">Empty</div>
-      </fieldset>
+        <!-- username field -->
+        <div class="field">
+          <label for="username-input">Username</label>
+          <input type="text" id="username-input" name="username" required>
+          <div id="username-input-error-message" class="error-message">Empty</div>
+        </div>
 
-      <!-- password field -->
-      <fieldset>
-        <label for="password-input">Password</label>
-        <input type="text" id="password-input" name="password" required>
-        <div id="password-input-error-message" class="error-message">Empty</div>
-      </fieldset>
+        <!-- password field -->
+        <div class="field">
+          <label for="password-input">Password</label>
+          <input type="text" id="password-input" name="password" required>
+          <div id="password-input-error-message" class="error-message">Empty</div>
+        </div>
 
-      <fieldset id="login-button-fieldset">
-        <input type="submit" id="login-button" name="login-button" value="Login">
-        <div id="login-button-error-message" class="error-message">Empty</div>
+        <div id="login-button-fieldset" class="field">
+          <input type="submit" id="login-button" name="login-button" value="Login">
+          <div id="login-button-error-message" class="error-message">Empty</div>
+        </div>
       </fieldset>
+      
     </form>
 
     <!-- Redirects to registration form -->
