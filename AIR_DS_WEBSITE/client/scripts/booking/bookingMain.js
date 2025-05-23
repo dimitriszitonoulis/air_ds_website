@@ -4,7 +4,7 @@ import { isNameValid } from "./bookingValidators.js";
 import { showError } from "../displayMessages.js";
 import { getAirportInfo, getFullName, getTakenSeats } from "./getBookingInfo.js";
 import { createSeatMap } from "./createSeatMap.js";
-import { addInfoFieldSets } from "./showNameForm.js";
+import { addInfoFieldSets, fillUserInfo } from "./showNameForm.js";
 
 // TODO delete later
 const TICKET_NUMBER = 2;
@@ -63,16 +63,9 @@ function setUpPassengers(username, ticketNumber, fields, baseUrl) {
     addFullNames(ticketNumber, fields);
 }
 
-async function fillUserInfo(username, baseUrl) {
-    // Take the name and surname of the registered user from the db
-    const fullName = await getFullName({ 'username': USERNAME }, BASE_URL);
 
-    // fill the registered user's information
-    const registeredUserNameField = document.getElementById('name-0');
-    const registeredUserSurnameField = document.getElementById('surname-0');
-    registeredUserNameField.value = fullName['name'];
-    registeredUserSurnameField.value = fullName['surname'];
-}
+
+
 
 // ------------------------------------------------------------------------------
 //                              VALIDATE NAME FIELDS
@@ -202,16 +195,10 @@ function chooseSeat(passengerFieldsets, seats) {
 //-----------------------------------------------------------------------------------
 //                                  SHOW FLIGHT INFO
 
-
-
-
-
 // array containing information about each passenger,
 // their seat and the cost of their ticket
 let tickets = [];
 setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
-
-
 
 function getDistance(lat1, lon1, lat2, lon2) {
     const degToRad = (deg) => (deg * Math.PI) / 180.0;

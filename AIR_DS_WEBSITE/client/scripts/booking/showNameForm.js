@@ -1,3 +1,4 @@
+import { getFullName } from "./getBookingInfo.js";
 
 // TODO add the variable from php
 // get the number of tickets from the home form
@@ -5,9 +6,23 @@
 // const TICKET_NUMBER = 5;
 
 
+
 // addInfoFieldSets();
 
 
+export async function fillUserInfo(username, baseUrl) {
+    // Take the name and surname of the registered user from the db
+    const fullName = await getFullName({ 'username': username }, baseUrl);
+
+    // fill the registered user's information
+    const registeredUserNameField = document.getElementById('name-0');
+    const registeredUserSurnameField = document.getElementById('surname-0');
+    registeredUserNameField.value = fullName['name'];
+    registeredUserSurnameField.value = fullName['surname'];
+}
+
+
+// TODO maybe add form and fielset id parameters
 export function addInfoFieldSets(ticket_number) {
     // create as many fieldsets as the tickets
     let extraPassengers = 0;
@@ -76,9 +91,6 @@ export function addInfoFieldSets(ticket_number) {
         seatForm.insertBefore(fieldset, chooseSeatsDiv);
     }
 }
-
-
-
 
 // sets label attributes
 function setLabel(label, forName, innerText) {
