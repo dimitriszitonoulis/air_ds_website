@@ -202,11 +202,11 @@ const info = await getAirportInfo(airport_codes, BASE_URL);
 const airInfo1 = info[0];
 const airInfo2 = info[1];
 
-function degToRad (deg) { return (deg * Math.PI) / 180.0; };
-
 const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
 
 function getDistance(lat1, lon1, lat2, lon2) {
+    const degToRad = (deg) => (deg * Math.PI) / 180.0;
+
     const R = 6371e3; // Earth's radius in meters
 
     const f1 = degToRad(lat1);
@@ -222,58 +222,58 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 
-
 const fee = airInfo1['fee'] + airInfo2['fee'];
 const flightCost = distance / 10;
 const seatCostTable =  { "leg": 20, "front": 10, "other": 0 };
 
-// array associating each passenger with their seat
+// array containing information about each passenger,
+// their seat and the cost of their ticket
 let tickets = [];
-// get info about each passenger
-passengerFieldsets.forEach((fs) => {
-    const name = fs.querySelector('.name').value;
-    const surname = fs.querySelector('.surname').value;
-    const seat = fs.querySelector('.seat-info').innerText;
+setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
 
-    const current = {
-        "name": name,
-        "surname": surname,
-        "seat": seat
-    };
 
-    tickets.push(current);
-});
+function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
+    // get info about each passenger
+    passengerFieldsets.forEach((fs) => {
+        const name = fs.querySelector('.name').value;
+        const surname = fs.querySelector('.surname').value;
+        const seat = fs.querySelector('.seat-info').innerText;
 
-// get seat cost info for each passenger
-tickets.forEach((current) => {
-    const seat = current['seat'];
-    const number = seat.split('-')[1]; // take the row number from the seat
+        const current = {
+            "name": name,
+            "surname": surname,
+            "seat": seat
+        };
 
-    // set the cost for each seat
-    if (number === 1 || number === 11 || number === 12) {
-        current['seatCost'] = seatCostTable['leg'];
-    }
-    else if (number > 1 && number < 11) {
-        current['seatCost'] = seatCostTable['front'];
-    }
-    else {
-        current['seatCost'] = seatCostTable['other'];
-    }
+        tickets.push(current);
+    });
 
-    // set the total for the current ticket
-    current['total'] = fee + flightCost + current['seatCost'];
-});
+    // get seat cost info for each passenger and total const for each passenger
+    tickets.forEach((current) => {
+        const seat = current['seat'];
+        // take the row number from the seat
+        const number = parseInt(seat.split('-')[1]); 
+
+        // set the cost for each seat
+        if (number === 1 || number === 11 || number === 12) {
+            current['seatCost'] = seatCostTable['leg'];
+        }
+        else if (number > 1 && number < 11) {
+            current['seatCost'] = seatCostTable['front'];
+        }
+        else {
+            current['seatCost'] = seatCostTable['other'];
+        }
+
+        // set the total for the current ticket
+        current['total'] = fee + flightCost + current['seatCost'];
+    });
+}
 
 let total = 0;
 for (const ticket in tickets) {
     total += ticket['total'];
 }
-
-
-// console.log(passSeat);
-// console.log(seatCostTable);
-
-
 
 
 //-----------------------------------------------------------------------------------
@@ -282,13 +282,7 @@ for (const ticket in tickets) {
 
 
 
-// TODO must make validation again for seats
-/**
- * make it like: seats: {
- * seat1: asdfasdf
- * ...
- * }
- */
+
 
 
 
