@@ -14,7 +14,7 @@
 
   /* alignment of plane body*/
   /* this is turned into flex by js */
-  display: none;    
+  display: flex;    
   /* display:flex; */
   justify-content: center;
   align-items: center;
