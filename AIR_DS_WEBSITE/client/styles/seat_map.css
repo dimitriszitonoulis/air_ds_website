@@ -33,6 +33,7 @@
   border:solid;
   border-color: white;
   border-width: 1px;
+  border-radius: 5px;
 
   /* alignment of items in plane body */
   /* display: flex; */
