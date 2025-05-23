@@ -212,14 +212,60 @@ function getDistance(lat1, lon1, lat2, lon2) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
 
-    return d / 1000;
+    return d / 1000; // return distance in km
 }
 
 
 
 const fee = airInfo1['fee'] + airInfo2['fee'];
-const 
+const flightCost = distance / 10;
+const seatCostTable =  { "leg": 20, "front": 10, "other": 0 };
 
+// array associating each passenger with their seat
+let tickets = [];
+// get info about each passenger
+passengerFieldsets.forEach((fs) => {
+    const name = fs.querySelector('.name').value;
+    const surname = fs.querySelector('.surname').value;
+    const seat = fs.querySelector('.seat-info').innerText;
+
+    const current = {
+        "name": name,
+        "surname": surname,
+        "seat": seat
+    };
+
+    tickets.push(current);
+});
+
+// get seat cost info for each passenger
+tickets.forEach((current) => {
+    const seat = current['seat'];
+    const number = seat.split('-')[1]; // take the row number from the seat
+
+    // set the cost for each seat
+    if (number === 1 || number === 11 || number === 12) {
+        current['seatCost'] = seatCostTable['leg'];
+    }
+    else if (number > 1 && number < 11) {
+        current['seatCost'] = seatCostTable['front'];
+    }
+    else {
+        current['seatCost'] = seatCostTable['other'];
+    }
+
+    // set the total for the current ticket
+    current['total'] = fee + flightCost + current['seatCost'];
+});
+
+let total = 0;
+for (const ticket in tickets) {
+    total += ticket['total'];
+}
+
+
+// console.log(passSeat);
+// console.log(seatCostTable);
 
 
 
