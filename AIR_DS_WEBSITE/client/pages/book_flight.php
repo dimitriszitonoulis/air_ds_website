@@ -55,7 +55,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
   <main>
     <container id="form-container">
       <form id="seat-form">
-        <fieldset>
+        <fieldset class="passenger-info">
           <!-- TODO maybe fill it with php
            and then when taking the values with js dont take this value -->
           <label class="ticket-info-label" for="name">Name</label>
@@ -70,18 +70,10 @@ require_once BASE_PATH . "client\includes\start_session.php";
            <!-- it will be hidden at first and appear when all the names are filled -->
           <div id="seat-field-0">
             <!-- id is needed to fill the seat dynamically -->
-            <span id="seat-info-0" class="seat-info">Seat</span>
-            <span id="seat-0">--</span>
+            <div id="seat-info-label-0" class="seat-info-label">Seat</div>
+            <div id="seat-0" class="seat-info">--</div>
           </div>
         </fieldset>
-
-
-        <!-- <fieldset>
-          <label for=""></label>
-          <input type="" id="" name="date">
-          <div id="" class="error-message">Empty</div>
-        </fieldset> -->
-
 
         <!-- TODO change id of button to something more fitting -->
         <div id="choose-seats-div">
@@ -92,10 +84,45 @@ require_once BASE_PATH . "client\includes\start_session.php";
     </container>
 
     <div id="seat-map-container">
+      <span>Select seats for passesger:</span>
+      <!-- TODO maybe create this inside the seatmap function -->
       <div id="plane-body">
 
       </div>
+      <button id="show-pricing-info-button" value="Show pricing"></button>
     </div>
+
+    <div id="ticket-info">
+      <table>
+        <tr>
+          <th>Departure</th>
+          <th>Destination</th>
+          <th>Date</th>
+          <th>Distance</th>
+          <th>Fee</th>
+          <th>Flight Cost</th>
+        </tr>
+        <tr>
+          <td id="departure-airport"></td>
+          <td id="destination-airport"></td>
+          <td id="departure-date"></td>
+          <td id="distance"></td>
+          <td id="fee"></td>
+          <td id="flight-cost"></td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <th>Surname</th>
+          <th>Seat</th>
+          <th>Ticket Price</th>
+        </tr>
+        <tr>
+          
+        </tr>
+
+      </table>
+    </div>
+
   </main>
 
 
