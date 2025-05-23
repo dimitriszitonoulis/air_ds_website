@@ -40,7 +40,7 @@ const seatCostTable =  {
 
 fillUserInfo(USERNAME, BASE_URL);
 
-createSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);    // pass them to seat map function 
+await createSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);    // pass them to seat map function 
 
 // add  fielsets for the rest of the users
 addInfoFieldSets(TICKET_NUMBER);
@@ -112,24 +112,21 @@ chooseSeatsBtn.addEventListener('click', async (e) => {
 
 
 
-// ------------------------------------------------------------------------------
-
-
 //-----------------------------------------------------------------------------------
 //                                   SELECT SEAT CODE
 let curSeatDiv = null;
 let selectedSeats = [];
 
-const passengerFieldsets = document.querySelectorAll(".passenger-info");
+const passengerFieldsets = document.querySelectorAll(".passenger-info-fieldset");
 //select all the seats inside the seat map
 const seats = planeBody.querySelectorAll(".seat");
+
 
 chooseSeat(passengerFieldsets, seats);
 
 function chooseSeat(passengerFieldsets, seats) {
     passengerFieldsets.forEach((curFieldset) =>
         curFieldset.addEventListener('click', (e) => {
-
             // if the current fieldset is already selected de-select it 
             if (curSeatDiv === curFieldset.querySelector(".seat-info")) {
                 curFieldset.style.backgroundColor = "";
@@ -151,7 +148,7 @@ function chooseSeat(passengerFieldsets, seats) {
         })
     );
 
-    seats.forEach((seat) =>
+    seats.forEach((seat) => 
         seat.addEventListener('click', (e) => {
             // if no passengers are selected nop
             // ONLY when a passenger is selected, can a seat be selected
@@ -185,7 +182,6 @@ function chooseSeat(passengerFieldsets, seats) {
             curSeatDiv.innerText = seat.id;
             selectedSeats.push(seat.id);
     }));
-
 }
 
 //-----------------------------------------------------------------------------------
