@@ -13,12 +13,42 @@ const DEPARTURE_AIRPORT = "ATH";
 const DESTINATION_AIRPORT = "BRU";
 const DATE = "2025-05-25 00:00:00";
 
+const planeBody = document.getElementById('plane-body');    // get the plane body div
+const seatmapContainer = document.getElementById('seat-map-container');
+// TODO uncomment later
+// seatmapContainer.style.display = "none";
 
-//--------------------------------------------------------------------------------
-//                          ADD INFO ABOUT REGISTERED USER
+// get info about distances from the db
+const airport_codes = {
+    "dep_code": DEPARTURE_AIRPORT,
+    "dest_code": DESTINATION_AIRPORT
+}
+const info = await getAirportInfo(airport_codes, BASE_URL);
+const airInfo1 = info[0];
+const airInfo2 = info[1];
+const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
+
+
+const fee = parseFloat((airInfo1['fee'] + airInfo2['fee']).toFixed(2));
+const flightCost = parseFloat((distance / 10).toFixed(2));
+const seatCostTable =  { 
+    "leg": 20, 
+    "front": 10, 
+    "other": 0 
+};
 
 
 fillUserInfo(USERNAME, BASE_URL);
+
+createSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);    // pass them to seat map function 
+
+// add  fielsets for the rest of the users
+addInfoFieldSets(TICKET_NUMBER);
+
+// fill the fields with information about the HTML elements containing 
+addFullNames(TICKET_NUMBER, fields);
+
+
 
 async function fillUserInfo(username, baseUrl) {
     // Take the name and surname of the registered user from the db
@@ -30,45 +60,10 @@ async function fillUserInfo(username, baseUrl) {
     registeredUserNameField.value = fullName['name'];
     registeredUserSurnameField.value = fullName['surname'];
 }
-//--------------------------------------------------------------------------------
-
-
-const seatForm = document.getElementById('form-div');
-
-
-// ------------------------------------------------------------------------------
-//                                  ADD SEAT MAP
-// create the seatmap
-// const values = {
-//     "dep_code": DEPARTURE_AIRPORT,
-//     "dest_code": DESTINATION_AIRPORT,
-//     "dep_date": DATE
-// };
-// let takenSeats = await getTakenSeats(values, BASE_URL);     // get taken seats 
-createSeatMap(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE);    // pass them to seat map function 
-
-const planeBody = document.getElementById('plane-body');    // get the plane body div
-const seatmapContainer = document.getElementById('seat-map-container');
-// TODO uncomment later
-// seatmapContainer.style.display = "none";
-
-// ------------------------------------------------------------------------------
-
-
-// ------------------------------------------------------------------------------
-//                      ADD INFO ABOUT THE REST OF THE PEOPLE
-
-// add  fielsets for the rest of the users
-addInfoFieldSets(TICKET_NUMBER);
-
-// fill the fields with information about the HTML elements containing 
-addFullNames(TICKET_NUMBER, fields);
-
-// ------------------------------------------------------------------------------
-
 
 // ------------------------------------------------------------------------------
 //                              VALIDATE NAME FIELDS
+
 const bookingFields = { ...fields };
 
 // assign validator function to names and surnames
@@ -113,17 +108,18 @@ chooseSeatsBtn.addEventListener('click', async (e) => {
 
 })
 
+
+
+
+
 // ------------------------------------------------------------------------------
 
 
 //-----------------------------------------------------------------------------------
 //                                   SELECT SEAT CODE
-// the fielset of the currenly selected passenger
 let curSeatDiv = null;
 let selectedSeats = [];
 
-//TODO maybe only add the event listeners if the validation has succeded
-// use query selector to be able to user for each afterwards
 const passengerFieldsets = document.querySelectorAll(".passenger-info");
 //select all the seats inside the seat map
 const seats = planeBody.querySelectorAll(".seat");
@@ -138,7 +134,6 @@ function chooseSeat(passengerFieldsets, seats) {
             if (curSeatDiv === curFieldset.querySelector(".seat-info")) {
                 curFieldset.style.backgroundColor = "";
                 curSeatDiv = null;
-                // curUserId = null;
                 return;
             }
 
@@ -150,12 +145,9 @@ function chooseSeat(passengerFieldsets, seats) {
 
             // make current fieldset green
             curFieldset.style.backgroundColor = "#93C572";
+
             // store the seat info div that is child of the current fieldset
             curSeatDiv = curFieldset.querySelector(".seat-info");
-            // curSeatDiv = null;
-            // curUserId = curFieldset
-            // console.log(curUserId);
-
         })
     );
 
@@ -192,7 +184,6 @@ function chooseSeat(passengerFieldsets, seats) {
             seat.style.backgroundColor = "#93C572";
             curSeatDiv.innerText = seat.id;
             selectedSeats.push(seat.id);
-            // curSeatDiv = null;     // otherwise 1 passenger can choose multiple seats
     }));
 
 }
@@ -202,18 +193,6 @@ function chooseSeat(passengerFieldsets, seats) {
 //-----------------------------------------------------------------------------------
 //                                  SHOW FLIGHT INFO
 
-// get info about distances from the db
-const airport_codes = {
-    "dep_code": DEPARTURE_AIRPORT,
-    "dest_code": DESTINATION_AIRPORT
-}
-
-const info = await getAirportInfo(airport_codes, BASE_URL);
-
-const airInfo1 = info[0];
-const airInfo2 = info[1];
-
-const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
 
 function getDistance(lat1, lon1, lat2, lon2) {
     const degToRad = (deg) => (deg * Math.PI) / 180.0;
@@ -232,18 +211,16 @@ function getDistance(lat1, lon1, lat2, lon2) {
     return d / 1000; // return distance in km
 }
 
-const fee = parseFloat((airInfo1['fee'] + airInfo2['fee']).toFixed(2));
-const flightCost = parseFloat((distance / 10).toFixed(2));
-const seatCostTable =  { 
-    "leg": 20, 
-    "front": 10, 
-    "other": 0 
-};
 
 // array containing information about each passenger,
 // their seat and the cost of their ticket
 let tickets = [];
 setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
+
+let total = 0;
+for (const ticket in tickets) {
+    total += ticket['total'];
+}
 
 
 function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
@@ -284,15 +261,12 @@ function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
     });
 }
 
-let total = 0;
-for (const ticket in tickets) {
-    total += ticket['total'];
-}
-// console.log(total);
+
 
 
 
 //-----------------------------------------------------------------------------------
+
 
 tickets = [
     {
