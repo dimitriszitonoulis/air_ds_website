@@ -18,3 +18,30 @@ body {
     */
     visibility: hidden;
 }
+
+
+#flight-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    flex-direction: column;
+}
+
+table {
+    /* make all th, td borders combine */
+    border-collapse: collapse;  
+    width: 80%;
+
+    /* border: 1px solid #ddd; */
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
+   text-align: left;
+    
+    /* border-bottom: solid;
+    border-color: white;
+    border-width: 5px; */
+}
