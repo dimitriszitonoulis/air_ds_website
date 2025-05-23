@@ -34,13 +34,9 @@ main()
 
 async function main() {
 
-
-
-
- 
-
     // make the seatmap container invisible
     hideSeatMap();
+    hidePricingInfo();
 
     setUpPassengers(USERNAME, TICKET_NUMBER, fields, BASE_URL);
 
@@ -55,26 +51,26 @@ async function main() {
 
     // array containing information about each passenger,
     // their seat and the cost of their ticket
-    let tickets ;
+    // let tickets ;
 
-    // TODO delete later
-    tickets = [
-        {
-            "name": "nghjke",
-            "surname": "hgfdh",
-            "seat": "sfvsfdgv",
-            "seatCost": "csdfa",
-            "total": "asdfsdfa"
-        },
-        {
-            "name": "ndjgfhghj",
-            "surname": "fghjfghjh",
-            "seat": "qewrv",
-            "seatCost": "nbcva",
-            "total": "ahjkl"
-        }
-    ];
-    addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets)
+    // // TODO delete later
+    // tickets = [
+    //     {
+    //         "name": "nghjke",
+    //         "surname": "hgfdh",
+    //         "seat": "sfvsfdgv",
+    //         "seatCost": "csdfa",
+    //         "total": "asdfsdfa"
+    //     },
+    //     {
+    //         "name": "ndjgfhghj",
+    //         "surname": "fghjfghjh",
+    //         "seat": "qewrv",
+    //         "seatCost": "nbcva",
+    //         "total": "ahjkl"
+    //     }
+    // ];
+    // addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets)
 }
 
 function setUpSeatValidation(passengerFieldsets) {
@@ -103,15 +99,14 @@ function setUpSeatValidation(passengerFieldsets) {
             
             const tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
 
+            showPricingInfo();
+
             addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets);
 
         } else {
             const errDiv = document.getElementById('show-pricing-info-button-error-message');
             showError(errDiv, "You must select at least 1 seat for each passenger");
         }
-
-    
-
     });
 
 }
@@ -271,7 +266,7 @@ function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
         }
 
         // set the total for the current ticket
-        current['total'] = fee + flightCost + current['seatCost'];
+        current['total'] = fee + flightCost + parseFloat(current['seatCost']);
     });
 
     return tickets;
@@ -280,8 +275,9 @@ function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
 function addPricingInfo(depAirport, destAirport, date, tickets) {
 
     let total = 0;
-    for (const ticket in tickets) {
-        total += ticket['total'];
+    for (const current in tickets) {
+        total += parseFloat(tickets[current]['total']);
+        // total += ticket['total'];
     }
 
     const table = document.getElementById('passenger-info-table');
@@ -312,10 +308,12 @@ function addPricingInfo(depAirport, destAirport, date, tickets) {
 
 
 function getFee(fee1, fee2) {
-    return parseFloat(fee1, fee2).toFixed(2);
+    return Math.round((fee1 + fee2) * 100) / 100;
+    // return parseFloat(fee1 + fee2).toFixed(2);
 }
 function getFlightCost(distance) {
-   return parseFloat((distance / 10).toFixed(2));
+    return Math.round((distance/10) * 100) / 100;
+//    return parseFloat((distance / 10).toFixed(2));
 }
 
 function getDistance(lat1, lon1, lat2, lon2) {
@@ -344,11 +342,12 @@ function getSeatCostTable() {
 }
 
 
-function removePricingInfo() {
-    const passInfoTable = document.createElement.getElementById('passenger-info-table');
+function hidePricingInfo() {
+    const infDiv = document.getElementById('pricing-info');
+    infDiv.style.display = "none";
+}
 
-    // save the header row
-    const row = passInfoTable.querySelector("tr"); 
-    passInfoTable.innerHTML = "";       // remove all child nodes
-    passInfoTable.appendChild(row);     // add the header row
+function showPricingInfo () {
+    const infDiv = document.getElementById('pricing-info');
+    infDiv.style.display = "flex";
 }
