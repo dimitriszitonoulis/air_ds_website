@@ -10,14 +10,19 @@ body {
 
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     align-items: center;
 }
 
-/* main {
+main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-} */
+    justify-content: space-evenly;
+    
+    margin-top: 2%;
+    margin-bottom: 2%;
+
+}
 
 .error-message {
     color: red;
@@ -52,6 +57,11 @@ th, td {
     text-align: left;
 }
 
-p, h2 {
+p, h2, a {
     text-align: center;
+    /* margin: auto; */
+}
+
+a{
+    color: white;
 }
