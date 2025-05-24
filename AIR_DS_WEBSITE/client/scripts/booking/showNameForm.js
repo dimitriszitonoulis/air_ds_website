@@ -31,7 +31,7 @@ export function addInfoFieldSets(ticket_number) {
     extraPassengers = ticket_number - 1;
 
 
-    const seatForm = document.getElementById('seat-form');
+    const seatForm = document.getElementById('book-flight-form');
     // TODO maybe change the layout and the div in the book_flight page
     const chooseSeatsDiv = document.getElementById('choose-seats-div');
 

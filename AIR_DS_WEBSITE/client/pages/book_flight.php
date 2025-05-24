@@ -53,9 +53,9 @@ require_once BASE_PATH . "client\includes\start_session.php";
 
   <!-- TODO maybe delete the ids from the labels -->
   <main>
-    <container id="form-container">
-      <form id="seat-form">
-        <fieldset class="passenger-info">
+    <div id="form-div">
+      <form id="book-flight-form">
+        <fieldset class="passenger-info-fieldset">
           <!-- TODO maybe fill it with php
            and then when taking the values with js dont take this value -->
           <label class="ticket-info-label" for="name">Name</label>
@@ -77,49 +77,54 @@ require_once BASE_PATH . "client\includes\start_session.php";
 
         <!-- TODO change id of button to something more fitting -->
         <div id="choose-seats-div">
-          <input type="button" id="choose-seats-button" name="choose-seats-button" value="Choose seats">
+          <button type="button" id="choose-seats-button">Choose seats</button>
           <div id="choose-seats-button-error-message" class="error-message">Empty</div>
         </div>
       </form>
-    </container>
+    </div>
 
     <div id="seat-map-container">
       <span>Select seats for passesger:</span>
-      <!-- TODO maybe create this inside the seatmap function -->
-      <div id="plane-body">
+      <div id="plane-body"></div>
 
+      <div id="show-pricing-button-div">
+        <button type="button" id="show-pricing-info-button">Show pricing</button>
+        <div id="show-pricing-info-button-error-message" class="error-message">Empty</div>
       </div>
-      <button id="show-pricing-info-button" value="Show pricing"></button>
+
+
     </div>
 
-    <div id="ticket-info">
-      <table>
+    <div id="pricing-info">
+      <table id="airport-info-table">
         <tr>
           <th>Departure</th>
           <th>Destination</th>
           <th>Date</th>
-          <th>Distance</th>
+          <th>Cost</th>
+          <!-- <th>Distance</th>
           <th>Fee</th>
-          <th>Flight Cost</th>
+          <th>Flight Cost</th> -->
         </tr>
         <tr>
           <td id="departure-airport"></td>
           <td id="destination-airport"></td>
           <td id="departure-date"></td>
-          <td id="distance"></td>
+          <td id="total-cost"></td>
+          <!-- <td id="distance"></td>
           <td id="fee"></td>
-          <td id="flight-cost"></td>
+          <td id="flight-cost"></td> -->
         </tr>
+      </table>
+
+      <table id="passenger-info-table">
         <tr>
           <th>Name</th>
           <th>Surname</th>
           <th>Seat</th>
+          <th>Seat Price</th>
           <th>Ticket Price</th>
         </tr>
-        <tr>
-          
-        </tr>
-
       </table>
     </div>
 
