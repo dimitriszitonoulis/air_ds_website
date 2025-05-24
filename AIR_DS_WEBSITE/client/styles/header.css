@@ -6,6 +6,7 @@
     margin-bottom: 5px;
  
     height: 60px;
+    min-height: 60px;
     width: 100%;
 
     /* nav bar alignment */
@@ -28,6 +29,9 @@ nav {
     /* contens alignment */
     display: flex;
     justify-content: space-evenly;
+
+
+    font-size: 25px;
 }
 
 /* apply only inside the nav bar  */
