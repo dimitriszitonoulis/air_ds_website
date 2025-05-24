@@ -49,29 +49,17 @@ async function main() {
 
     setUpSeatValidation(passengerFieldsets);
 
-    // array containing information about each passenger,
-    // their seat and the cost of their ticket
-    // let tickets ;
+    submitBooking()
 
-    // // TODO delete later
-    // tickets = [
-    //     {
-    //         "name": "nghjke",
-    //         "surname": "hgfdh",
-    //         "seat": "sfvsfdgv",
-    //         "seatCost": "csdfa",
-    //         "total": "asdfsdfa"
-    //     },
-    //     {
-    //         "name": "ndjgfhghj",
-    //         "surname": "fghjfghjh",
-    //         "seat": "qewrv",
-    //         "seatCost": "nbcva",
-    //         "total": "ahjkl"
-    //     }
-    // ];
-    // addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets)
+
 }
+
+function submitBooking(passengerFieldsets) {
+    const tickets = setTickets(passengerFieldsets);
+    bookTickets(tickets, BASE_URL);
+}
+
+
 
 function setUpSeatValidation(passengerFieldsets) {
     const showPricingBtn = document.getElementById('show-pricing-info-button');
@@ -234,7 +222,7 @@ function setUpPassengerSelection(passengerFieldsets) {
     );
 }
 
-function setTickets(passengerFieldsets, seatCostTable, fee=null, flightCost=null) {
+function setTickets(passengerFieldsets, seatCostTable=null, fee=null, flightCost=null) {
     let tickets = [];
     // get info about each passenger
     passengerFieldsets.forEach((fs) => {
@@ -248,7 +236,7 @@ function setTickets(passengerFieldsets, seatCostTable, fee=null, flightCost=null
             "seat": seat,
         };
 
-        if (fee !== null && flightCost !== null) {
+        if (seatCostTable !== null, fee !== null && flightCost !== null) {
             // take the row number from the seat
             const number = parseInt(seat.split('-')[1]);
             // set the cost for each seat
