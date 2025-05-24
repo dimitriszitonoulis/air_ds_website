@@ -26,18 +26,18 @@ function db_initialize()
 
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //  For development only
-        include_once 'db_drop_tables.php';
-        drop_tables();
+        // include_once 'db_drop_tables.php';
+        // drop_tables();
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         insert_tables($conn);
 
         // TODO uncomment the first time the db is created
         // include the script in index and redirect from index to the home page
-        add_users($conn);
-        add_airports(conn: $conn);
-        add_flights($conn);
-        add_reservations($conn);
+        // add_users($conn);
+        // add_airports(conn: $conn);
+        // add_flights($conn);
+        // add_reservations($conn);
 
     } catch (PDOException $e) {
         die("Database connection failed\n" . $e);
@@ -72,7 +72,6 @@ function insert_tables($conn)
      * ATTENTION! 
      * Username and email MUST be unique. 
      */
-    // TODO maybe hash passwords for security (the length of password should be changed to 255 to store the hashes)
     $conn->exec("
         CREATE TABLE IF NOT EXISTS users(
         id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -99,9 +98,12 @@ function insert_tables($conn)
     $conn->exec("
         CREATE TABLE IF NOT EXISTS reservations (
         id INT AUTO_INCREMENT PRIMARY KEY, 
-        seat VARCHAR(4) NOT NULL,
         flight_id INT UNSIGNED NOT NULL,
         user_id INT UNSIGNED NOT NULL,
+        name VARCHAR(20) NOT NULL,
+        surname VARCHAR (20) NOT NULL,
+        seat VARCHAR(4) NOT NULL,
+        price DECIMAL(10, 2) NOT NULL,
         FOREIGN KEY (flight_id) REFERENCES flights(id), 
         FOREIGN KEY (user_id) REFERENCES users(id));"
     );
@@ -158,12 +160,20 @@ function add_users($conn)
 function add_flights($conn)
 {
     // $day = date('d');
-    $month = date('m');
+    $current_month = date('m');
+    $next_month = date('m',strtotime('first day of +1 month'));
+    $months = [$current_month, $next_month];
+
     $year = date('Y');
 
     $flight_dates = [];
-    for ($day = 1; $day < 29; $day++) {
-        $flight_dates[$day] = date("Y-m-d", strtotime("{$year}-{$month}-{$day}"));
+
+    // add a day for the first 28 days of the current and the next month
+    foreach ($months as $month) {
+        
+        for ($day = 1; $day < 29; $day++) {
+            $flight_dates[] = date("Y-m-d", strtotime("{$year}-{$month}-{$day}"));
+        }
     }
 
     $stmt = $conn->query("SELECT code FROM airports;");
@@ -247,9 +257,9 @@ function add_reservations($conn){
                 foreach ($taken_seats as $seat) {
                     $query =
                     "   INSERT INTO 
-                        reservations  (seat, flight_id, user_id)
+                        reservations  (seat, flight_id, user_id, name, surname, price)
                         VALUES
-                        ('{$seat}', '{$flight['id']}', '{$user_id}');
+                        ('{$seat}', '{$flight['id']}', '{$user_id}', 'anon', 'anon', '100');
                     ";
                     $stmt = $conn->prepare($query);
                     // TODO maybe bind paremeters... 
