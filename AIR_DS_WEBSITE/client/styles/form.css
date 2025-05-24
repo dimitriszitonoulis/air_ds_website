@@ -11,7 +11,7 @@ form {
 .field {
     /* border */
     border: solid;
-    border-color: white;
+    border-color: black;
     border-width: 2px;
     border-radius: 5px;
 
@@ -25,7 +25,8 @@ form {
     /* justify-content: center; */
     /* text-align: center; */
 
-    font-size: 2vw;
+    /* font-size: 1.5vw; */
+    font-size: 25px;
 }
 
 fieldset {
@@ -36,10 +37,13 @@ fieldset {
     border-radius: 5px;
 
 
-    /* contents alignment */
-    /* align-items: center;
-    justify-content: center;
-    text-align: center;  */
+    /* contents alignment  */
+    display: flex;
+    justify-content: space-around;
+    /* align-items: center; */
+    flex-direction: column;
+
+    /* text-align: center;   */
 
 }
 
@@ -47,5 +51,15 @@ input, select {
     min-width: 100px;
     max-width: 1000px;
     /* flex: 0 0 2vw; */
-    font-size: 1.5vw;
+    /* font-size: 1.5vw; */
+    font-size: 25px;
+}
+
+/* in the book_flight.php
+ in order to center the button */
+#choose-seats-div {
+    display :flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
 }
