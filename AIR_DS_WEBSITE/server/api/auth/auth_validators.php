@@ -72,7 +72,7 @@ function is_name_valid ($name, $response) {
  * @param mixed $username
  * @param mixed $response - an array containing response messages
  */
-function is_username_valid_register($conn, $username, $response) {
+function is_username_valid($conn, $username, $response) {
     $is_syntax = is_username_syntax_valid($username, $response);
     if (!$is_syntax['result']) return $is_syntax;
 
