@@ -22,9 +22,6 @@ function db_book_tickets($conn, $dep_code, $dest_code, $dep_date, $username, $ti
     // retrieve response (first fetched column)
     $flight_id = $stmt->fetchColumn(0);
 
-
-
-
     // find the user id 
     // find the flight id
     $query =
@@ -57,12 +54,18 @@ function db_book_tickets($conn, $dep_code, $dest_code, $dep_date, $username, $ti
         "   INSERT INTO
                 reservations ( flight_id, user_id, name, surname, seat, price)
             VALUES
-                ({$flight_id}, {$user_id}, {$name}, {$surname}, {$seat}, {$price})
+                (:flight_id, :user_id, :name, :surname, :seat, :price)
         ";
         // prepare the stament
         $stmt = $conn->prepare($query);
         // bind parameters
         $stmt->bindParam(':flight_id', $flight_id, PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':surname', $surname, PDO::PARAM_STR);
+        $stmt->bindParam(':seat', $seat, PDO::PARAM_STR);
+        $stmt->bindParam(':price', $price, PDO::PARAM_STR);
+
         $stmt->execute();
     }
 
