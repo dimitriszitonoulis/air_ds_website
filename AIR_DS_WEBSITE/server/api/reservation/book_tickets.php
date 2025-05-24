@@ -6,10 +6,11 @@ require_once BASE_PATH . "server/database/db_utils/db_connect.php";
 require_once BASE_PATH . "server/api/validation_manager.php";
 require_once BASE_PATH . "server/api/reservation/reservation_validators.php";
 require_once BASE_PATH . "server/database/services/reservations/db_get_flight_info.php";
+require_once BASE_PATH . "server/database/services/reservations/db_book_tickets.php";
 
 book_tickets();
 
-
+//TODO update documentation
 /**
  * Summary of get_airport_info
  * 
@@ -78,10 +79,6 @@ function book_tickets (){
     ];          
     $validators = get_validators_booking();
 
-    // TODO delete later
-    // http_response_code(200);
-    // echo [var_dump($decoded_content)];
-    // exit;
 
     $response = null;
     // response array like:  ["result" => boolean, "message" => string, http_response_code => int]
@@ -94,6 +91,11 @@ function book_tickets (){
         exit;
     }
 
+    // // TODO delete later
+    // http_response_code(200);
+    // // echo [var_dump($decoded_content)];
+    // echo json_encode(["result" => false, "message" => "HERE"]);
+    // exit;
 
     $dep_code = $decoded_content["dep_code"];
     $dest_code = $decoded_content["dest_code"];
@@ -102,19 +104,33 @@ function book_tickets (){
     $username = $decoded_content["username"];
     // array of arrays like: ["name" => <name>, "surname" => surname, "seat" => seat]
     $tickets = $decoded_content["tickets"]; 
-    get_ticket_price($conn, $dep_code, $dest_code, $tickets);
+    // add the price of each ticket ass an extra column
+    $tickets = get_ticket_price($conn, $dep_code, $dest_code, $tickets);
+
+
+
+    // // TODO delete later
+    // http_response_code(200);
+    // echo [var_dump($tickets)];
+    // // echo json_encode(["result" => false, "message" => "HERE"]);
+    // exit;
+
 
     try {
-        $response = db_book_tickets($conn, $dep_code, $dest_code, $dep_date, $username, $tickets, $response);
+        db_book_tickets($conn, $dep_code, $dest_code, $dep_date, $username, $tickets, $response);
     } catch (Exception $e) {
         $response = $response_message['failure']['nop'];
         http_response_code($response['http_response_code']);
-        echo json_encode($response);
+        // echo json_encode($response);
+        echo json_encode($e);
         exit;  
     }
     
 
-    // $response['airport_info'] = $airport_information;
+    //if this point is reached then return success message
+    // $response was assigned it's value by the validators, 
+    // since this point is reached the validation succeded
+    // and $response has the value of a success message
     http_response_code($response['http_response_code']);
     echo json_encode($response);
     exit;  
@@ -135,6 +151,7 @@ function get_ticket_price($conn, $dep_code, $dest_code, $tickets){
         $ticket_price = $fee + $flight_cost + $seat_cost;
         $tickets[$i]["price"] = $ticket_price;
     }
+    return $tickets;
 }
 
 function get_info($conn, $dep_code, $dest_code) {

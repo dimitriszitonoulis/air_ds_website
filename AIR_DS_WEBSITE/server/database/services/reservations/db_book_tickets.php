@@ -68,7 +68,5 @@ function db_book_tickets($conn, $dep_code, $dest_code, $dep_date, $username, $ti
 
         $stmt->execute();
     }
-
-    return $response["success"];
 }
 ?>
