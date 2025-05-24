@@ -3,6 +3,9 @@ html {
 }
 
 body {
+    /* removes gap under the footer */
+    height:100vh;
+    
     /* background-color: #2f2f2f; */
     background-color: #323339;
     color:whitesmoke;
