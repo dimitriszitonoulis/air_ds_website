@@ -49,17 +49,24 @@ async function main() {
 
     setUpSeatValidation(passengerFieldsets);
 
-    submitBooking()
+    // submitBooking()
 
 
 }
 
 function submitBooking(passengerFieldsets) {
     const tickets = setTickets(passengerFieldsets);
+    const flightInfo = {
+        "dep_code": DEPARTURE_AIRPORT,
+        "dest_code": DESTINATION_AIRPORT,
+        "dep_date": DATE,
+        "ticket_num": TICKET_NUMBER,
+        "username": USERNAME,
+        "tickets": tickets
+
+    }
     bookTickets(tickets, BASE_URL);
 }
-
-
 
 function setUpSeatValidation(passengerFieldsets) {
     const showPricingBtn = document.getElementById('show-pricing-info-button');
@@ -74,21 +81,21 @@ function setUpSeatValidation(passengerFieldsets) {
             // if the seat is invalid break
             if (seat.innerText === "--") {
                 isAllValid = false;
-                break;    
+                break;
             }
         }
-        
+
         const errDiv = document.getElementById('show-pricing-info-button-error-message');
 
         if (isAllValid) {
             clearError(errDiv);
-            
+
             showPricingBtn.style.display = "none";
             const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
             const seatCostTable = getSeatCostTable();
             const fee = getFee(airInfo1['fee'], airInfo2['fee']);
             const flightCost = getFlightCost(distance);
-            
+
             const tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
 
             showPricingInfo();
@@ -222,13 +229,19 @@ function setUpPassengerSelection(passengerFieldsets) {
     );
 }
 
-function setTickets(passengerFieldsets, seatCostTable=null, fee=null, flightCost=null) {
+function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flightCost = null) {
     let tickets = [];
+    const names = [];
+    const surnames = [];
+    const seats = [];
     // get info about each passenger
     passengerFieldsets.forEach((fs) => {
         const name = fs.querySelector('.name').value;
         const surname = fs.querySelector('.surname').value;
         const seat = fs.querySelector('.seat-info').innerText;
+        // names.push(name);
+        // surnames.push(surname);
+        // seats.push(seat);
 
         const current = {
             "name": name,
@@ -293,15 +306,14 @@ function addPricingInfo(depAirport, destAirport, date, tickets) {
     }
 }
 
-
 function getFee(fee1, fee2) {
     return Math.round((fee1 + fee2) * 100) / 100;
     // return parseFloat(fee1 + fee2).toFixed(2);
 }
 
 function getFlightCost(distance) {
-    return Math.round((distance/10) * 100) / 100;
-//    return parseFloat((distance / 10).toFixed(2));
+    return Math.round((distance / 10) * 100) / 100;
+    //    return parseFloat((distance / 10).toFixed(2));
 }
 
 function getDistance(lat1, lon1, lat2, lon2) {
@@ -329,13 +341,12 @@ function getSeatCostTable() {
     };
 }
 
-
 function hidePricingInfo() {
     const infDiv = document.getElementById('pricing-info');
     infDiv.style.display = "none";
 }
 
-function showPricingInfo () {
+function showPricingInfo() {
     const infDiv = document.getElementById('pricing-info');
     infDiv.style.display = "flex";
 }
