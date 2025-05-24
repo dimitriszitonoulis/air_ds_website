@@ -187,6 +187,7 @@ function is_username_valid_booking($conn, $username, $response) {
     return $response['success'];
 }
 function is_tickets_valid($tickets, $response) {
-    if (!isset($tickets) || empty($tickets)) return $response["tickets"]['invalid'];
+    if (!isset($tickets) || empty($tickets)) return $response["tickets"]["invalid"];
+    if (!is_array($tickets)) return $response["tickets"]["invalid"];
     return $response["success"];
 }
