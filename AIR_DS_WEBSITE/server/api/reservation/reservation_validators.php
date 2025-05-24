@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . "/../../../config/config.php";
-require_once BASE_PATH . 'server\database\services\db_is_field_stored.php'; 
-
+require_once BASE_PATH . "server/database/services/db_is_field_stored.php"; 
+require_once BASE_PATH . "server/database/services/reservations/db_get_flight_info.php";
+require_once BASE_PATH . "server/api/auth/auth_validators.php";
 
 
 /**
@@ -24,6 +25,33 @@ function get_validators_reservation() {
             return is_departure_date_valid($params["conn"], $params["dep_code"], $params['dest_code'], $params['dep_date'], $params['response']);
         }
     ];
+}
+
+function get_validators_booking() {
+    return [
+        "dep_code" => function ($params)  {
+            return is_airport_code_valid($params["conn"], $params["dep_code"], $params['response']); 
+        },
+        "dest_code" => function ($params)  {
+            return is_airport_code_valid($params["conn"], $params["dest_code"], $params['response']); 
+        },
+        "dep_date" => function ($params) {
+            return is_departure_date_valid($params["conn"], $params["dep_code"], $params['dest_code'], $params['dep_date'], $params['response']);
+        },
+        "ticket_num" => function($params) {
+            return is_ticket_number_valid($params["conn"], $params['ticket_num'], $params["dep_code"], $params['dest_code'], $params['dep_date'], $params['response']);
+        },
+        "username" => function($params) {
+            return is_username_valid_booking($params["conn"], $params["username"], $params["response"]);
+        },
+        "tickets" => function($params) {
+            return is_tickets_valid($params["tickets"],  $params["response"]);
+        }
+    ];
+}
+
+function get_passengers_validators() {
+    return ;
 }
 
 /**
@@ -53,19 +81,6 @@ function is_airport_code_valid($conn, $code, $response) {
     return $response['success'];
 }
 
-// 0: Object { name: "Athens International Airport 'Eleftherios Venizelos'", code: "ATH" }
-// ​
-// 1: Object { name: "Brussels Airport", code: "BRU" }
-// ​
-// 2: Object { name: "Paris Charles de Gaulle Airport", code: "CDG" }
-// ​
-// 3: Object { name: "Leonardo da Vinci Rome Fiumicino Airport", code: "FCO" }
-// ​
-// 4: Object { name: "Larnaka International Airport", code: "LCA" }
-// ​
-// 5: Object { name: "Adolfo Suárez Madrid–Barajas Airport", code: "MAD" }
-
-
 /**
  * Summary of is_name_valid
  * 
@@ -81,7 +96,6 @@ function is_airport_code_valid($conn, $code, $response) {
  * @param mixed $name - the name to be validated
  * @param mixed $response - an array containing response messages
  */
-// TODO has same name as auth validator, says that it is referenced. Check if it is true
 function is_name_valid_reservation ($name, $response) {
     if(!isset($name) || empty($name)) return $response['name']['missing'];
     if(!is_only_letters($name)) return $response['name']['invalid'];
@@ -135,4 +149,44 @@ function is_departure_date_valid($conn, $dep_code, $dest_code, $dep_date, $respo
     // TODO maybe check if the flight for the specific date has empty seats
 
     return $response['success'];
+}
+
+function is_ticket_number_valid($conn, $ticket_number, $dep_code, $dest_code, $dep_date, $response) {
+    // if empty is used then the string:"0" is considered empty and the wrong response is sent
+    if (!isset($ticket_number) || trim($ticket_number) === '') 
+        return $response['ticket_num']['missing'];
+//    if (!isset($ticket_number) || empty($ticket_number)) return $response['ticket_num']['missing'];
+    if (!is_numeric($ticket_number)) return $response['ticket_num']['invalid'];
+    if (!is_int($ticket_number)) return $response['ticket_num']['invalid'];
+    if ($ticket_number < 1) return $response['ticket_num']['invalid'];
+
+    $total_seats = 186;
+    // get number of already reserved seats from db
+    $taken_seats = 0;
+    // maybe the $dep_code, $dest_code, $dep_date are null
+    try {
+        $taken_seats = count(db_get_taken_seats($conn, $dep_code, $dest_code, $dep_date));
+    } catch (Exception $e) {
+        return $response['ticket_num']['invalid'];
+    }
+    
+    if ($total_seats - ($taken_seats + $ticket_number) < 0)
+        return $response['ticket_num']['invalid'];
+
+    return $response['success'];
+}
+
+function is_username_valid_booking($conn, $username, $response) {
+    $is_syntax = is_username_syntax_valid($username, $response);
+    if (!$is_syntax['result']) return $is_syntax;
+
+    $is_stored = is_username_stored($conn, $username, $response);
+    // if the username is not stored return error message
+    if(!$is_stored['result']) return $response['username']['invalid'];
+
+    return $response['success'];
+}
+function is_tickets_valid($tickets, $response) {
+    if (!isset($tickets) || empty($tickets)) return $response["tickets"]['invalid'];
+    return $response["success"];
 }
