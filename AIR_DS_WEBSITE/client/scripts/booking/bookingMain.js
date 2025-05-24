@@ -1,7 +1,7 @@
 import { addFullNames, fields } from "./bookingFields.js";
 import { validateRealTime, validateSubmitTime } from '../validationManager.js';
 import { isNameValid } from "./bookingValidators.js";
-import { showError } from "../displayMessages.js";
+import { clearError, showError } from "../displayMessages.js";
 import { getAirportInfo, getFullName, getTakenSeats } from "./getBookingInfo.js";
 import { createSeatMap, hideSeatMap, showSeatMap } from "./createSeatMap.js";
 import { addInfoFieldSets, fillUserInfo } from "./showNameForm.js";
@@ -89,8 +89,12 @@ function setUpSeatValidation(passengerFieldsets) {
                 break;    
             }
         }
+        
+        const errDiv = document.getElementById('show-pricing-info-button-error-message');
 
         if (isAllValid) {
+            clearError(errDiv);
+            
             showPricingBtn.style.display = "none";
             const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
             const seatCostTable = getSeatCostTable();
@@ -104,7 +108,6 @@ function setUpSeatValidation(passengerFieldsets) {
             addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets);
 
         } else {
-            const errDiv = document.getElementById('show-pricing-info-button-error-message');
             showError(errDiv, "You must select at least 1 seat for each passenger");
         }
     });
@@ -231,7 +234,7 @@ function setUpPassengerSelection(passengerFieldsets) {
     );
 }
 
-function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
+function setTickets(passengerFieldsets, seatCostTable, fee=null, flightCost=null) {
     let tickets = [];
     // get info about each passenger
     passengerFieldsets.forEach((fs) => {
@@ -242,31 +245,27 @@ function setTickets(passengerFieldsets, seatCostTable, fee, flightCost) {
         const current = {
             "name": name,
             "surname": surname,
-            "seat": seat
+            "seat": seat,
         };
 
+        if (fee !== null && flightCost !== null) {
+            // take the row number from the seat
+            const number = parseInt(seat.split('-')[1]);
+            // set the cost for each seat
+            if (number === 1 || number === 11 || number === 12) {
+                current["seatCost"] = seatCostTable['leg'];
+            }
+            else if (number > 1 && number < 11) {
+                current["seatCost"] = seatCostTable['front'];
+            }
+            else {
+                current["seatCost"] = seatCostTable['other'];
+            }
+            // set the total for the current ticket
+            current['total'] = fee + flightCost + parseFloat(current["seatCost"]);
+        }
+
         tickets.push(current);
-    });
-
-    // get seat cost info for each passenger and total const for each passenger
-    tickets.forEach((current) => {
-        const seat = current['seat'];
-        // take the row number from the seat
-        const number = parseInt(seat.split('-')[1]);
-
-        // set the cost for each seat
-        if (number === 1 || number === 11 || number === 12) {
-            current['seatCost'] = seatCostTable['leg'];
-        }
-        else if (number > 1 && number < 11) {
-            current['seatCost'] = seatCostTable['front'];
-        }
-        else {
-            current['seatCost'] = seatCostTable['other'];
-        }
-
-        // set the total for the current ticket
-        current['total'] = fee + flightCost + parseFloat(current['seatCost']);
     });
 
     return tickets;
@@ -311,6 +310,7 @@ function getFee(fee1, fee2) {
     return Math.round((fee1 + fee2) * 100) / 100;
     // return parseFloat(fee1 + fee2).toFixed(2);
 }
+
 function getFlightCost(distance) {
     return Math.round((distance/10) * 100) / 100;
 //    return parseFloat((distance / 10).toFixed(2));
