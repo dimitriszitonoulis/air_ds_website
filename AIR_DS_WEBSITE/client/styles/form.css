@@ -2,9 +2,18 @@ form {
     /* position */
     /* margin-left: 30%;
     margin-right: 30%; */
-    max-width: 900px;
+    /* this is done because when the seat map appeared the  form size changed*/
+    max-width: 500px;
     min-width: 500px;
 
+    box-sizing: border-box;
+
+}
+
+/* the form on the main page did not center correctly */
+#purchase-tickets-form {
+    max-width: 1000px;
+    min-width: 700px;
 }
 
 .field {
