@@ -94,13 +94,16 @@ function book_tickets (){
         exit;
     }
 
-    // the validation of the main content is complete
-    // now the names and seats of the passengers must be validated
-    // $field_names = array_keys($decoded_content["tickets"]);
-    // $expected_fields = ["name", "surname", "seat"];
-    // $response_message = get_response_message($expected_fields);
 
-    // $response = validate_fields($conn, $decoded_content["tickets"], $field_names, $expected_fields, $validator_parameters, $validators);
+    $dep_code = $decoded_content["dep_code"];
+    $dest_code = $decoded_content["dest_code"];
+    $dep_date = $decoded_content["dep_date"];
+    $ticket_num = $decoded_content["ticket_num"];
+    $username = $decoded_content["username"];
+    // array of arrays like: ["name" => <name>, "surname" => surname, "seat" => seat]
+    $tickets = $decoded_content["tickets"]; 
+
+
 
     
 
@@ -109,4 +112,59 @@ function book_tickets (){
     echo json_encode($response);
     exit;  
 }
+
+// assumes that tickets are validated
+function get_ticket_price($conn, $dep_code, $dest_code, $dep_date, $tickets){
+
+    $airport_info = get_info($conn, $dep_code, $dest_code);
+    $air_info1 = $airport_info[0];
+    $air_info2 = $airport_info[1];
+    $distance = get_distance($air_info1["latitude"], $air_info1['longitude'], $air_info2['latitude'], $air_info2['longitude']);
+    $fee = get_fee($air_info1["fee"], $air_info2["fee"]);
+    $flight_cost = get_flight_cost($distance);
+
+    for ($i = 0; $i < count($tickets); $i++) {
+        $seat_cost = get_seat_cost();
+    }
+
+}
+
+function get_info($conn, $dep_code, $dest_code) {
+    $airport_information = db_get_airport_information($conn, $dep_code, $dest_code);
+    return $airport_information;
+}
+
+function get_fee($fee1, $fee2) {
+    return round($fee1 + $fee2, 2);
+}
+        
+function get_flight_cost($distance) {
+    return round($distance / 10, 2);
+}
+
+function get_seat_cost($seat) {
+    $parts = explode("-", $seat);
+
+}
+
+function get_distance($lat1, $lon1, $lat2, $lon2) {
+    // Earth's radius in kilometers
+    $R = 6371e3;
+
+    // Convert degrees to radians
+    $f1 = deg2rad($lat1);
+    $f2 = deg2rad($lat2);
+    $df = deg2rad($lat2 - $lat1);
+    $dth = deg2rad($lon2 - $lon1);
+
+    $a = sin($df / 2) ** 2 + cos($f1) * cos($f2) * sin($dth / 2) ** 2;
+
+    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+    // Distance in kilometers
+    $d = $R * $c;
+
+    return $d / 1000;
+}
+
 ?>
