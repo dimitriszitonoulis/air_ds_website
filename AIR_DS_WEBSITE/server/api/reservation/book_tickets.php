@@ -102,9 +102,16 @@ function book_tickets (){
     $username = $decoded_content["username"];
     // array of arrays like: ["name" => <name>, "surname" => surname, "seat" => seat]
     $tickets = $decoded_content["tickets"]; 
+    get_ticket_price($conn, $dep_code, $dest_code, $tickets);
 
-
-
+    try {
+        $response = db_book_tickets($conn, $dep_code, $dest_code, $dep_date, $username, $tickets, $response);
+    } catch (Exception $e) {
+        $response = $response_message['failure']['nop'];
+        http_response_code($response['http_response_code']);
+        echo json_encode($response);
+        exit;  
+    }
     
 
     // $response['airport_info'] = $airport_information;
@@ -114,8 +121,8 @@ function book_tickets (){
 }
 
 // assumes that tickets are validated
-function get_ticket_price($conn, $dep_code, $dest_code, $dep_date, $tickets){
-
+// adds a column with the key: "price" to the $tickets array
+function get_ticket_price($conn, $dep_code, $dest_code, $tickets){
     $airport_info = get_info($conn, $dep_code, $dest_code);
     $air_info1 = $airport_info[0];
     $air_info2 = $airport_info[1];
@@ -124,9 +131,10 @@ function get_ticket_price($conn, $dep_code, $dest_code, $dep_date, $tickets){
     $flight_cost = get_flight_cost($distance);
 
     for ($i = 0; $i < count($tickets); $i++) {
-        $seat_cost = get_seat_cost();
+        $seat_cost = get_seat_cost($tickets[$i]["seat"]);
+        $ticket_price = $fee + $flight_cost + $seat_cost;
+        $tickets[$i]["price"] = $ticket_price;
     }
-
 }
 
 function get_info($conn, $dep_code, $dest_code) {
@@ -144,7 +152,14 @@ function get_flight_cost($distance) {
 
 function get_seat_cost($seat) {
     $parts = explode("-", $seat);
+    $seat_number = $parts[1];
+    $cost = 0;
 
+    if ($seat_number == 1 || $seat_number == 11 || $seat_number == 12) $cost = 20;
+    else if ($seat_number > 1 && $seat_number < 11) $cost = 10;
+    else $cost = 0;
+
+    return $cost;
 }
 
 function get_distance($lat1, $lon1, $lat2, $lon2) {
