@@ -21,7 +21,6 @@ require_once BASE_PATH . "config/messages.php";
  * @return array{message: string, result: bool}
  */
 function validate_fields($conn, $decoded_content, $field_names, $expected_fields, $validator_params, $validators) {
-
     $response = get_response_message($expected_fields);
 
     $is_payload_valid_response = is_payload_valid(  $decoded_content, $field_names, $expected_fields, $response);
@@ -99,7 +98,7 @@ function apply_validators($decoded_content, $fields, $response, $validators, $pa
         $params[$field] = $decoded_content[$field];
         $validator_response = $validators[$field]($params);
 
-        // no need to unset the key it beacuse $params is pass by reference not value (does not add overhead)
+        // no need to unset the key it because $params is pass by reference not value (does not add overhead)
         // In no way must username be unset because it is needed  for password
 
         // if a field is invalid do not continue with the other checks
