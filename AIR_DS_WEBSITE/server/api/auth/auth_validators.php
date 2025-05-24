@@ -22,7 +22,7 @@ function get_validators_register() {
             return is_name_valid($params["surname"], $params['response']); 
         },
         "username" => function ($params) {
-            return is_username_valid_register($params["conn"], $params["username"], $params['response']);
+            return is_username_valid($params["conn"], $params["username"], $params['response']);
         },
         "password" => function ($params) {
             return is_password_syntax_valid($params["password"], $params['response']); 
