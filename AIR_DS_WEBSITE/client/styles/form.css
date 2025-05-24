@@ -7,7 +7,6 @@ form {
 
 }
 
-
 .field {
     /* border */
     border: solid;
@@ -58,7 +57,7 @@ input, select {
 /* in the book_flight.php
  in order to center the button */
 #choose-seats-div {
-    display :flex;
+    display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
