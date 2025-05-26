@@ -4,31 +4,27 @@ require_once BASE_PATH . "config/messages.php";
 require_once BASE_PATH . "server/database/db_utils/db_connect.php";
 require_once BASE_PATH . "server/api/validation_manager.php";
 require_once BASE_PATH . "server/api/reservation/reservation_validators.php";
-// require_once BASE_PATH . "server/database/services/reservations/db_get_flight_info.php";
-// require_once BASE_PATH . "server/database/services/reservations/db_book_tickets.php";
 require_once BASE_PATH . "server/database/services/trips/db_get_trips.php";
 
 get_trips();
 
-//TODO update documentation
 /**
- * Summary of get_airport_info
+ * Summary of get_trips
  * 
  * This function is an AJAX end point
  * 
- * It receives the codes of 2 airports.
- * It returns details about them.
+ * It receives the username of a registered user.
+ * It returns all the trips that user has made, newest trip 1st.
  * 
- * The airport codes and the date are received as a JSON like: 
+ * The username is received as a JSON like: 
  * {
- *  dep_code: <departure airport code>,
- *  dest_code: <destination airport code>,
+ *  username: <username>,
  * }
  * 
  * 
- * It is responsible to receive the fetch request by the client (departure code, destination code).
+ * It is responsible to receive the fetch request by the client (username).
  * Validate the input using the validation manager and validation functions.
- * Call the function that returns the information about those airports.
+ * Call the function that returns the trip about the user with the specified username.
  * Send the data back to the client.
  * 
  * If at any point something goes wrong an error message is sent
@@ -42,8 +38,19 @@ get_trips();
  *  result => boolean,
  *  message => string
  *  http_response_code => int
- *  airport_info => array containing the information about the specified airports
+ *  trips => array containing the trips that user has made
  * ]
+ * 
+ * the trips are an array like:
+ * [
+ *  departure_airport => <departure aiport code>,
+ *  destination_airport => <destination airport code,
+ *  date => <departure date>,
+ *  name => <name>,
+ *  surname => <surname>,
+ *  seat => <seat code>,
+ *  price => <ticket price>
+ * ] 
  * 
  * @return never
  */
@@ -93,12 +100,10 @@ function get_trips (){
 
     try {
         $trips = db_get_trips($conn, $decoded_content["username"]);
-        // echo json_encode(['trips' => $trips]);
     } catch (Exception $e) {
         $response = $response_message['failure']['nop'];
         http_response_code($response['http_response_code']);
         echo json_encode($response);
-        // echo json_encode($e);
         exit;  
     }
     
