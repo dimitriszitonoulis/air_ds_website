@@ -118,7 +118,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
       </table>
 
       <table id="passenger-info-table">
-        <tr>
+        <tr id="passenger-info-header-row">
           <th>Name</th>
           <th>Surname</th>
           <th>Seat</th>
