@@ -11,23 +11,22 @@ const TICKET_NUMBER = 2;
 const USERNAME = "giog";    // the username must be taken from the session variable
 const DEPARTURE_AIRPORT = "ATH";
 const DESTINATION_AIRPORT = "BRU";
-const DATE = "2025-05-25 00:00:00";
+const DATE = "2025-06-05 00:00:00";
 
 // get info about distances from the db
 const airport_codes = {
     "dep_code": DEPARTURE_AIRPORT,
     "dest_code": DESTINATION_AIRPORT
 }
-const info = await getAirportInfo(airport_codes, BASE_URL);
-const airInfo1 = info[0];
-const airInfo2 = info[1];
+const INFO = await getAirportInfo(airport_codes, BASE_URL);
+const AIR_INFO1 = INFO[0];
+const AIR_INFO2 = INFO[1];
 
 // THESE MUST BE GLOBAL
 // for seat selection
-let curSeatDiv = null;
-let selectedSeats = [];
+let CURR_SEAT_DIV = null;
+let SELECTED_SEATS = [];
 
-// let tickets = [];
 
 
 main()
@@ -90,10 +89,10 @@ function setUpSeatValidation(passengerFieldsets) {
         if (isAllValid) {
             clearError(errDiv);
 
-            showPricingBtn.style.display = "none";
-            const distance = getDistance(airInfo1['latitude'], airInfo1['longitude'], airInfo2['latitude'], airInfo2['longitude']);
+            // showPricingBtn.style.display = "none";
+            const distance = getDistance(AIR_INFO1['latitude'], AIR_INFO1['longitude'], AIR_INFO2['latitude'], AIR_INFO2['longitude']);
             const seatCostTable = getSeatCostTable();
-            const fee = getFee(airInfo1['fee'], airInfo2['fee']);
+            const fee = getFee(AIR_INFO1['fee'], AIR_INFO2['fee']);
             const flightCost = getFlightCost(distance);
 
             const tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
@@ -126,35 +125,35 @@ async function setUpSeatMap(depAirport, destAirport, depDate) {
         seat.addEventListener('click', (e) => {
             // if no passengers are selected nop
             // ONLY when a passenger is selected, can a seat be selected
-            if (curSeatDiv === null) return;
+            if (CURR_SEAT_DIV === null) return;
 
             // if the user tries to select a seat for a specific person,
             // and they click 2 times on the same seat, de-select the seat
-            if (curSeatDiv.innerText === seat.id) {
+            if (CURR_SEAT_DIV.innerText === seat.id) {
                 seat.style.backgroundColor = "";
-                curSeatDiv.innerText = "--";
-                const i = selectedSeats.indexOf(seat.id);   // find index of element to be removed
-                selectedSeats.splice(i, 1);                 // remove 1 element from  selectedSeats at the selected index
+                CURR_SEAT_DIV.innerText = "--";
+                const i = SELECTED_SEATS.indexOf(seat.id);   // find index of element to be removed
+                SELECTED_SEATS.splice(i, 1);                 // remove 1 element from  selectedSeats at the selected index
                 return;
             }
 
             // if the seat for the current passenger already has a value, 
             // and the same passenger tries to select another seat, do not let them
             // They MUST  first deselect that  seat and then choose another
-            if (curSeatDiv.innerText !== "--") {
+            if (CURR_SEAT_DIV.innerText !== "--") {
                 return;
             }
 
             // if a seat is selected by another passenger,
             // do not re-select it
-            if (selectedSeats.includes(seat.id)) {
+            if (SELECTED_SEATS.includes(seat.id)) {
                 console.log("already included");
                 return;
             }
 
             seat.style.backgroundColor = "#93C572";
-            curSeatDiv.innerText = seat.id;
-            selectedSeats.push(seat.id);
+            CURR_SEAT_DIV.innerText = seat.id;
+            SELECTED_SEATS.push(seat.id);
         }));
 
 }
@@ -209,9 +208,9 @@ function setUpPassengerSelection(passengerFieldsets) {
     passengerFieldsets.forEach((curFieldset) =>
         curFieldset.addEventListener('click', (e) => {
             // if the current fieldset is already selected de-select it 
-            if (curSeatDiv === curFieldset.querySelector(".seat-info")) {
+            if (CURR_SEAT_DIV === curFieldset.querySelector(".seat-info")) {
                 curFieldset.style.backgroundColor = "";
-                curSeatDiv = null;
+                CURR_SEAT_DIV = null;
                 return;
             }
             // TODO when the last information button is clicked for the price  
@@ -224,7 +223,7 @@ function setUpPassengerSelection(passengerFieldsets) {
             curFieldset.style.backgroundColor = "#93C572";
 
             // store the seat info div that is child of the current fieldset
-            curSeatDiv = curFieldset.querySelector(".seat-info");
+            CURR_SEAT_DIV = curFieldset.querySelector(".seat-info");
         })
     );
 }
@@ -240,7 +239,7 @@ function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flight
         const surname = fs.querySelector('.surname').value;
         const seat = fs.querySelector('.seat-info').innerText;
         // names.push(name);
-        // surnames.push(surname);
+        // surnames.push(surname);  
         // seats.push(seat);
 
         const current = {
@@ -281,6 +280,11 @@ function addPricingInfo(depAirport, destAirport, date, tickets) {
     }
 
     const table = document.getElementById('passenger-info-table');
+    const headerRow = document.getElementById('passenger-info-header-row');
+    // in case the user wants to re-select seats, empty the previous results
+
+    table.innerHTML = "";
+    table.appendChild(headerRow);
 
     // get the columns for the flight information
     const depCol = document.getElementById('departure-airport')
