@@ -1,12 +1,24 @@
-
-// TODO fix documentation
 /**
  * 
- * This function gets username of the logged in user and 
+ * This function gets the username of the logged in user and 
  * returns trips made by that user
  * 
  * values = {
  *      'username': <username>,
+ * }
+ * 
+ * 
+ * The api returns a JSON like: 
+ * 
+ * {
+ * 
+ *      "departure_airport": <departure aiport code>,
+ *      "destination_airport": <destination airport code,
+ *      "date": <departure date>,
+ *      "name": <name>,
+ *      "surname": <surname>,
+ *      "seat": <seat code>,
+ *      "price": <ticket price>
  * }
  * 
  * @param {object} values - object containing the username
@@ -15,7 +27,7 @@
  */
 export async function getTakenSeats (values, BASE_URL) {
 
-    const url = `${BASE_URL}server/api/reservation/get_taken_seats.php`;
+    const url = `${BASE_URL}server/api/trips/get_trips.php`;
 
     try {
         const response = await fetch(url, {
@@ -33,10 +45,7 @@ export async function getTakenSeats (values, BASE_URL) {
 
         console.log("Fetch succesful return data:", data)
 
-        // if the user is registered this is true, otherwise false
         return data;
-
-        
     } catch (error) {
         console.error("Error fetching data: ", error);
         return false;
