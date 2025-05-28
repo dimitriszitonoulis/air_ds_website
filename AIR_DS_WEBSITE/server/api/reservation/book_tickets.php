@@ -91,12 +91,6 @@ function book_tickets (){
         exit;
     }
 
-    // // TODO delete later
-    // http_response_code(200);
-    // // echo [var_dump($decoded_content)];
-    // echo json_encode(["result" => false, "message" => "HERE"]);
-    // exit;
-
     $dep_code = $decoded_content["dep_code"];
     $dest_code = $decoded_content["dest_code"];
     $dep_date = $decoded_content["dep_date"];
@@ -107,22 +101,12 @@ function book_tickets (){
     // add the price of each ticket ass an extra column
     $tickets = get_ticket_price($conn, $dep_code, $dest_code, $tickets);
 
-
-
-    // // TODO delete later
-    // http_response_code(200);
-    // echo [var_dump($tickets)];
-    // // echo json_encode(["result" => false, "message" => "HERE"]);
-    // exit;
-
-
     try {
         db_book_tickets($conn, $dep_code, $dest_code, $dep_date, $username, $tickets, $response);
     } catch (Exception $e) {
         $response = $response_message['failure']['nop'];
         http_response_code($response['http_response_code']);
-        // echo json_encode($response);
-        echo json_encode($e);
+        echo json_encode($response);
         exit;  
     }
     
