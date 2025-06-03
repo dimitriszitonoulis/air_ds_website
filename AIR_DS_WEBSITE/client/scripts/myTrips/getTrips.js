@@ -45,7 +45,7 @@ export async function getTrips (values, BASE_URL) {
 
         console.log("Fetch succesful return data:", data)
 
-        return data;
+        return data['trips'];
     } catch (error) {
         console.error("Error fetching data: ", error);
         return false;
