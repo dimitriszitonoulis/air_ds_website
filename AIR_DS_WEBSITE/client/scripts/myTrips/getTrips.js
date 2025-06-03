@@ -25,7 +25,7 @@
  * @param {String} BASE_URL - a string containing the base url
  * @returns {object} - an object like: {'name': <name>, 'surname': <surname>}
  */
-export async function getTakenSeats (values, BASE_URL) {
+export async function getTrips (values, BASE_URL) {
 
     const url = `${BASE_URL}server/api/trips/get_trips.php`;
 
