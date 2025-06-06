@@ -32,6 +32,7 @@ db_initialize();
       <fieldset>
         <!-- departure aiport select field -->
         <div class="field">
+          <!-- TODO close name and surname into div and seat into seperate div -->
           <label class="airport-label" for="departure-airport-input">Select the departure airport</label>
           <br>
           <!-- gets filled with js -->

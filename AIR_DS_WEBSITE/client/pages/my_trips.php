@@ -28,6 +28,8 @@ require_once BASE_PATH . "client\includes\start_session.php";
   <main>
     <div id="trips-info">
 
+      <h2>No trips to show</h2>
+
       <table id="passenger-trips-header-row">
         <tr>
           <th>Departure</th>
@@ -57,7 +59,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
   <?php include_once BASE_PATH . 'client/includes/footer.php' ?>
 
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
-  <script type="module" src="<?= BASE_URL ?>client/scripts/booking/bookingMain.js"></script>
+  <script type="module" src="<?= BASE_URL ?>client/scripts/myTrips/myTripsMain.js"></script>
 </body>
 
 </html>

@@ -36,7 +36,7 @@ export async function getFullName(values, BASE_URL) {
 
 /**
  * 
- * This function gets the departure airport code, the destination arirport code and the deparure date and 
+ * This function gets the departure airport code, the destination airport code and the deparure date and 
  * returns the taken seats for the flight specified by those values
  * 
  * values = {
@@ -77,6 +77,7 @@ export async function getTakenSeats (values, BASE_URL) {
         return false;
     }
 }
+
  /**
  * values = {
  *      'dep_code': <departure airtport code>,

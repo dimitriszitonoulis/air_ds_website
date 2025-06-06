@@ -271,7 +271,6 @@ function is_seats_valid($conn, $seats, $dep_code, $dest_code, $dep_date, $respon
 function is_name_syntax_valid_reservation ($name, $response) {
     if(!isset($name) || empty($name)) return $response['name']['missing'];
     if(!is_only_letters($name)) return $response['name']['invalid'];
-    // TODO uncomment later
-    // if (strlen($name) < 3 || strlen($name) > 20) return $response['name']['invalid'];
+    if (strlen($name) < 3 || strlen($name) > 20) return $response['name']['invalid'];
     return $response['success'];
 }

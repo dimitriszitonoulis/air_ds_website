@@ -7,7 +7,7 @@ require_once BASE_PATH . "config/config.php";
 <header id="header">
   <nav>
     <a href="<?= BASE_URL . "client/pages/home.php"?>">Home</a>
-    <a>My Trips</a>
+    <a href="<?= BASE_URL . "client/pages/my_trips.php"?>">My Trips</a>
 
     <?php 
       if (!isset($_SESSION["userId"])) { 

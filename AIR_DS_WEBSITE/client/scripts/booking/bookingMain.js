@@ -48,6 +48,7 @@ async function main() {
 
     setUpSeatValidation(passengerFieldsets);
 
+    // TODO book seats
     // submitBooking()
 
 
@@ -62,7 +63,6 @@ function submitBooking(passengerFieldsets) {
         "ticket_num": TICKET_NUMBER,
         "username": USERNAME,
         "tickets": tickets
-
     }
     bookTickets(tickets, BASE_URL);
 }

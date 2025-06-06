@@ -1,7 +1,6 @@
 import { validateSubmitTime, validateRealTime } from "../validationManager.js";
 import { showMessage, clearError, showError, showRedirectMessage } from "../displayMessages.js";
 import { getTrips } from "./getTrips.js";
-import { createElement } from "react";
 
 //TODO remove later
 const USERNAME = "giog";    // the username must be taken from the session variable
@@ -9,6 +8,7 @@ const USERNAME = "giog";    // the username must be taken from the session varia
 const infoDiv = document.getElementById('trips-info');
 const values = {"username": USERNAME};
 
+// fetch db api for trips
 const trips = await getTrips(values, BASE_URL);
 
 if (trips === null) {
@@ -18,11 +18,12 @@ if (trips === null) {
 }
 
 
+const table = document.createElement('table');
+
 for (const trip of trips) {
-    const table = document.createElement('table');
 
     const tripRowHeader = document.createElement('tr');
-    const tripRow = document.createElement('tr');       // constains info about the trip like the destination
+    const tripRow = document.createElement('tr');       // constains info about the trip, e.x. the destination
 
     const passengerHeader = document.createElement('tr');
     const passengerRow = document.createElement('tr');  // contains info about the passengers
@@ -36,9 +37,6 @@ for (const trip of trips) {
     // const surnameHeading = document.createElement('th');
     // const seatHeading = document.createElement('th');
     // const seatPriceHeading = document.createElement('th');
-
-
-
 
 
 
@@ -59,26 +57,61 @@ for (const trip of trips) {
     // passengerHeader.appendChild(dateHeading);
 
 
+    addTripRowHeaders(tripRowHeader);
+    addTripRowValues(tripRow, trip);
 
 
-
-
-
+    table.appendChild(tripRowHeader);
+    table.appendChild(tripRow);
 }
+const main = document.querySelector('main');
+main.appendChild(table);
 
+/**
+ *  Adds <th> elements to the given <tr> element for:
+ * - The departure airport
+ * - The destination airport 
+ * - The day of the flights
+ * 
+ * IMPORTANT 
+ * the order by which the <th> elements are added 
+ * should be the same as the order by which the td items are added later
+ * 
+ * 
+ * @param {HTMLTableRowElement} row - the row where the <th> elements for the trips are to be added 
+ */
 function addTripRowHeaders(row) {
     const departureHeading = getTableHeader("Departure");
     const destinationHeading = getTableHeader("Destination");
     const dateHeading = getTableHeader("Date");
 
     row.appendChild(departureHeading);
-    row.appendChild(destinationHeader);
+    row.appendChild(destinationHeading);
     row.appendChild(dateHeading);
-
 }
 
-function addTripRowValues(row, trips) {
-    
+/**
+ * Adds <td> elements to the given <tr> element for:
+ * - The departure airport
+ * - The destination airport 
+ * - The day of the flights
+ * 
+ * IMPORTANT 
+ * the order by which the <td> elements are added 
+ * should be the same as the order by which the <th> elements where added before
+ * 
+ * @param {HTMLTableRowElement} row - the row where the <td> elements for the trip are to be added
+ * @param {JSON} trip - a JSON containing the information for a trip
+ */
+function addTripRowValues(row, trip) {
+    // the rows must be added at the same order as the corresponding row headers
+    const depAirport = getTableDataCell(trip['departure_airport']);
+    const destAirport = getTableDataCell(trip['destination_airport']);
+    const date = getTableDataCell(trip['date']);
+
+    row.appendChild(depAirport);
+    row.appendChild(destAirport);
+    row.appendChild(date);
 }
 
 function addPassengerRowHeaders(row) {
@@ -95,12 +128,16 @@ function addPassengerRowHeaders(row) {
     row.appendChild(costHeading);
 }
 
-
-
 function getTableHeader(text) {
     const th = document.createElement('th');
     th.innerText = text;
     return th;
+}
+
+function getTableDataCell(text) {
+    const td = document.createElement('td');
+    td.innerText = text;
+    return td;
 }
 
 /* <table id="passenger-trips-header-row">
