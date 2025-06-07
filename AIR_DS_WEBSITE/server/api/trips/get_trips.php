@@ -144,7 +144,7 @@ function get_trips (){
  * 
  * And turn them to:
  * current_trip = [
- *  trip_info => [dest => asdf, dep=> adsf, date =>asdf],
+ *  flight_info => [dest => asdf, dep=> adsf, date =>asdf],
  *  passengers[
  *      [
  *          name: 'fdfdf',
@@ -167,7 +167,7 @@ function get_trips (){
  * This means that the rows of the database must be sorted by those 3 columns
  * 
  * @param mixed $trips
- * @return array{passengers: array, trip_info: array}
+ * @return array{passengers: array, flight_info: array}
  * 
  */
 function format_trips($trips) {
@@ -177,7 +177,7 @@ function format_trips($trips) {
         // initialize $formated_trips
         if (empty($formated_trips)) {
             $formated_trips[] = [
-                'trip_info' => [
+                'flight_info' => [
                     'departure_airport' => $trip['departure_airport'],
                     'destination_airport' => $trip['destination_airport'],
                     'date' => $trip['date']
@@ -196,12 +196,12 @@ function format_trips($trips) {
 
         // get the trip info for the last element
         $last_index = array_key_last($formated_trips);
-        // $trip_info = $formated_trips[$last_index];
+        // $flight_info = $formated_trips[$last_index];
 
         // extract trip info
-        $dep_airport = $formated_trips[$last_index]['trip_info']['departure_airport'];
-        $dest_airport = $formated_trips[$last_index]['trip_info']['destination_airport'];
-        $date = $formated_trips[$last_index]['trip_info']['date'];
+        $dep_airport = $formated_trips[$last_index]['flight_info']['departure_airport'];
+        $dest_airport = $formated_trips[$last_index]['flight_info']['destination_airport'];
+        $date = $formated_trips[$last_index]['flight_info']['date'];
 
         // if at least one different, then it is a different flight
         // add new entry to $current_trip
@@ -211,7 +211,7 @@ function format_trips($trips) {
         )
         {
             $formated_trips[] = [
-                "trip_info" => [
+                "flight_info" => [
                     'departure_airport' => $trip['departure_airport'],
                     'destination_airport' => $trip['destination_airport'],
                     'date' => $trip['date']
