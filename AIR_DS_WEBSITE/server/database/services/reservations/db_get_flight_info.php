@@ -103,7 +103,7 @@ function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=nu
 
     return $result;
 }
-// TODO maybe return more details and reuse function
+
 function db_get_airport_information($conn, $dep_code = null, $dest_code = null) {
      // if no departure airport code is provided
     if ($dep_code === null)
