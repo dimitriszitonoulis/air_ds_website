@@ -54,8 +54,6 @@ function get_validators_booking() {
     ];
 }
 
-
-
 /**
  * Summary of is_airport_code_correct
  * 
@@ -246,8 +244,6 @@ function is_seats_valid($conn, $seats, $dep_code, $dest_code, $dep_date, $respon
 
     return $response["success"];
 }
-
-
 
 /**
  * Summary of is_name_valid
