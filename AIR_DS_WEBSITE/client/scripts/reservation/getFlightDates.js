@@ -121,19 +121,6 @@ async function fetchFlights(depCode, destCode) {
     }
 }
 
-// 0: Object { name: "Athens International Airport 'Eleftherios Venizelos'", code: "ATH" }
-// ​
-// 1: Object { name: "Brussels Airport", code: "BRU" }
-// ​
-// 2: Object { name: "Paris Charles de Gaulle Airport", code: "CDG" }
-// ​
-// 3: Object { name: "Leonardo da Vinci Rome Fiumicino Airport", code: "FCO" }
-// ​
-// 4: Object { name: "Larnaka International Airport", code: "LCA" }
-// ​
-// 5: Object { name: "Adolfo Suárez Madrid–Barajas Airport", code: "MAD" }
-
-
 // take string and keep what is inside parentheses
 function getCode(str) {
     const regex = /\(([^)]+)\)/;
