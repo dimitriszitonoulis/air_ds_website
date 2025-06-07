@@ -3,13 +3,18 @@ import { showMessage, clearError, showError, showRedirectMessage } from "../disp
 import { getTrips } from "./getTrips.js";
 
 //TODO remove later
-const USERNAME = "giog";    // the username must be taken from the session variable
+// const USERNAME = "giog";    // the username must be taken from the session variable
+const USERNAME = "Dim";
 
+const table = document.createElement('table');
 const infoDiv = document.getElementById('trips-info');
 const values = {"username": USERNAME};
 
 // fetch db api for trips
 const trips = await getTrips(values, BASE_URL);
+
+
+// const airportInfo = await getAirportInfo(airport_codes, BASE_URL);
 
 if (trips === null) {
     const h2 = document.createElement('h2');
@@ -18,51 +23,23 @@ if (trips === null) {
 }
 
 
-const table = document.createElement('table');
 
 for (const trip of trips) {
 
     const tripRowHeader = document.createElement('tr');
     const tripRow = document.createElement('tr');       // constains info about the trip, e.x. the destination
 
-    const passengerHeader = document.createElement('tr');
+    const passengerRowHeader = document.createElement('tr');
     const passengerRow = document.createElement('tr');  // contains info about the passengers
 
-    // const departureHeading = document.createElement('th');
-    // const destHeading = document.createElement('th');
-
-    // const dateHeading = document.createElement('th');
-    // const costHeading = document.createElement('th');
-    // const nameHeading = document.createElement('th');
-    // const surnameHeading = document.createElement('th');
-    // const seatHeading = document.createElement('th');
-    // const seatPriceHeading = document.createElement('th');
-
-
-
-
-
-    // const departureHeading = getTableHeader("Departure");
-    // const destinationHeading = getTableHeader("Destination");
-    // const dateHeading = getTableHeader("Date");
-
-    // const nameHeading = getTableHeader("Name");
-    // const surnameHeading = getTableHeader("Surname");
-    // const seatHeading = getTableHeader("Seat");
-    // const seatPriceHeading = getTableHeader("Seat Cost");
-    // const costHeading = getTableHeader("Total Cost");
-
-    // passengerHeader.appendChild(departureHeading);
-    // passengerHeader.appendChild(destinationHeader);
-    // passengerHeader.appendChild(dateHeading);
-
-
     addTripRowHeaders(tripRowHeader);
-    addTripRowValues(tripRow, trip);
+    addTripRowValues(tripRow, trip['flight_info']['departure_airport'], trip['flight_info']['destination_airport'], trip['flight_info']['date'])
 
+    addPassengerRowHeaders(passengerRowHeader);
 
     table.appendChild(tripRowHeader);
     table.appendChild(tripRow);
+    table.appendChild(passengerRowHeader);
 }
 const main = document.querySelector('main');
 main.appendChild(table);
@@ -72,6 +49,8 @@ main.appendChild(table);
  * - The departure airport
  * - The destination airport 
  * - The day of the flights
+ * - The airport fee
+ * - The flight cost
  * 
  * IMPORTANT 
  * the order by which the <th> elements are added 
@@ -84,10 +63,14 @@ function addTripRowHeaders(row) {
     const departureHeading = getTableHeader("Departure");
     const destinationHeading = getTableHeader("Destination");
     const dateHeading = getTableHeader("Date");
-
+    const fee = getTableHeader("Airport Fee");
+    const flighCost = getTableHeader("Flight Cost");
+    
     row.appendChild(departureHeading);
     row.appendChild(destinationHeading);
     row.appendChild(dateHeading);
+    row.appendChild(fee);
+    row.appendChild(flighCost);
 }
 
 /**
@@ -101,13 +84,15 @@ function addTripRowHeaders(row) {
  * should be the same as the order by which the <th> elements where added before
  * 
  * @param {HTMLTableRowElement} row - the row where the <td> elements for the trip are to be added
- * @param {JSON} trip - a JSON containing the information for a trip
+ * @param {string} depAirportValue - string containing the value for the departure airport
+ * @param {string} destAirportValue - string containing the value for the destination airport
+ * @param {string} dateValue - string containing the value for the date
  */
-function addTripRowValues(row, trip) {
+function addTripRowValues(row, depAirportValue, destAirportValue, dateValue) {
     // the rows must be added at the same order as the corresponding row headers
-    const depAirport = getTableDataCell(trip['departure_airport']);
-    const destAirport = getTableDataCell(trip['destination_airport']);
-    const date = getTableDataCell(trip['date']);
+    const depAirport = getTableDataCell(depAirportValue);
+    const destAirport = getTableDataCell(destAirportValue);
+    const date = getTableDataCell(dateValue);
 
     row.appendChild(depAirport);
     row.appendChild(destAirport);
@@ -125,6 +110,7 @@ function addPassengerRowHeaders(row) {
     row.appendChild(surnameHeading);
     row.appendChild(seatHeading);
     row.appendChild(seatPriceHeading);
+   
     row.appendChild(costHeading);
 }
 
@@ -139,6 +125,11 @@ function getTableDataCell(text) {
     td.innerText = text;
     return td;
 }
+
+function setPricing() {
+     
+}
+
 
 /* <table id="passenger-trips-header-row">
     <tr>
