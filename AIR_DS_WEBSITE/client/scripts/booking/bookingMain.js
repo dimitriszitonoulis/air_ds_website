@@ -11,7 +11,7 @@ const TICKET_NUMBER = 2;
 const USERNAME = "giog";    // the username must be taken from the session variable
 const DEPARTURE_AIRPORT = "ATH";
 const DESTINATION_AIRPORT = "BRU";
-const DATE = "2025-06-05 00:00:00";
+const DATE = "2025-06-26 00:00:00";
 
 // get info about distances from the db
 const airport_codes = {
@@ -54,8 +54,14 @@ async function main() {
 
 }
 
+// TODO implement
 function submitBooking(passengerFieldsets) {
+    // TODO
+    // ATTENTION
+    // only send passenger name, surname and seat
+    // NOT PRICING INFO
     const tickets = setTickets(passengerFieldsets);
+    
     const flightInfo = {
         "dep_code": DEPARTURE_AIRPORT,
         "dest_code": DESTINATION_AIRPORT,
@@ -64,49 +70,12 @@ function submitBooking(passengerFieldsets) {
         "username": USERNAME,
         "tickets": tickets
     }
-    bookTickets(tickets, BASE_URL);
+
+    // TODO implement
+    bookTickets(flightInfo, BASE_URL);
 }
 
-function setUpSeatValidation(passengerFieldsets) {
-    const showPricingBtn = document.getElementById('show-pricing-info-button');
-    showPricingBtn.addEventListener('click', (e) => {
 
-        // removePricingInfo();
-        let isAllValid = true;
-
-        // loop through the fieldsets and get the selected seat
-        for (const fs of passengerFieldsets) {
-            const seat = fs.querySelector('.seat-info');
-            // if the seat is invalid break
-            if (seat.innerText === "--") {
-                isAllValid = false;
-                break;
-            }
-        }
-
-        const errDiv = document.getElementById('show-pricing-info-button-error-message');
-
-        if (isAllValid) {
-            clearError(errDiv);
-
-            // showPricingBtn.style.display = "none";
-            const distance = getDistance(AIR_INFO1['latitude'], AIR_INFO1['longitude'], AIR_INFO2['latitude'], AIR_INFO2['longitude']);
-            const seatCostTable = getSeatCostTable();
-            const fee = getFee(AIR_INFO1['fee'], AIR_INFO2['fee']);
-            const flightCost = getFlightCost(distance);
-
-            const tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
-
-            showPricingInfo();
-
-            addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets);
-
-        } else {
-            showError(errDiv, "You must select at least 1 seat for each passenger");
-        }
-    });
-
-}
 
 
 function setUpPassengers(username, ticketNumber, fields, baseUrl) {
@@ -200,9 +169,9 @@ function setUpFieldValidation(passengerFieldsets) {
 function setUpPassengerSelection(passengerFieldsets) {
     // make name and surname read only
     const name = document.querySelectorAll('.name')
-        .forEach((input) => input.readOnly = true);
+                         .forEach((input) => input.readOnly = true);
     const surname = document.querySelectorAll('.surname')
-        .forEach((input) => input.readOnly = true);
+                            .forEach((input) => input.readOnly = true);
 
     // add event listeners to all passenger fieldsets
     passengerFieldsets.forEach((curFieldset) =>
@@ -228,6 +197,47 @@ function setUpPassengerSelection(passengerFieldsets) {
     );
 }
 
+function setUpSeatValidation(passengerFieldsets) {
+    const showPricingBtn = document.getElementById('show-pricing-info-button');
+    showPricingBtn.addEventListener('click', (e) => {
+
+        // removePricingInfo();
+        let isAllValid = true;
+
+        // loop through the fieldsets and get the selected seat
+        for (const fs of passengerFieldsets) {
+            const seat = fs.querySelector('.seat-info');
+            // if the seat is invalid break
+            if (seat.innerText === "--") {
+                isAllValid = false;
+                break;
+            }
+        }
+
+        const errDiv = document.getElementById('show-pricing-info-button-error-message');
+
+        if (isAllValid) {
+            clearError(errDiv);
+            // showPricingBtn.style.display = "none";
+            const distance = getDistance(AIR_INFO1['latitude'], AIR_INFO1['longitude'], AIR_INFO2['latitude'], AIR_INFO2['longitude']);
+            const seatCostTable = getSeatCostTable();
+            const fee = getFee(AIR_INFO1['fee'], AIR_INFO2['fee']);
+            const flightCost = getFlightCost(distance);
+
+            const tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
+
+            showPricingInfo();
+
+            addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets);
+
+        } else {
+            showError(errDiv, "You must select at least 1 seat for each passenger");
+        }
+    });
+
+}
+
+
 function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flightCost = null) {
     let tickets = [];
     const names = [];
@@ -248,7 +258,7 @@ function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flight
             "seat": seat,
         };
 
-        if (seatCostTable !== null, fee !== null && flightCost !== null) {
+        if (seatCostTable !== null && fee !== null && flightCost !== null) {
             // take the row number from the seat
             const number = parseInt(seat.split('-')[1]);
             // set the cost for each seat
