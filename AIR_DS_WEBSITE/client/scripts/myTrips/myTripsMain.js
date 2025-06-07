@@ -2,13 +2,14 @@ import { validateSubmitTime, validateRealTime } from "../validationManager.js";
 import { showMessage, clearError, showError, showRedirectMessage } from "../displayMessages.js";
 import { getTrips } from "./getTrips.js";
 import { getAirportInfo } from "../booking/getBookingInfo.js";
+import { cancelTrip } from "./cancelTrip.js";
 
 //TODO remove later
-// const USERNAME = "giog";    // the username must be taken from the session variable
-const USERNAME = "Dim";
+const USERNAME = "giog";    // the username must be taken from the session variable
+// const USERNAME = "Dim";
 
 
-main()
+await main()
 
 /**
  * Fetch the api to check if the passenger has any trips
@@ -26,9 +27,9 @@ main()
  */
 async function main() {
 
-    const table = document.createElement('table');
-    const infoDiv = document.getElementById('trips-info');
+    // const infoDiv = document.getElementById('trips-info');
     const values = {"username": USERNAME};
+    let selectedTrip = null;
 
     // fetch api for trips
     const trips = await getTrips(values, BASE_URL);
@@ -42,8 +43,54 @@ async function main() {
         return;
     }
 
+    const tripDivs = await addTripTables(trips, mainElement);
+    
+    const cancelBtn = document.createElement('button');
+    cancelBtn.id = "delete-btn";
+    cancelBtn.innerText = "Cancel trip";
+
+    tripDivs.forEach(div => {
+        div.addEventListener('click', async() => {
+            if (selectedTrip === null) {
+                div.style.backgroundColor = "#53599b";
+                selectedTrip = {
+                    "dep_code": document.querySelector(".dep-code").innerText,
+                    "dest_code": document.querySelector(".dest-code").innerText,
+                    "date": document.querySelector(".date").innerText,
+                    "username": USERNAME
+                }
+                div.appendChild(cancelBtn);
+                return;
+            }
+
+            // if an element is clicked twice de-select it 
+            div.style.backgroundColor = "";
+            selectedTrip = null;
+            div.removeChild(cancelBtn);
+        });
+    });
+
+
+    //TODO if the button is pressed refresh the page 
+    // if the trip is actually cancelled remove it from the tables 
+    cancelBtn.addEventListener('click', async() => {
+        await cancelTrip(selectedTrip, BASE_URL);
+    })
+    
+
+}
+
+//TODO delete counter
+// TODo add documentation
+async function addTripTables(trips, mainElement) {
+    let counter = 0;
+    const tripDivs = [];
 
     for (const trip of trips) {
+        const table = document.createElement('table');
+        const tripDiv = document.createElement('div');
+        tripDiv.className = "trip-info";
+
         const depAirport = trip['flight_info']['departure_airport'];
         const destAirport = trip['flight_info']['destination_airport'];
         const date = trip['flight_info']['date'];
@@ -88,10 +135,15 @@ async function main() {
             addPassengerRowValues(passengerRow, passenger, fee, flightCost);
             table.appendChild(passengerRow);
         }
+        tripDiv.appendChild(table)
+        mainElement.appendChild(tripDiv);
+        tripDivs.push(tripDiv);
 
+        if (counter > 5) break;
+        counter++;
     }
 
-    mainElement.appendChild(table);
+    return tripDivs;
 }
 
 /**
@@ -140,9 +192,9 @@ function addTripRowHeaders(row) {
  */
 function addTripRowValues(row, depAirportValue, destAirportValue, dateValue, feeValue, flightCostValue) {
     // the rows must be added at the same order as the corresponding row headers
-    const depAirport = getTableDataCell(depAirportValue);
-    const destAirport = getTableDataCell(destAirportValue);
-    const date = getTableDataCell(dateValue);
+    const depAirport = getTableDataCell(depAirportValue, "dep-code");
+    const destAirport = getTableDataCell(destAirportValue, "dest-code");
+    const date = getTableDataCell(dateValue, "date");
     const fee = getTableDataCell(feeValue);
     const flightCost = getTableDataCell(flightCostValue);
 
@@ -226,7 +278,6 @@ function addPassengerRowValues(row, passenger, feeValue, flightCostValue) {
     row.appendChild(seat.cloneNode(true));
     row.appendChild(seatPrice.cloneNode(true));
     row.appendChild(cost.cloneNode(true));
-
 }
 
 /**
@@ -244,8 +295,9 @@ function getTableHeader(text) {
  * @param {string} text 
  * @returns {HTMLTableDataCellElement} - a table data cell where innerText = the value of the input value
  */
-function getTableDataCell(text) {
+function getTableDataCell(text, className=null) {
     const td = document.createElement('td');
+    if(className) td.className = className;
     td.innerText = text;
     return td;
 }
