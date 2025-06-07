@@ -26,32 +26,8 @@ require_once BASE_PATH . "client\includes\start_session.php";
 
   <!-- TODO maybe delete the ids from the labels -->
   <main>
-    <div id="trips-info">
-
-      <h2>No trips to show</h2>
-
-      <table id="passenger-trips-header-row">
-        <tr>
-          <th>Departure</th>
-          <th>Destination</th>
-          <th>Date</th>
-          <th>Cost</th>
-          <th>Surname</th>
-          <th>Seat</th>
-          <th>Seat Price</th>
-          <th>Ticket Price</th>
-        <tr>
-          <td id="departure-airport"></td>
-          <td id="destination-airport"></td>
-          <td id="departure-date"></td>
-          <td id="total-cost"></td>
-          <td id="passenger-surname"></td>
-          <td id="passenger-seat"></td>
-          <td id="paassenger-seat-price"></td>
-          <td id="passenger-ticket-price"></td>
-        </tr>
-      </table>
-    </div>
+    <!-- <div id="trips-info">
+    </div> -->
 
   </main>
 
