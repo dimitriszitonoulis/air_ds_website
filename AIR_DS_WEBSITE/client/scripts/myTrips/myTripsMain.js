@@ -7,76 +7,92 @@ import { getAirportInfo } from "../booking/getBookingInfo.js";
 // const USERNAME = "giog";    // the username must be taken from the session variable
 const USERNAME = "Dim";
 
-const table = document.createElement('table');
-const infoDiv = document.getElementById('trips-info');
-const values = {"username": USERNAME};
 
-// fetch api for trips
-const trips = await getTrips(values, BASE_URL);
+main()
 
+/**
+ * Fetch the api to check if the passenger has any trips
+ * If not:
+ * - append h2 item saying there are no trips
+ * - return
+ * If they do:
+ * - create a table element
+ * - add a row containing the headers for the trip information
+ * - add a row containing the values for the trip information
+ * - add a row containing the headers for the passengers information
+ * - add a row for each passenger containing the passenger's information
+ * - append all rows to the table
+ * - append the table to main
+ */
+async function main() {
 
-// const airportInfo = await getAirportInfo(airport_codes, BASE_URL);
+    const table = document.createElement('table');
+    const infoDiv = document.getElementById('trips-info');
+    const values = {"username": USERNAME};
 
-if (trips === null) {
-    const h2 = document.createElement('h2');
-    h2.innerText = "No trips to show";
-    // return;
-}
+    // fetch api for trips
+    const trips = await getTrips(values, BASE_URL);
+    const mainElement = document.querySelector('main');
 
-
-
-for (const trip of trips) {
-    const depAirport = trip['flight_info']['departure_airport'];
-    const destAirport = trip['flight_info']['destination_airport'];
-    const date = trip['flight_info']['date'];
-    const passengers = trip['passengers'];
-
-    // get the codes for the departure and destination airport
-    const airport_codes = {
-        "dep_code": depAirport,
-        "dest_code": destAirport
-    };
-    // for each airport get: latitude, longitude and fee.
-    const airportInfo = await getAirportInfo(airport_codes, BASE_URL);
-    const air_info1 = airportInfo[0];
-    const air_info2 = airportInfo[1];
-
-    // get the fee and the cost of the flight
-    const distance = getDistance(   air_info1['latitude'], air_info1['longitude'],
-                                    air_info2['latitude'], air_info2['longitude']
-    );
-    const fee = getFee(air_info1['fee'], air_info2['fee']);
-    const flightCost = getFlightCost(distance);
-
-
-    // create elements for the rows of the table
-    // row for the trip header and information
-    const tripRowHeader = document.createElement('tr');
-    const tripRow = document.createElement('tr');       // constains info about the trip, e.x. the destination
-
-    // row for the passengers header and information
-    const passengerRowHeader = document.createElement('tr');
-    let passengerRow = document.createElement('tr');  // contains info about the passengers
-    
-    addTripRowHeaders(tripRowHeader);
-    addTripRowValues(tripRow, depAirport, destAirport, date, fee, flightCost)
-    
-    addPassengerRowHeaders(passengerRowHeader);
-    table.appendChild(tripRowHeader);
-    table.appendChild(tripRow);
-    table.appendChild(passengerRowHeader);
-    
-    
-    for (const passenger of passengers) {
-        passengerRow = document.createElement('tr');
-        addPassengerRowValues(passengerRow, passenger, fee, flightCost);
-        table.appendChild(passengerRow);
+    // if the passenger has no trips
+    if (trips === null) {
+        const h2 = document.createElement('h2');
+        h2.innerText = "No trips to show";
+        mainElement.appendChild(h2);
+        return;
     }
 
-}
 
-const mainElement = document.querySelector('main');
-mainElement.appendChild(table);
+    for (const trip of trips) {
+        const depAirport = trip['flight_info']['departure_airport'];
+        const destAirport = trip['flight_info']['destination_airport'];
+        const date = trip['flight_info']['date'];
+        const passengers = trip['passengers'];
+
+        // get the codes for the departure and destination airport
+        const airport_codes = {
+            "dep_code": depAirport,
+            "dest_code": destAirport
+        };
+        // for each airport get: latitude, longitude and fee.
+        const airportInfo = await getAirportInfo(airport_codes, BASE_URL);
+        const air_info1 = airportInfo[0];
+        const air_info2 = airportInfo[1];
+
+        // get the fee and the cost of the flight
+        const distance = getDistance(   air_info1['latitude'], air_info1['longitude'],
+                                        air_info2['latitude'], air_info2['longitude']
+        );
+        const fee = getFee(air_info1['fee'], air_info2['fee']);
+        const flightCost = getFlightCost(distance);
+
+        // create elements for the rows of the table
+        // row for the trip header and information
+        const tripRowHeader = document.createElement('tr');
+        const tripRow = document.createElement('tr');       // constains info about the trip, e.x. the destination
+
+        // row for the passengers header and information
+        const passengerRowHeader = document.createElement('tr');
+        let passengerRow = document.createElement('tr');  // contains info about the passengers
+        
+        addTripRowHeaders(tripRowHeader);
+        addTripRowValues(tripRow, depAirport, destAirport, date, fee, flightCost)
+        
+        addPassengerRowHeaders(passengerRowHeader);
+        table.appendChild(tripRowHeader);
+        table.appendChild(tripRow);
+        table.appendChild(passengerRowHeader);
+        
+        for (const passenger of passengers) {
+            passengerRow = document.createElement('tr');
+            addPassengerRowValues(passengerRow, passenger, fee, flightCost);
+            table.appendChild(passengerRow);
+        }
+
+    }
+
+    mainElement.appendChild(table);
+}
 
 /**
  *  Adds <th> elements to the given <tr> element for:
@@ -213,31 +229,26 @@ function addPassengerRowValues(row, passenger, feeValue, flightCostValue) {
 
 }
 
+/**
+ * @param {string} text 
+ * @returns {HTMLTableHeaderCellElement} - a table header cell where innerText = the value of the input value
+ */
 function getTableHeader(text) {
     const th = document.createElement('th');
     th.innerText = text;
     return th;
 }
 
+
+/**
+ * @param {string} text 
+ * @returns {HTMLTableDataCellElement} - a table data cell where innerText = the value of the input value
+ */
 function getTableDataCell(text) {
     const td = document.createElement('td');
     td.innerText = text;
     return td;
 }
-
-function setPricing() {
-    const distance = getDistance(AIR_INFO1['latitude'], AIR_INFO1['longitude'], AIR_INFO2['latitude'], AIR_INFO2['longitude']);
-    const seatCostTable = getSeatCostTable();
-    const fee = getFee(AIR_INFO1['fee'], AIR_INFO2['fee']);
-    const flightCost = getFlightCost(distance);
-
-    const tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
-
-    showPricingInfo();
-
-    addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets); 
-}
-
 
 function getFee(fee1, fee2) {
     return Math.round((fee1 + fee2) * 100) / 100;
