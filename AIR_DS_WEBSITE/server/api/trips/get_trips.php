@@ -44,7 +44,7 @@ get_trips();
  * the trips are an array like:
  * [
  *  departure_airport => <departure aiport code>,
- *  destination_airport => <destination airport code,
+ *  destination_airport => <destination airport code>,
  *  date => <departure date>,
  *  name => <name>,
  *  surname => <surname>,
@@ -107,7 +107,7 @@ function get_trips (){
         exit;  
     }
     
-    $response["trips"] = $trips;
+    $response["trips"] = format_trips($trips);
     //if this point is reached then return success message
     // $response was assigned it's value by the validators, 
     // since this point is reached the validation succeded
@@ -115,6 +115,130 @@ function get_trips (){
     http_response_code($response['http_response_code']);
     echo json_encode($response);
     exit;  
+}
+
+
+/**
+ * Summary of format_trips
+ * 
+ * Take as input the return rows ($trips) from the DB that have the format:
+ * [
+ *  departure_airport => "asdf",
+ *  destination_airport => "adsf",
+ *  date => "asdf",
+ *  name => "fdfdf",
+ *  surname => "aswdef",
+ *  seat => "E-12",
+ *  price => "580.12"
+ * ] 
+ * [
+ *  departure_airport => "asdf",
+ *  destination_airport => "adsf",
+ *  date => "asdf",
+ *  name => 'fgfdsgf',
+ *  surname => 'ajhgfef',
+ *  seat => 'F-12',
+ *  price => '580.12'
+ * ] 
+ * 
+ * 
+ * And turn them to:
+ * current_trip = [
+ *  trip_info => [dest => asdf, dep=> adsf, date =>asdf],
+ *  passengers[
+ *      [
+ *          name: 'fdfdf',
+ *          surname: 'aswdef',
+ *          seat: 'E-12',
+ *          price: '580.12'
+ *      ],
+ *      [
+ *          name: 'fgfdsgf',
+ *          surname: 'ajhgfef',
+ *          seat: 'F-12',
+ *          price: '580.12'
+ *      ]
+ *    ]
+ * ]
+ * 
+ * ATTENTION
+ * The function assumes that the rows returned by the database are grouped by the similar flights
+ * A flight is determined by the departure airport, the destination airport and the flight date
+ * This means that the rows of the database must be sorted by those 3 columns
+ * 
+ * @param mixed $trips
+ * @return array{passengers: array, trip_info: array}
+ * 
+ */
+function format_trips($trips) {
+    $formated_trips = []; 
+
+    foreach ($trips as $trip) {
+        // initialize $formated_trips
+        if (empty($formated_trips)) {
+            $formated_trips[] = [
+                'trip_info' => [
+                    'departure_airport' => $trip['departure_airport'],
+                    'destination_airport' => $trip['destination_airport'],
+                    'date' => $trip['date']
+                ],
+                'passengers' => [
+                    [
+                    'name' => $trip['name'],
+                    'surname' => $trip['surname'],
+                    'seat' => $trip['seat'],
+                    'price' => $trip['price']
+                    ]
+                ]
+            ];
+            continue;
+        }
+
+        // get the trip info for the last element
+        $last_index = array_key_last($formated_trips);
+        // $trip_info = $formated_trips[$last_index];
+
+        // extract trip info
+        $dep_airport = $formated_trips[$last_index]['trip_info']['departure_airport'];
+        $dest_airport = $formated_trips[$last_index]['trip_info']['destination_airport'];
+        $date = $formated_trips[$last_index]['trip_info']['date'];
+
+        // if at least one different, then it is a different flight
+        // add new entry to $current_trip
+        if ($dep_airport !== $trip['departure_airport'] ||
+            $dest_airport !== $trip['destination_airport'] ||
+            $date !== $trip['date']
+        )
+        {
+            $formated_trips[] = [
+                "trip_info" => [
+                    'departure_airport' => $trip['departure_airport'],
+                    'destination_airport' => $trip['destination_airport'],
+                    'date' => $trip['date']
+                ],
+                'passengers' => [
+                    // passengers contains one array for eache passenger
+                    [
+                    "name"=> $trip['name'],
+                    "surname"=> $trip['surname'],
+                    "seat"=> $trip['seat'],
+                    "price"=> $trip['price']
+                    ]
+                ]
+            ];  
+            continue;
+        }
+
+        // if there is already an entry for the flight just add the passenger 
+        // to the passengers array
+        $formated_trips[$last_index]['passengers'][] = [
+            "name"=> $trip['name'],
+            "surname"=> $trip['surname'],
+            "seat"=> $trip['seat'],
+            "price"=> $trip['price']
+        ];
+    }    
+    return $formated_trips;
 }
 
 ?>
