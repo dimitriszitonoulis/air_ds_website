@@ -1,7 +1,5 @@
 import { showError, clearError } from '../displayMessages.js';
 
-
-
 /**
  * 
  * This function performs real time valition to the supplied name
@@ -13,7 +11,7 @@ import { showError, clearError } from '../displayMessages.js';
  * 
  * 
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- * ATTENTION
+ *                              ATTENTION
  * this function is also used for the validation of the surname
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  * 
@@ -44,22 +42,6 @@ export function isNameValid(nameElement, errMessageDiv) {
     clearError(errMessageDiv);
     return true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function isOnlyLetters(text) {
