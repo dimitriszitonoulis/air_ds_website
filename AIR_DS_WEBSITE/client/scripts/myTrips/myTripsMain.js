@@ -93,10 +93,49 @@ async function main() {
     })
 }
 
-//TODO delete counter
-// TODo add documentation
+/**
+ * 
+ * Loop through the trips made by the logged in user
+ * For each trip make a table containing:
+ * - the trip's information
+ * - each passenger's information
+ * The information about the trips is an array containing JSONs with the following format:
+ * {
+      flight_info: {
+        departure_airport: departure airport code,
+        destination_airport: destination airport code,
+        date: departure date
+      },
+      passengers: [
+        { 
+          name: passenger1 name,
+          surname: passenger1 surname,
+          seat: passenger1 seat,
+          price: passenger1 ticket price 
+        },
+        ...
+        {
+         name: passengerN name,
+          surname: passengerN surname,
+          seat: passengerN seat,
+          price: passengerN ticket price 
+        }
+      ]
+    }
+ * 
+ * Add each table to its own div
+ * Add each div to the supplied main HTML element
+ * Also add each div to tripDivs array and return it
+ * 
+ * 
+ * @param {Array} trips each element is a JSON for a trip
+ * @param {HTMLElement} mainElement an HTML main element where the div containing all the trips will be added
+ * @returns {Array} array of divs. Each div contains an HTML table element that has information about:
+ *                          - the trip
+ *                          - the passengers for that trip
+ * It is essentially an array of all the divs that are appended to the main HTML element
+ */
 async function addTripTables(trips, mainElement) {
-    let counter = 0;
     const tripDivs = [];
 
     for (const trip of trips) {
@@ -151,11 +190,7 @@ async function addTripTables(trips, mainElement) {
         tripDiv.appendChild(table)
         mainElement.appendChild(tripDiv);
         tripDivs.push(tripDiv);
-
-        if (counter > 5) break;
-        counter++;
     }
-
     return tripDivs;
 }
 
