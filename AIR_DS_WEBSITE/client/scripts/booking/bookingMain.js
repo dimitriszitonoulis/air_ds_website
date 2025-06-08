@@ -49,6 +49,7 @@ async function main() {
     setUpSeatValidation(passengerFieldsets);
 
     // TODO book seats
+    // add button with event listener for when to sumbit
     // submitBooking()
 
 
@@ -237,7 +238,37 @@ function setUpSeatValidation(passengerFieldsets) {
 
 }
 
-
+/**
+ * 
+ * Sets the tickets to be booked
+ * Tickets is an array of objects
+ * Each object contains information about the customer to whom the ticket belongs
+ * If seatCostTable, fee and flightCost have been passed as parameters each object also contains
+ * pricing data current object (ticket)
+ * 
+ * The format of each ticket is as follows:
+ * {
+ *  "name":     {string} name,
+ *  "surname":  {string} surname,
+ *  "seat":     {string} seat
+ * }
+ * 
+ * 
+ * If seatCostTable, fee and flightCost have been passed as parameters the format is the following:
+ * {
+ *  "name":     {string} name,
+ *  "surname":  {string} surname,
+ *  "seat":     {string} seat code,
+ *  "seatCost": {string} seat cost,
+ *  "total":    {string} total cost 
+ * }
+ * 
+ * @param {HTMLFieldSetElement} passengerFieldsets the elements containing, name surname and set info for each passenger 
+ * @param {Object} seatCostTable contains information about the pricing for each seat (can be omm)
+ * @param {number} fee the fee for the flight between 2 airports
+ * @param {number} flightCost the cost of the flight between 2 airtports
+ * @returns 
+ */
 function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flightCost = null) {
     let tickets = [];
     const names = [];
@@ -258,6 +289,8 @@ function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flight
             "seat": seat,
         };
 
+        // only if seatCostTable, fee, flightCost have been supplied add pricing data to the current ticket
+        // otherwise only data about the name, surname and seat is written on the ticket
         if (seatCostTable !== null && fee !== null && flightCost !== null) {
             // take the row number from the seat
             const number = parseInt(seat.split('-')[1]);
