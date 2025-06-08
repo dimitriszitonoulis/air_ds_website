@@ -26,10 +26,17 @@ await main()
  * - append the table to main
  */
 async function main() {
-
-    // const infoDiv = document.getElementById('trips-info');
     const values = {"username": USERNAME};
     let selectedTrip = null;
+    let selectedDiv = null;
+    // button to cancel the flight
+    const cancelBtn = document.createElement('button');
+    cancelBtn.id = "delete-btn";
+    cancelBtn.innerText = "Cancel trip";
+    // div that shows  message in case the flight is not cancelled
+    const errorMessageDiv = document.createElement('div');
+    errorMessageDiv.className = "error-message";
+    errorMessageDiv.id = "cancel-trip-error-message";
 
     // fetch api for trips
     const trips = await getTrips(values, BASE_URL);
@@ -43,17 +50,9 @@ async function main() {
         return;
     }
 
+    // adds table with the trips made by the customer
     const tripDivs = await addTripTables(trips, mainElement);
     
-    const cancelBtn = document.createElement('button');
-    cancelBtn.id = "delete-btn";
-    cancelBtn.innerText = "Cancel trip";
-    const errorMessageDiv = document.createElement('div');
-    errorMessageDiv.className = "error-message";
-    errorMessageDiv.id = "cancel-trip-error-message";
-
-    let selectedDiv = null;
-
     tripDivs.forEach(div => {
         div.addEventListener('click', async() => {
             //save the previously selected div
@@ -81,7 +80,6 @@ async function main() {
     });
 
 
-    //TODO if the button is pressed refresh the page 
     // if the trip is actually cancelled remove it from the tables 
     cancelBtn.addEventListener('click', async() => {
         const isCancelled = await cancelTrip(selectedTrip, BASE_URL);
@@ -93,8 +91,6 @@ async function main() {
             showError(errorMessageDiv, "You cannot cancel a trip less than 30 days away");
         }
     })
-    
-
 }
 
 //TODO delete counter
