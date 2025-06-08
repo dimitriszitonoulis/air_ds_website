@@ -4,10 +4,10 @@
  * 
  * Function that returns the dates for flights between 2 airports
  * 
- * @param mixed $conn - trhe connection to the database
- * @param mixed $dep_code - the code of the departure airport
- * @param mixed $dest_code - the code of the destination airport
- * @throws \InvalidArgumentException - if any of the parameters are null
+ * @param PDO $conn the connection to the database
+ * @param string $dep_code the code of the departure airport
+ * @param string $dest_code the code of the destination airport
+ * @throws \InvalidArgumentException if any of the parameters are null
  */
 function db_get_flight_dates($conn, $dep_code = null, $dest_code = null)
 {
@@ -46,6 +46,16 @@ function db_get_flight_dates($conn, $dep_code = null, $dest_code = null)
 
 //TODO has similar code as db_is_seat_stored() in db_is_field_stored
 // if something is wrong here it is also propaly wrong there
+/**
+ * Summary of db_get_taken_seats
+ 
+ * @param PDO $conn the connection to the database
+ * @param string $dep_code the code of the departure airport
+ * @param string $dest_code the code of the departure airport
+ * @param string $dep_date the departure date
+ * @return mixed array containing the seat codes for the specified flight
+ * @throws \InvalidArgumentException if any of the parameters are null
+ */
 function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=null)
 {
     // if no departure airport code is provided
@@ -98,12 +108,25 @@ function db_get_taken_seats($conn, $dep_code=null, $dest_code=null, $dep_date=nu
     $stmt->bindParam(':flight_id', $flight_id, PDO::PARAM_STR);
     $stmt->execute();
 
-    // group all the rows of the response itno a single array
+    // group all the rows of the response into a single array
     $result = $stmt->fetchALL(PDO::FETCH_COLUMN);
 
     return $result;
 }
 
+/**
+ * Summary of db_get_airport_information
+ * 
+ * @param PDO $conn the connection to the database
+ * @param string $dep_code the code of the departure airport
+ * @param string $dest_code the code of the departure airport
+ * @return mixed array containging associative arrays like:
+ *                  ["code" => airport code,
+ *                  "latitude" => airport latitude,
+ *                  "longitude" => airport longitude,
+ *                  "fee" => airport fee]
+ * @throws \InvalidArgumentException if any of the parameters are null
+ */
 function db_get_airport_information($conn, $dep_code = null, $dest_code = null) {
      // if no departure airport code is provided
     if ($dep_code === null)
@@ -112,7 +135,6 @@ function db_get_airport_information($conn, $dep_code = null, $dest_code = null) 
     // if no destination airport code is provided
     if ($dest_code === null)
         throw new InvalidArgumentException("Destination airport code must not be null.");
-
 
     $query =
     "   SELECT
@@ -130,7 +152,6 @@ function db_get_airport_information($conn, $dep_code = null, $dest_code = null) 
     // execute query
     $stmt->execute();
 
-    // retrieve response (first fetched column)
     $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     return $response;
