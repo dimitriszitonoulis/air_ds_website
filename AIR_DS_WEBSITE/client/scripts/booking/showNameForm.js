@@ -7,9 +7,14 @@ import { getFullName } from "./getBookingInfo.js";
 
 
 
-// addInfoFieldSets();
 
 
+/**
+ * Fills the name and surname for the logged in user
+ * 
+ * @param {string} username the username of a registered user 
+ * @param {string} baseUrl the base url as defined in config/config.php
+ */
 export async function fillUserInfo(username, baseUrl) {
     // Take the name and surname of the registered user from the db
     const fullName = await getFullName({ 'username': username }, baseUrl);
@@ -21,8 +26,18 @@ export async function fillUserInfo(username, baseUrl) {
     registeredUserSurnameField.value = fullName['surname'];
 }
 
-
-// TODO maybe add form and fielset id parameters
+/**
+ * Adds a fieldset for each passenger
+ * Each fieldset contains:
+ * - Name label and input field
+ * - Surname label and input field
+ * - Div for error messages for the name and surname fields
+ * - Div for seat information
+ *      - div containing the word: Seat
+ *      - div containing the seat code for the passenger
+ * 
+ * @param {number} ticket_number the number of tickets to be purchased
+ */
 export function addInfoFieldSets(ticket_number) {
     // create as many fieldsets as the tickets
     let extraPassengers = 0;
@@ -30,13 +45,12 @@ export function addInfoFieldSets(ticket_number) {
     // the first one is the registered user
     extraPassengers = ticket_number - 1;
 
-
     const seatForm = document.getElementById('book-flight-form');
-    // TODO maybe change the layout and the div in the book_flight page
     const chooseSeatsDiv = document.getElementById('choose-seats-div');
 
     // there is already the default fieldset for the user with the account
     // add fieldsets for the rest of the users
+    // The counter is used for the generation of ids, 0 belongs to the logged in user so counter starts from 1
     for (let counter = 1; counter <= extraPassengers; counter++) {
         const fieldset = document.createElement('fieldset');
         fieldset.className = "passenger-info-fieldset";
