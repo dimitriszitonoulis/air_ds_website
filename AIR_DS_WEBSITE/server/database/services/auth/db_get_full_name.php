@@ -1,6 +1,4 @@
 <?php
-// this file has functions to details aboput the user of an account
-
 function db_get_full_name($conn, $username=null) {
     if ($username === null) 
         throw new InvalidArgumentException ("Username must not be null");
