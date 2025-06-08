@@ -1,12 +1,12 @@
 import { validateSubmitTime, validateRealTime } from "../validationManager.js";
-import { showMessage, clearError, showError, showRedirectMessage } from "../displayMessages.js";
+import { clearError, showError } from "../displayMessages.js";
 import { getTrips } from "./getTrips.js";
 import { getAirportInfo } from "../booking/getBookingInfo.js";
 import { cancelTrip } from "./cancelTrip.js";
 
 //TODO remove later
-const USERNAME = "giog";    // the username must be taken from the session variable
-// const USERNAME = "Dim";
+// const USERNAME = "giog";    // the username must be taken from the session variable
+const USERNAME = "Dim";
 
 
 await main()
@@ -48,25 +48,35 @@ async function main() {
     const cancelBtn = document.createElement('button');
     cancelBtn.id = "delete-btn";
     cancelBtn.innerText = "Cancel trip";
+    const errorMessageDiv = document.createElement('div');
+    errorMessageDiv.className = "error-message";
+    errorMessageDiv.id = "cancel-trip-error-message";
+
+    let selectedDiv = null;
 
     tripDivs.forEach(div => {
         div.addEventListener('click', async() => {
-            if (selectedTrip === null) {
-                div.style.backgroundColor = "#53599b";
-                selectedTrip = {
-                    "dep_code": document.querySelector(".dep-code").innerText,
-                    "dest_code": document.querySelector(".dest-code").innerText,
-                    "date": document.querySelector(".date").innerText,
-                    "username": USERNAME
-                }
-                div.appendChild(cancelBtn);
-                return;
-            }
+            //save the previously selected div
+            const previousSelectedDiv = selectedDiv;
 
-            // if an element is clicked twice de-select it 
-            div.style.backgroundColor = "";
-            selectedTrip = null;
-            div.removeChild(cancelBtn);
+            selectedDiv = div;
+            div.style.backgroundColor = "royalblue";
+            selectedTrip = {
+                "dep_code": div.querySelector(".dep-code").innerText,
+                "dest_code": div.querySelector(".dest-code").innerText,
+                "dep_date": div.querySelector(".dep-date").innerText,
+                "username": USERNAME
+            }
+            div.appendChild(cancelBtn);
+            div.appendChild(errorMessageDiv);           
+
+
+            // if no div was chosen previously
+            // happens at the beggining where no div is selected initially
+            if (previousSelectedDiv === null) return;
+
+            previousSelectedDiv.style.backgroundColor = "";
+
         });
     });
 
@@ -74,7 +84,14 @@ async function main() {
     //TODO if the button is pressed refresh the page 
     // if the trip is actually cancelled remove it from the tables 
     cancelBtn.addEventListener('click', async() => {
-        await cancelTrip(selectedTrip, BASE_URL);
+        const isCancelled = await cancelTrip(selectedTrip, BASE_URL);
+        const errorMessageDiv = document.getElementById("cancel-trip-error-message");
+        if (isCancelled) {
+            clearError(errorMessageDiv);
+            location.reload();
+        } else {
+            showError(errorMessageDiv, "You cannot cancel a trip less than 30 days away");
+        }
     })
     
 
@@ -194,7 +211,7 @@ function addTripRowValues(row, depAirportValue, destAirportValue, dateValue, fee
     // the rows must be added at the same order as the corresponding row headers
     const depAirport = getTableDataCell(depAirportValue, "dep-code");
     const destAirport = getTableDataCell(destAirportValue, "dest-code");
-    const date = getTableDataCell(dateValue, "date");
+    const date = getTableDataCell(dateValue, "dep-date");
     const fee = getTableDataCell(feeValue);
     const flightCost = getTableDataCell(flightCostValue);
 
