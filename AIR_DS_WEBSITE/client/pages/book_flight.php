@@ -102,18 +102,16 @@ require_once BASE_PATH . "client\includes\start_session.php";
           <th>Destination</th>
           <th>Date</th>
           <th>Cost</th>
-          <!-- <th>Distance</th>
-          <th>Fee</th>
-          <th>Flight Cost</th> -->
+          <th></th>Fee</th>
+          <th>Flight Cost</th>
         </tr>
         <tr>
           <td id="departure-airport"></td>
           <td id="destination-airport"></td>
           <td id="departure-date"></td>
           <td id="total-cost"></td>
-          <!-- <td id="distance"></td>
           <td id="fee"></td>
-          <td id="flight-cost"></td> -->
+          <td id="flight-cost"></td>
         </tr>
       </table>
 
@@ -128,6 +126,8 @@ require_once BASE_PATH . "client\includes\start_session.php";
       </table>
     </div>
 
+    <!-- must be hidden first -->
+    <button id="book-tickets-btn">Book tickets</button>
   </main>
 
 
