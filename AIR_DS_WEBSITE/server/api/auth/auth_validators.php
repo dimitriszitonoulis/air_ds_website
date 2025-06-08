@@ -156,7 +156,7 @@ function is_username_stored($conn, $username, $response) {
  * 
  * @param string $password - the password to be validated
  * @param mixed $response - array containing response messages
- * @return  - the appropriate response message
+ * @return - the appropriate response message
  */
 function is_password_syntax_valid ($password, $response) {
     if (!isset($password) || empty($password)) return $response['password']['missing'];
