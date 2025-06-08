@@ -18,7 +18,7 @@ export async function bookTickets(values, BASE_URL) {
 
         console.log("Fetch succesful return data:", data)
 
-        // if the user is registered this is true, otherwise false
+        // if the user tickets are booked this is true, otherwise false
         return data['result'];
 
     } catch (error) {
