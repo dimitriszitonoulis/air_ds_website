@@ -53,6 +53,13 @@ async function main() {
     submitBooking(passengerFieldsets);
 }
 
+/**
+ * Form the information to be sent to the api and send it
+ * 
+ * If the tickets are booked redirect to my trips page
+ * 
+ * @param {HTMLFieldSetElement} passengerFieldsets contains elements from which passenger name, surname and seat can be extracted
+ */
 async function submitBooking(passengerFieldsets) {
     const bookBtn = document.getElementById("book-tickets-btn");
 
@@ -67,6 +74,7 @@ async function submitBooking(passengerFieldsets) {
             "username":     USERNAME,
             "tickets":      tickets
         }
+
         const isBooked = bookTickets(flightInfo, BASE_URL);
 
         if (isBooked) {
@@ -84,8 +92,27 @@ function setUpPassengers(username, ticketNumber, fields, baseUrl) {
     addFullNames(ticketNumber, fields); // fill the fields with information about the HTML elements containing 
 }
 
+/**
+ * Sets up the seat map
+ * 
+ * - Create the seat map and add it to the DOM
+ * - Select all the seats and add eventListener to them
+ * 
+ * Seat selection:
+ * - A seat can be selected only when a passenger is selected
+ * - If a seat is clicked twice it is de-selected
+ * - If a seat alredy has a value the previous seat must be de-selected
+ * - If a seat is already selected by another passenger do not select it
+ *   
+ * 
+ * @param {string} depAirport   the code of the departure airport
+ * @param {string} destAirport  the code of the destination airport
+ * @param {string} depDate         the departure date
+ */
 async function setUpSeatMap(depAirport, destAirport, depDate) {
-    await createSeatMap(depAirport, destAirport, depDate);    // pass them to seat map function 
+
+    await createSeatMap(depAirport, destAirport, depDate);
+
     // after the seatmap is created select all the seats 
     const planeBody = document.getElementById('plane-body');    // get the plane body div
     const seats = planeBody.querySelectorAll(".seat");
@@ -102,7 +129,7 @@ async function setUpSeatMap(depAirport, destAirport, depDate) {
                 seat.style.backgroundColor = "";
                 CURR_SEAT_DIV.innerText = "--";
                 const i = SELECTED_SEATS.indexOf(seat.id);   // find index of element to be removed
-                SELECTED_SEATS.splice(i, 1);                 // remove 1 element from  selectedSeats at the selected index
+                SELECTED_SEATS.splice(i, 1);                 // remove 1st element from  selectedSeats at the selected index
                 return;
             }
 
@@ -120,6 +147,7 @@ async function setUpSeatMap(depAirport, destAirport, depDate) {
                 return;
             }
 
+            // if everything is alright select the seat
             seat.style.backgroundColor = "#93C572";
             CURR_SEAT_DIV.innerText = seat.id;
             SELECTED_SEATS.push(seat.id);
@@ -127,6 +155,18 @@ async function setUpSeatMap(depAirport, destAirport, depDate) {
 
 }
 
+/**
+ * 
+ * Set up the validation for the passenger info
+ * 
+ * The validation is performed only if the customer chose to buy more than 1 tickets
+ * This is because the passenger info is filled automatically based on the account information,
+ * and the passenger info has already undergone validation when the passnger registered
+ * 
+ * When the passenger chooses to select the seats show the seat map and set up the passenger selection
+ * 
+ * @param {HTMLFieldSetElement} passengerFieldsets contains elements from which passenger name, surname and seat can be extracted
+ */
 function setUpFieldValidation(passengerFieldsets) {
     const bookingFields = { ...fields };
 
@@ -165,6 +205,20 @@ function setUpFieldValidation(passengerFieldsets) {
 
 }
 
+/**
+ * Sets up the passenger selection
+ * 
+ * Each passenger can be selected by clicking on their fieldset
+ * 
+ * Passenger selection:
+ * - If a passenger is clicked twice they are de-selected
+ * - If a passenger is selected
+ *      - it changes color
+ *      - the colors from the other passengers get removed
+ *      - CURR_SEAT_DIV has the value of the seat div inside the current passenger's fieldset
+ * - If no passenger is selected then CURR_SEAT_DIV = null
+ * @param {HTMLFieldSetElement} passengerFieldsets contains elements from which passenger name, surname and seat can be extracted
+ */
 function setUpPassengerSelection(passengerFieldsets) {
     // make name and surname read only
     const name = document.querySelectorAll('.name')
@@ -182,7 +236,7 @@ function setUpPassengerSelection(passengerFieldsets) {
                 return;
             }
             // TODO when the last information button is clicked for the price  
-            // do not forget to clear all the green colors 
+            // TODO do not forget to clear all the green colors 
 
             // if the current fieldset is pressed remove the colors from the others
             passengerFieldsets.forEach((fieldset) => fieldset.style.backgroundColor = "");
@@ -196,12 +250,32 @@ function setUpPassengerSelection(passengerFieldsets) {
     );
 }
 
+/**
+ * 
+ * Set up the validation for the seats
+ * 
+ * When the pricing button is clicked check the validity of each seat
+ * A seat is valid if it has a value other than: "--"
+ * 
+ * If all the seats are valid:
+ * - Calculate the pricing info
+ * - Show the pricing table
+ * - Show the book tickets button 
+ * 
+ * 
+ * @param {HTMLFieldSetElement} passengerFieldsets contains elements from which passenger name, surname and seat can be extracted
+ */
 function setUpSeatValidation(passengerFieldsets) {
     const showPricingBtn = document.getElementById('show-pricing-info-button');
-    showPricingBtn.addEventListener('click', (e) => {
 
-        // removePricingInfo();
+    showPricingBtn.addEventListener('click', (e) => {
+        const errDiv = document.getElementById('show-pricing-info-button-error-message');
         let isAllValid = true;
+
+        // // TODO add code to deselect all previoulsy selected passengers
+        // // if the current fieldset is pressed remove the colors from the others
+        // passengerFieldsets.forEach((fieldset) => fieldset.style.backgroundColor = "");
+        // CURR_SEAT_DIV = null;
 
         // loop through the fieldsets and get the selected seat
         for (const fs of passengerFieldsets) {
@@ -213,16 +287,13 @@ function setUpSeatValidation(passengerFieldsets) {
             }
         }
 
-        const errDiv = document.getElementById('show-pricing-info-button-error-message');
-
         if (isAllValid) {
-            clearError(errDiv);
+            clearError(errDiv); // clear previous error messages
             // showPricingBtn.style.display = "none";
             const distance = getDistance(AIR_INFO1['latitude'], AIR_INFO1['longitude'], AIR_INFO2['latitude'], AIR_INFO2['longitude']);
             const seatCostTable = getSeatCostTable();
             const fee = getFee(AIR_INFO1['fee'], AIR_INFO2['fee']);
             const flightCost = getFlightCost(distance);
-
             const tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
 
             addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, fee, flightCost, tickets);
@@ -311,6 +382,9 @@ function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flight
 }
 
 /**
+ * Adds values and cells to pricing info table
+ * First, add info about the flight and the total cost
+ * Then loop through the ticket array and add information about each passenger
  * 
  * @param {string} depAirport   the code of the departure airport
  * @param {string} destAirport  the code of the destination airport
