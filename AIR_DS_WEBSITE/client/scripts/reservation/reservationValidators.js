@@ -1,6 +1,5 @@
 import { showError, clearError } from '../displayMessages.js'
 
-// TODO must be fixed to validate what was fetched from the db
 export function isDateValid(tripDateElement, errMessageDiv) {
     const tripDate = tripDateElement.value;
     // every time a change is made calculate the current time and the time given by the element 
