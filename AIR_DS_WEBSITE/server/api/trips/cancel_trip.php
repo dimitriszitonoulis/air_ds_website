@@ -10,48 +10,37 @@ cancel_trip();
 
 //TODO fix documentation
 /**
- * Summary of get_trips
+ * Summary of cancel_trip 
  * 
  * This function is an AJAX end point
  * 
- * It receives the username of a registered user.
- * It returns all the trips that user has made, newest trip 1st.
+ * It receives:
+ * - the code of the deaprture airport
+ * - the code of the destination airport
+ * - the departure date
+ * - the username of a registered user.
  * 
- * The username is received as a JSON like: 
+ * FUNCTIONALITY
+ * It cancels the specified trip made by the registered user.
+ * 
+ * The information is received as a JSON like: 
  * {
+ *  dep_code: <departure airport code>,
+ *  dest_code: <destination airport code>,
+ *  dep_date: <departure date>
  *  username: <username>,
  * }
  * 
- * 
- * It is responsible to receive the fetch request by the client (username).
+ * DESCRIPTION: 
+ * It is responsible to receive the fetch request by the client.
  * Validate the input using the validation manager and validation functions.
- * Call the function that returns the trip about the user with the specified username.
- * Send the data back to the client.
+ * Call the function that cancels the trip.
+ * Send a response back to the client.
  * 
  * If at any point something goes wrong an error message is sent
  * 
  * Type of responses:
  * The responses of this function are response_messages detailed in config/messages.php
- * 
- * The only exception to this rule is the success message if everything goes well.
- * This message is an array like:
- * [
- *  result => boolean,
- *  message => string
- *  http_response_code => int
- *  trips => array containing the trips that user has made
- * ]
- * 
- * the trips are an array like:
- * [
- *  departure_airport => <departure aiport code>,
- *  destination_airport => <destination airport code>,
- *  date => <departure date>,
- *  name => <name>,
- *  surname => <surname>,
- *  seat => <seat code>,
- *  price => <ticket price>
- * ] 
  * 
  * @return never
  */
@@ -77,14 +66,17 @@ function cancel_trip (){
     // what if the keys are not what I am expecting?
     // get the name of the fields that come from the client
     $field_names = array_keys($decoded_content);
-    $expected_fields = ["dep_code", "dest_code", "dep_date", "username"];   
+    $expected_fields = ["dep_code", "dest_code", "dep_date", "username"];
 
     // modify response_message to also include messages for the expected fields
     $response_message = get_response_message($expected_fields);
-    $validator_parameters = [   // parameters needed by some validators that cannot be provided by the validator manager
+
+    // parameters needed by some validators that cannot be provided by the validator manager
+    $validator_parameters = [   
         'conn' => $conn,
         'response' => $response_message
     ];
+
     $validators = get_validators();
 
     $response = null;
@@ -99,11 +91,11 @@ function cancel_trip (){
     }
 
     try {
-       db_cancel_trip($conn,
-                            $decoded_content["dep_code"],
-                            $decoded_content["dest_code"],
-                            $decoded_content["dep_date"],
-                            $decoded_content["username"]);
+       db_cancel_trip(  $conn,
+                    $decoded_content["dep_code"],
+                   $decoded_content["dest_code"],
+                    $decoded_content["dep_date"],
+                    $decoded_content["username"]);
     } catch (Exception $e) {
         $response = $response_message['failure']['nop'];
         http_response_code($response['http_response_code']);
@@ -119,6 +111,4 @@ function cancel_trip (){
     echo json_encode($response);
     exit;  
 }
-
-
 ?>
