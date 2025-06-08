@@ -7,10 +7,6 @@ require_once BASE_PATH . "config/messages.php";
 require_once BASE_PATH . "server/database/services/auth/db_are_credentials_correct.php";
 require_once BASE_PATH . "server/api/auth/auth_validators.php";
 
-// error_reporting(0);
-// ini_set('display_errors', 0);
-
-
 check_login_errors();
 
 function check_login_errors() {
@@ -39,7 +35,8 @@ function check_login_errors() {
     // modify response_message to also include messages for the expected fields
     // this MUST be done otherwise the validator functions will not have access to the correct response messages
     $response_message = get_response_message($expected_fields);
-    $validator_parameters = [   // parameters needed by some validators that cannot be provided by the validator manager
+    // parameters needed by some validators that cannot be provided by the validator manager
+    $validator_parameters = [   
         'conn' => $conn,
         'response' => $response_message
     ];          
@@ -64,7 +61,6 @@ function check_login_errors() {
     try {
         $is_credentials_correct = db_are_credentials_correct($conn, $username, $password);
     } catch (Exception $e) {
-        // TODO maybe change later to have specific message for login
         $response = $response_message['failure']['invalid'];
         http_response_code($response['http_response_code']);
         echo json_encode($response);
@@ -81,7 +77,6 @@ function check_login_errors() {
     // if this point is reached all the fields are valid
     login_user($username);
 
-    // TODO maybe add check that the session userId is the same as the username
     if(!isset($_SESSION['userId'])) {
         $response = $response_message['failure']['nop'];
         http_response_code($response['http_response_code']);
@@ -106,5 +101,4 @@ function get_validators_login() {
         }
     ];
 }
-
 ?>
