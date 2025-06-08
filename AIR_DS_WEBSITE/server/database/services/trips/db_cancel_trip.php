@@ -1,4 +1,19 @@
 <?php
+/**
+ * Summary of db_cancel_trip
+ * 
+ * Get the id of the flight specified by $dep_code, $dest_code, $dep_date
+ * Get the id of the user that has the supplied username
+ * Delete the reservation that has the same flight and user id as those declared above
+ * 
+ * @param PDO $conn - the connection to the database
+ * @param string $dep_code - the code of the departure airport
+ * @param string $dest_code - the code of the departure airport
+ * @param string $dep_date - the departure date
+ * @param string $username - the username of the user that booked the flight. Assumes that the username exists in the DB
+ * @throws \InvalidArgumentException - if any of the inputs are null or not specified
+ * @return void
+ */
 function db_cancel_trip($conn, $dep_code=null, $dest_code=null, $dep_date=null, $username=null)
 {
     // if no departure airport code is provided
@@ -57,7 +72,7 @@ function db_cancel_trip($conn, $dep_code=null, $dest_code=null, $dep_date=null, 
     // retrieve response (first fetched column)
     $user_id = $stmt->fetchColumn(0);
 
-
+    // delete the reservation made by the user for the specified flight
     $query = 
     "   DELETE
         FROM
