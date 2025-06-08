@@ -19,10 +19,6 @@ cancel_trip();
  * - the code of the destination airport
  * - the departure date
  * - the username of a registered user.
- * 
- * FUNCTIONALITY
- * It cancels the specified trip made by the registered user.
- * 
  * The information is received as a JSON like: 
  * {
  *  dep_code: <departure airport code>,
@@ -30,6 +26,9 @@ cancel_trip();
  *  dep_date: <departure date>
  *  username: <username>,
  * }
+ * 
+ * FUNCTIONALITY
+ * It cancels the specified trip made by the registered user.
  * 
  * DESCRIPTION: 
  * It is responsible to receive the fetch request by the client.
