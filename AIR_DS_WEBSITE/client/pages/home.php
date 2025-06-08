@@ -1,9 +1,6 @@
 <?php
 require_once __DIR__ . "/../../config/config.php";
-require_once BASE_PATH . '.\server\database\db_utils\db_initialize.php';
 require_once BASE_PATH . "client\includes\start_session.php";
-db_initialize();
-
 ?>
 
 <!DOCTYPE html>
