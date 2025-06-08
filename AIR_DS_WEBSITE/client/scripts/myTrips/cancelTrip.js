@@ -1,6 +1,10 @@
-
-//TODO fix documentation
 /**
+ * 
+ * Fetch the api with the  JSON values.
+ *  Values contains information about:
+ * - the flight to be cancelled 
+ * - the username of the user that booked it
+ * 
  * values = {
  *      'username': username,
  *      'dep_code': departure airport code,
@@ -15,6 +19,8 @@
  *     message: string,
  *     http_response_code: int 
  * }
+ * 
+ * This function should only return the result back not the whole response of the api
  * 
  * @param {object} values
  * @param {String} BASE_URL - a string containing the base url
