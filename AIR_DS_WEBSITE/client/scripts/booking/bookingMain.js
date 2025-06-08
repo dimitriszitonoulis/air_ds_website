@@ -16,8 +16,8 @@ const DATE = "2025-06-26 00:00:00";
 
 // get info about distances from the db
 const airport_codes = {
-    "dep_code": DEPARTURE_AIRPORT,
-    "dest_code": DESTINATION_AIRPORT
+    "dep_code":     DEPARTURE_AIRPORT,
+    "dest_code":    DESTINATION_AIRPORT
 }
 const INFO = await getAirportInfo(airport_codes, BASE_URL);
 const AIR_INFO1 = INFO[0];
@@ -50,7 +50,6 @@ async function main() {
 
     setUpSeatValidation(passengerFieldsets);
 
-    // add button with event listener for when to sumbit
     submitBooking(passengerFieldsets);
 }
 
@@ -78,9 +77,6 @@ async function submitBooking(passengerFieldsets) {
 
     
 }
-
-
-
 
 function setUpPassengers(username, ticketNumber, fields, baseUrl) {
     fillUserInfo(username, baseUrl);    // fill info about the registered user
@@ -229,7 +225,7 @@ function setUpSeatValidation(passengerFieldsets) {
 
             const tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
 
-            addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets);
+            addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, fee, flightCost, tickets);
             showPricingInfo();
             showBookTicketsBtn();
         } else {
@@ -265,10 +261,10 @@ function setUpSeatValidation(passengerFieldsets) {
  *  "total":    {string} total cost 
  * }
  * 
- * @param {HTMLFieldSetElement} passengerFieldsets the elements containing, name surname and set info for each passenger 
- * @param {Object} seatCostTable contains information about the pricing for each seat (can be omm)
- * @param {number} fee the fee for the flight between 2 airports
- * @param {number} flightCost the cost of the flight between 2 airtports
+ * @param {HTMLFieldSetElement} passengerFieldsets  the elements containing, name surname and seat info for each passenger 
+ * @param {Object} seatCostTable                    contains information about the pricing for each seat (can be omm)
+ * @param {number} fee                              the fee for the flight between 2 airports
+ * @param {number} flightCost                       the cost of the flight between 2 airtports
  * @returns 
  */
 function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flightCost = null) {
@@ -314,31 +310,65 @@ function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flight
     return tickets;
 }
 
-function addPricingInfo(depAirport, destAirport, date, tickets) {
+/**
+ * 
+ * @param {string} depAirport   the code of the departure airport
+ * @param {string} destAirport  the code of the destination airport
+ * @param {string} date         the departure date
+ * @param {number} fee          the fee for the flight between 2 airports
+ * @param {number} flightCost   the cost of the flight between 2 airtports
+ * @param {Array} tickets       array of objects
+ * Each object contains information about
+ * - the customer to whom the ticket belongs
+ * - pricing data for the customer
+ * Each object (ticket) has the following format
+ * {
+ *  "name":     {string} name,
+ *  "surname":  {string} surname,
+ *  "seat":     {string} seat code,
+ *  "seatCost": {string} seat cost,
+ *  "total":    {string} total cost 
+ * }
+ */
+function addPricingInfo(depAirport, destAirport, date, fee, flightCost, tickets) {
 
     let total = 0;
     for (const current in tickets) {
         total += parseFloat(tickets[current]['total']);
-        // total += ticket['total'];
     }
 
-    const table = document.getElementById('passenger-info-table');
-    const headerRow = document.getElementById('passenger-info-header-row');
-    // in case the user wants to re-select seats, empty the previous results
+    // const table = document.getElementById('passenger-info-table');
+    const table = document.getElementById('pricing-info-table');
 
+    // save the elements of the table
+    const airportInfoHeaderRow = document.getElementById('airport-info-header-row');
+    const airportInfoValuesRow = document.getElementById('airport-info-values-row');
+    const passengerHeaderRow = document.getElementById('passenger-info-header-row');
+    const totalCostRow = document.getElementById('total-cost-row');
+
+    // in case the user wants to re-select seats, empty the previous results
     table.innerHTML = "";
-    table.appendChild(headerRow);
+
+    // append the previously saved table elements (header rows etc)
+    table.appendChild(airportInfoHeaderRow);
+    table.appendChild(airportInfoValuesRow);
+    table.appendChild(passengerHeaderRow);
+    table.appendChild(totalCostRow);
 
     // get the columns for the flight information
     const depCol = document.getElementById('departure-airport')
     const destCol = document.getElementById('destination-airport');
     const depDateCol = document.getElementById('departure-date');
+    const feeCol = document.getElementById('fee');
+    const flightCostCol = document.getElementById('flight-cost');
     const costCol = document.getElementById('total-cost');
 
     // fill the columns with the flight information
     depCol.innerText = depAirport;
     destCol.innerText = destAirport;
     depDateCol.innerText = date;
+    feeCol.innerText = fee;
+    flightCostCol.innerText = flightCost;
     costCol.innerText = total;
 
     for (const i in tickets) {
@@ -349,18 +379,16 @@ function addPricingInfo(depAirport, destAirport, date, tickets) {
             col.innerText = ticket[field];
             row.appendChild(col);
         }
-        table.appendChild(row);
+        table.insertBefore(row, totalCostRow);
     }
 }
 
 function getFee(fee1, fee2) {
     return Math.round((fee1 + fee2) * 100) / 100;
-    // return parseFloat(fee1 + fee2).toFixed(2);
 }
 
 function getFlightCost(distance) {
     return Math.round((distance / 10) * 100) / 100;
-    //    return parseFloat((distance / 10).toFixed(2));
 }
 
 function getDistance(lat1, lon1, lat2, lon2) {

@@ -96,32 +96,34 @@ require_once BASE_PATH . "client\includes\start_session.php";
     </div>
 
     <div id="pricing-info">
-      <table id="airport-info-table">
-        <tr>
+      <table id="pricing-info-table">
+        <tr id="airport-info-header-row">
           <th>Departure</th>
           <th>Destination</th>
           <th>Date</th>
-          <th>Cost</th>
-          <th></th>Fee</th>
+          <th>Fee</th>
           <th>Flight Cost</th>
+          <!-- <th>Cost</th> -->
         </tr>
-        <tr>
+        <tr id="airport-info-values-row">
           <td id="departure-airport"></td>
           <td id="destination-airport"></td>
           <td id="departure-date"></td>
-          <td id="total-cost"></td>
           <td id="fee"></td>
           <td id="flight-cost"></td>
+          <!-- <td id="total-cost"></td> -->
         </tr>
-      </table>
 
-      <table id="passenger-info-table">
         <tr id="passenger-info-header-row">
           <th>Name</th>
           <th>Surname</th>
           <th>Seat</th>
           <th>Seat Price</th>
           <th>Ticket Price</th>
+        </tr>
+        <tr id="total-cost-row">
+          <th colspan="4">Total cost</th>
+          <td id="total-cost"></td>
         </tr>
       </table>
     </div>
