@@ -77,7 +77,7 @@ function cancel_trip (){
         'response' => $response_message
     ];
 
-    $validators = get_validators();
+    $validators = get_validators_trip();
 
     $response = null;
     // response array like:  ["result" => boolean, "message" => string, http_response_code => int]
