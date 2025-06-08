@@ -1,33 +1,27 @@
+
+//TODO fix documentation
 /**
- * 
- * This function gets the username of the logged in user and 
- * returns trips made by that user
- * 
  * values = {
- *      'username': <username>,
+ *      'username': username,
+ *      'dep_code': departure airport code,
+ *      'dest_code': destination airport code,
+ *      'date': departure date
  * }
  * 
  * 
  * The api returns a JSON like: 
- * 
  * {
- * 
- *      "departure_airport": <departure aiport code>,
- *      "destination_airport": <destination airport code,
- *      "date": <departure date>,
- *      "name": <name>,
- *      "surname": <surname>,
- *      "seat": <seat code>,
- *      "price": <ticket price>
+ *     result: boolean,
+ *     message: string,
+ *     http_response_code: int 
  * }
  * 
- * @param {object} values - object containing the username
+ * @param {object} values
  * @param {String} BASE_URL - a string containing the base url
- * @returns {object} - an object like: {'name': <name>, 'surname': <surname>}
+ * @returns {boolean} - truf if the trip was deleted, otherwise false
  */
 export async function cancelTrip (values, BASE_URL) {
-
-    const url = `${BASE_URL}server/api/trips/.php`;
+    const url = `${BASE_URL}server/api/trips/cancel_trip.php`;
 
     try {
         const response = await fetch(url, {
@@ -45,7 +39,7 @@ export async function cancelTrip (values, BASE_URL) {
 
         console.log("Fetch succesful return data:", data)
 
-        // return data['trips'];
+        return data['result'];
 
     } catch (error) {
         console.error("Error fetching data: ", error);
