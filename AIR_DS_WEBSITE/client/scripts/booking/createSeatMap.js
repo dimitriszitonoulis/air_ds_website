@@ -16,8 +16,7 @@ export function hideSeatMap() {
  * The seat map is seperated into upper, lower rows (grouped together in a div) 
  * and a middle row (has its own div) containing the numbers of the seat.
  * 
- * At the first column is the correspondin letter of each row.
- * The letters are added. 
+ * At the first column is the corresponding letter of each row.
  * This means that the 1st row has letter F
  *                     2nd row has letter D
  *                     ...
@@ -25,7 +24,7 @@ export function hideSeatMap() {
 
  * 
  * @param {Array} takenSeats - contains the ids of the taken seats.
- * the ids have the format: <row letter>-<seat number>
+ * the ids have the format: row letter-seat number
  * ex A-10 -> is the 10th seat of the last row (row lettering is backwards)
  */
 export async function createSeatMap(depAirport, destAirport, depDate) {
