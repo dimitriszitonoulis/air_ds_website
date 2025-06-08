@@ -1,14 +1,15 @@
 import { addFullNames, fields } from "./bookingFields.js";
-import { validateRealTime, validateSubmitTime } from '../validationManager.js';
+import { validateRealTime} from '../validationManager.js';
 import { isNameValid } from "./bookingValidators.js";
 import { clearError, showError } from "../displayMessages.js";
 import { getAirportInfo, getFullName, getTakenSeats } from "./getBookingInfo.js";
 import { createSeatMap, hideSeatMap, showSeatMap } from "./createSeatMap.js";
 import { addInfoFieldSets, fillUserInfo } from "./showNameForm.js";
+import { bookTickets } from "./bookTickets.js";
 
 // TODO delete later
 const TICKET_NUMBER = 2;
-const USERNAME = "giog";    // the username must be taken from the session variable
+const USERNAME = "Dim";    // the username must be taken from the session variable
 const DEPARTURE_AIRPORT = "ATH";
 const DESTINATION_AIRPORT = "BRU";
 const DATE = "2025-06-26 00:00:00";
@@ -36,6 +37,7 @@ async function main() {
     // make the seatmap container invisible
     hideSeatMap();
     hidePricingInfo();
+    hideBookTicketsBtn();
 
     setUpPassengers(USERNAME, TICKET_NUMBER, fields, BASE_URL);
 
@@ -48,32 +50,33 @@ async function main() {
 
     setUpSeatValidation(passengerFieldsets);
 
-    // TODO book seats
     // add button with event listener for when to sumbit
-    // submitBooking()
-
-
+    submitBooking(passengerFieldsets);
 }
 
-// TODO implement
-function submitBooking(passengerFieldsets) {
-    // TODO
-    // ATTENTION
-    // only send passenger name, surname and seat
-    // NOT PRICING INFO
-    const tickets = setTickets(passengerFieldsets);
-    
-    const flightInfo = {
-        "dep_code": DEPARTURE_AIRPORT,
-        "dest_code": DESTINATION_AIRPORT,
-        "dep_date": DATE,
-        "ticket_num": TICKET_NUMBER,
-        "username": USERNAME,
-        "tickets": tickets
-    }
+async function submitBooking(passengerFieldsets) {
+    const bookBtn = document.getElementById("book-tickets-btn");
 
-    // TODO implement
-    bookTickets(flightInfo, BASE_URL);
+    bookBtn.addEventListener('click', async () => {
+        const tickets = setTickets(passengerFieldsets);
+        
+        const flightInfo = {
+            "dep_code":     DEPARTURE_AIRPORT,
+            "dest_code":    DESTINATION_AIRPORT,
+            "dep_date":     DATE,
+            "ticket_num":   TICKET_NUMBER,
+            "username":     USERNAME,
+            "tickets":      tickets
+        }
+        const isBooked = bookTickets(flightInfo, BASE_URL);
+
+        if (isBooked) {
+            const redirectUrl = `${BASE_URL}/client/pages/my_trips.php`;
+            window.location.replace(redirectUrl);
+        }
+    });
+
+    
 }
 
 
@@ -158,7 +161,6 @@ function setUpFieldValidation(passengerFieldsets) {
             showSeatMap();
             const passengerFieldsets = document.querySelectorAll(".passenger-info-fieldset");
             setUpPassengerSelection(passengerFieldsets);
-
         } else {
             showError(chooseSeatsErrorDiv, "Could not process names");
         }
@@ -227,10 +229,9 @@ function setUpSeatValidation(passengerFieldsets) {
 
             const tickets = setTickets(passengerFieldsets, seatCostTable, fee, flightCost);
 
-            showPricingInfo();
-
             addPricingInfo(DEPARTURE_AIRPORT, DESTINATION_AIRPORT, DATE, tickets);
-
+            showPricingInfo();
+            showBookTicketsBtn();
         } else {
             showError(errDiv, "You must select at least 1 seat for each passenger");
         }
@@ -241,6 +242,7 @@ function setUpSeatValidation(passengerFieldsets) {
 /**
  * 
  * Sets the tickets to be booked
+ * 
  * Tickets is an array of objects
  * Each object contains information about the customer to whom the ticket belongs
  * If seatCostTable, fee and flightCost have been passed as parameters each object also contains
@@ -279,10 +281,8 @@ function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flight
         const name = fs.querySelector('.name').value;
         const surname = fs.querySelector('.surname').value;
         const seat = fs.querySelector('.seat-info').innerText;
-        // names.push(name);
-        // surnames.push(surname);  
-        // seats.push(seat);
 
+        // the current ticket
         const current = {
             "name": name,
             "surname": surname,
@@ -396,4 +396,14 @@ function hidePricingInfo() {
 function showPricingInfo() {
     const infDiv = document.getElementById('pricing-info');
     infDiv.style.display = "flex";
+}
+
+function showBookTicketsBtn() {
+    const btn = document.getElementById("book-tickets-btn");
+    btn.style.display = "flow-root";
+}
+
+function hideBookTicketsBtn() {
+    const btn = document.getElementById("book-tickets-btn");
+    btn.style.display = "none";
 }
