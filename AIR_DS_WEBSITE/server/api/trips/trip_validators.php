@@ -8,13 +8,10 @@ require_once BASE_PATH . "server/database/services/auth/db_get_full_name.php";
 require_once BASE_PATH . "server/api/reservation/reservation_validators.php";
 
 
+
 /**
- * Summary of get_validators
- * An array containing key value pairs of authorization fields and their validator functions
- * @return array{
- *  dep: (callable(mixed ):bool), 
- *  dest: (callable(mixed ):bool), 
- * }
+ * Summary of get_validators_trip
+ * @return array{dep_code: (callable(mixed )), dep_date: (callable(mixed )), dest_code: (callable(mixed )), username: (callable(mixed ))}
  */
 function get_validators_trip() {
     return [
