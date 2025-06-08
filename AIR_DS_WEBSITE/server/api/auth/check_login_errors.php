@@ -73,14 +73,13 @@ function check_login_errors() {
 
     if (!$is_credentials_correct) {
         $response = $response_message['failure']['invalid'];
-        // FIXME sends 400 but it should send 200
         http_response_code($response['http_response_code']);
         echo json_encode($response);
         exit;
     }
 
     // if this point is reached all the fields are valid
-    login_user($decoded_content);
+    login_user($username);
 
     // TODO maybe add check that the session userId is the same as the username
     if(!isset($_SESSION['userId'])) {
