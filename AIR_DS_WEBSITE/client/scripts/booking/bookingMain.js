@@ -8,11 +8,11 @@ import { addInfoFieldSets, fillUserInfo } from "./showNameForm.js";
 import { bookTickets } from "./bookTickets.js";
 
 // TODO delete later
-const TICKET_NUMBER = 2;
-const USERNAME = "Dim";    // the username must be taken from the session variable
-const DEPARTURE_AIRPORT = "ATH";
-const DESTINATION_AIRPORT = "BRU";
-const DATE = "2025-06-26 00:00:00";
+// const TICKET_NUMBER = 2;
+// const USERNAME = "Dim";    // the username must be taken from the session variable
+// const DEPARTURE_AIRPORT = "ATH";
+// const DESTINATION_AIRPORT = "BRU";
+// const DATE = "2025-06-26 00:00:00";
 
 // get info about distances from the db
 const airport_codes = {
@@ -60,11 +60,13 @@ async function main() {
  * 
  * @param {HTMLFieldSetElement} passengerFieldsets contains elements from which passenger name, surname and seat can be extracted
  */
-async function submitBooking(passengerFieldsets) {
+async function submitBooking() {
     const bookBtn = document.getElementById("book-tickets-btn");
+    const passengerFieldsets = document.querySelectorAll(".passenger-info-fieldset");
 
     bookBtn.addEventListener('click', async () => {
         const tickets = setTickets(passengerFieldsets);
+      
         
         const flightInfo = {
             "dep_code":     DEPARTURE_AIRPORT,
@@ -75,10 +77,11 @@ async function submitBooking(passengerFieldsets) {
             "tickets":      tickets
         }
 
-        const isBooked = bookTickets(flightInfo, BASE_URL);
+        console.log(flightInfo);
 
+        const isBooked = await bookTickets(flightInfo, BASE_URL);
         if (isBooked) {
-            const redirectUrl = `${BASE_URL}/client/pages/my_trips.php`;
+            const redirectUrl = `${BASE_URL}client/pages/my_trips.php`;
             window.location.replace(redirectUrl);
         }
     });
@@ -386,12 +389,12 @@ function setTickets(passengerFieldsets, seatCostTable = null, fee = null, flight
  * First, add info about the flight and the total cost
  * Then loop through the ticket array and add information about each passenger
  * 
- * @param {string} depAirport   the code of the departure airport
- * @param {string} destAirport  the code of the destination airport
- * @param {string} date         the departure date
- * @param {number} fee          the fee for the flight between 2 airports
- * @param {number} flightCost   the cost of the flight between 2 airtports
- * @param {Array} tickets       array of objects
+ * @param {string}  depAirport the code of the departure airport
+ * @param {string} destAirport the code of the destination airport
+ * @param {string}        date the departure date
+ * @param {number}         fee the fee for the flight between 2 airports
+ * @param {number}  flightCost the cost of the flight between 2 airtports
+ * @param {Array}      tickets array of objects
  * Each object contains information about
  * - the customer to whom the ticket belongs
  * - pricing data for the customer
