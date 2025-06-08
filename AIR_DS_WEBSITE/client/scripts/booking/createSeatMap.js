@@ -130,7 +130,6 @@ function setSeat(currentSeat, id, isMiddleRow, isLegSeat, isFront, isTaken = fal
     seat.id = id;
     seat.className = 'seat';
 
-    // TODO change the classes of each seat for easier coloring
     if (isMiddleRow) {
         seat.innerText = `${currentSeat}`;
         seat.className = 'seat-number';
