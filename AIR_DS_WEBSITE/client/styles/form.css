@@ -44,8 +44,16 @@
         min-width: 300px;
     }
 
-    input, select, option, button {
+    input, select, option {
         width: 100%;
+        min-width: 200px;
+        font-size: 15px;
+        border-radius: 0.5vw;
+    }
+
+    button {
+        width: 100%;
+        max-width: 200px;
         min-width: 200px;
         font-size: 15px;
         border-radius: 0.5vw;
@@ -196,9 +204,13 @@ button {
     background-color: #28292e;
     color: white;
 
+    /* font-weight: bold; */
+
+
     border: solid;
     border-color: #34353b;
 }
+
 button:hover {
     background-color: royalblue;
 }
