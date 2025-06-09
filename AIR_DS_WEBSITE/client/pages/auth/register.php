@@ -59,12 +59,12 @@ require_once BASE_PATH . "client\includes\start_session.php";
           <div id="email-input-error-message" class="error-message">Empty</div>
         </div>
 
-        <div id="register-button-fieldset" class="field">
-          <input type="submit" id="register-button" name="register-button" value="Register">
-          <div id="registration-button-error-message" class="error-message"></div>
-        </div>
+       
       </fieldset>
-      
+      <div id="register-button-fieldset" class="field">
+        <input type="submit" id="register-button" name="register-button" value="Register">
+        <div id="registration-button-error-message" class="error-message"></div>
+      </div>
     </form>
   </main>
 

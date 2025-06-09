@@ -38,13 +38,14 @@ require_once BASE_PATH . "client/includes/start_session.php"
           <div id="password-input-error-message" class="error-message">Empty</div>
         </div>
 
-        <div id="login-button-fieldset" class="field">
-          <input type="submit" id="login-button" name="login-button" value="Login">
-          <div id="login-button-error-message" class="error-message">Empty</div>
-        </div>
       </fieldset>
       
+      <div id="login-button-fieldset" class="field">
+      <input type="submit" id="login-button" name="login-button" value="Login">
+      <div id="login-button-error-message" class="error-message">Empty</div>
+    </div>
     </form>
+
 
     <!-- Redirects to registration form -->
     <p>Need an account? <a href="./register.php">Register</a> </p>
