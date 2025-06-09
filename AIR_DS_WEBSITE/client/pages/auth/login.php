@@ -34,7 +34,7 @@ require_once BASE_PATH . "client/includes/start_session.php"
         <!-- password field -->
         <div class="field">
           <label for="password-input">Password</label>
-          <input type="text" id="password-input" name="password" required>
+          <input type="password" id="password-input" name="password" required>
           <div id="password-input-error-message" class="error-message">Empty</div>
         </div>
 
@@ -55,6 +55,7 @@ require_once BASE_PATH . "client/includes/start_session.php"
   <?php include_once BASE_PATH . "client/includes/footer.php"; ?>
 
   <script>const BASE_URL = "<?= BASE_URL ?>";</script>
+  <script src="<?= BASE_URL ?>client/scripts/hamburgerMenu.js"></script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/auth/checkLoginErrors.js"></script>
 </body>
 

@@ -73,7 +73,8 @@ require_once BASE_PATH . "client\includes\start_session.php";
   </main>
 
   <?php include_once BASE_PATH . 'client/includes/footer.php' ?>
-
+  
+  <script src="<?= BASE_URL ?>client/scripts/hamburgerMenu.js"></script>
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/getAirports.js"></script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/reservation/getFlightDates.js"></script>

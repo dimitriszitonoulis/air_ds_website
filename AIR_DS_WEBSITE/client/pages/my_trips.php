@@ -15,7 +15,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
 <head>
   <!-- <link rel="stylesheet" href="./client/styles/style.css">  -->
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/style.css">
-  <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/header.css">
+  <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/header2.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/form.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/footer.css">
 </head>
@@ -35,6 +35,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
   <?php include_once BASE_PATH . 'client/includes/footer.php' ?>
 
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
+  <script src="<?= BASE_URL ?>client/scripts/hamburgerMenu.js"></script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/myTrips/myTripsMain.js"></script>
 </body>
 

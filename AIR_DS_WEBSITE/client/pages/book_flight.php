@@ -132,8 +132,9 @@ define("USERNAME", $_SESSION['userId'])
 
 
   <?php include_once BASE_PATH . 'client/includes/footer.php' ?>
-
-
+  
+  <script src="<?= BASE_URL ?>client/scripts/hamburgerMenu.js"></script>
+  
   <script>
     const DEPARTURE_AIRPORT = getAirportCode("<?= DEPARTURE_AIRPORT ?>");
     const DESTINATION_AIRPORT = getAirportCode("<?= DESTINATION_AIRPORT ?>");
@@ -141,12 +142,13 @@ define("USERNAME", $_SESSION['userId'])
     const TICKET_NUMBER = parseInt("<?= TICKET_NUMBER ?>");
     const BASE_URL = "<?= BASE_URL ?>";
     const USERNAME = "<?= USERNAME ?>";
-
+    
     function getAirportCode (str) {
       const regex = /\(([^)]+)\)/;
       return str.match(regex)[1];
     }
   </script>
+  
   <script type="module" src="<?= BASE_URL ?>client/scripts/booking/bookingMain.js"></script>
 </body>
 
