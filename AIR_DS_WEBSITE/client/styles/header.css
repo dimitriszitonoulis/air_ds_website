@@ -1,10 +1,96 @@
+/* For small screens */
+@media (max-width: 800px) {
+    #hamburger {
+        display: block;
+
+        position: absolute;
+        top: 0px;
+        right: 0px;
+    }
+
+    nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+
+        width: 100px;
+        text-align: center;
+
+        font-size: 10px;
+        /* justify-content: center; */
+    }
+
+    nav.show {
+        display: flex;
+    }
+
+
+
+    nav>a {
+        font-size: 15px;
+    }
+}
+
+/* For big screens */
+@media (min-width: 801px) {
+    #header {
+        /* position */
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 5px;
+
+        height: 60px;
+        min-height: 60px;
+        width: 100%;
+
+        /* nav bar alignment */
+        display: flex;
+        align-items: center;
+
+
+        /* coloring */
+        background-color: royalblue;
+
+    }
+
+    #hamburger {
+        display: none;
+    }
+
+
+    nav {
+        /* TODO maybe make position sticky */
+        /* place nav bar on top */
+        margin-left: auto;
+        margin-right: auto;
+        width: 30%;
+        /* no need to change will be burger for smaller screens */
+
+        /* contens alignment */
+        display: flex;
+        justify-content: space-evenly;
+
+
+        font-size: 25px;
+    }
+
+    /* apply only inside the nav bar  */
+    nav>a {
+        flex: 1 1 auto;
+        color: white;
+    }
+}
+
 #header {
     /* position */
     margin-top: 0;
     margin-left: 0;
     margin-right: 0;
     margin-bottom: 5px;
- 
+
     height: 60px;
     min-height: 60px;
     width: 100%;
@@ -13,29 +99,33 @@
     display: flex;
     align-items: center;
 
-
     /* coloring */
     background-color: royalblue;
-    
+
+}
+
+#hamburger {
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: white;
+
+
+
+
+    max-width: 100px;
+    min-width: 100px;
+    font-size: 30px;
+    border-radius: 0.5vw;
 }
 
 nav {
-    /* TODO maybe make position sticky */
-    /* place nav bar on top */
-    margin-left: auto;
-    margin-right: auto;
-    width: 30%;  /* no need to change will be burger for smaller screens */
-
     /* contens alignment */
-    display: flex;
     justify-content: space-evenly;
-
-
-    font-size: 25px;
 }
 
 /* apply only inside the nav bar  */
-nav > a {
+nav>a {
     flex: 1 1 auto;
     color: white;
 }
