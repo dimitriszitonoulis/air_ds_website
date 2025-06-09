@@ -12,24 +12,25 @@ require_once BASE_PATH . "client\includes\start_session.php";
 // TODO uncomment after testing is finished
 // maybe check if the values are empty or a method other than POST is used
 // if a method other than post is used redirect to home page
-// if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-//   header("Location:" . BASE_URL . "client/pages/home.php");
-// }
-// // if any of the fields are empty redirect to home page
-// if(empty($_POST["departure-airport"]))
-//   header("Location:" . BASE_URL . "client/pages/home.php");
-// if(empty($_POST["destination-airport"]))
-//   header("Location:" . BASE_URL . "client/pages/home.php");
-// if(empty($_POST["date"]))
-//   header("Location:" . BASE_URL . "client/pages/home.php");
-// if(empty($_POST["ticket"]))
-//   header("Location:" . BASE_URL . "client/pages/home.php");
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+  header("Location:" . BASE_URL . "client/pages/home.php");
+}
+// if any of the fields are empty redirect to home page
+if(empty($_POST["departure-airport"]))
+  header("Location:" . BASE_URL . "client/pages/home.php");
+if(empty($_POST["destination-airport"]))
+  header("Location:" . BASE_URL . "client/pages/home.php");
+if(empty($_POST["date"]))
+  header("Location:" . BASE_URL . "client/pages/home.php");
+if(empty($_POST["ticket"]))
+  header("Location:" . BASE_URL . "client/pages/home.php");
 
 // add the value of the fields to constants
-// define("DEPARTURE_AIRPORT", $_POST['departure-airport']);
-// define("DESTINATION_AIRPORT", $_POST['destination-airport']);
-// define("DATE", $_POST['date']);
-// define("TICKET_NUMBER", $_POST['ticket']);
+define("DEPARTURE_AIRPORT", $_POST['departure-airport']);
+define("DESTINATION_AIRPORT", $_POST['destination-airport']);
+define("DATE", $_POST['date']);
+define("TICKET_NUMBER", $_POST['ticket']);
+define("USERNAME", $_SESSION['userId'])
 
 ?>
 
@@ -51,13 +52,11 @@ require_once BASE_PATH . "client\includes\start_session.php";
 
   <?php include_once BASE_PATH . 'client/includes/header.php' ?>
 
-  <!-- TODO maybe delete the ids from the labels -->
   <main>
     <div id="form-div">
       <form id="book-flight-form">
+
         <fieldset class="passenger-info-fieldset">
-          <!-- TODO maybe fill it with php
-           and then when taking the values with js dont take this value -->
           <label class="ticket-info-label" for="name">Name</label>
           <input type="text" id="name-0" class="name" readonly>
 
@@ -75,7 +74,6 @@ require_once BASE_PATH . "client\includes\start_session.php";
           </div>
         </fieldset>
 
-        <!-- TODO change id of button to something more fitting -->
         <div id="choose-seats-div">
           <button type="button" id="choose-seats-button">Choose seats</button>
           <div id="choose-seats-button-error-message" class="error-message">Empty</div>
@@ -84,7 +82,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
     </div>
 
     <div id="seat-map-container">
-      <span>Select seats for passesger:</span>
+      <h2>Select seats for passengers:</h2>
       <div id="plane-body"></div>
 
       <div id="show-pricing-button-div">
@@ -135,7 +133,20 @@ require_once BASE_PATH . "client\includes\start_session.php";
 
   <?php include_once BASE_PATH . 'client/includes/footer.php' ?>
 
-  <script> const BASE_URL = "<?= BASE_URL ?>";</script>
+
+  <script>
+    const DEPARTURE_AIRPORT = getAirportCode("<?= DEPARTURE_AIRPORT ?>");
+    const DESTINATION_AIRPORT = getAirportCode("<?= DESTINATION_AIRPORT ?>");
+    const DATE = "<?= DATE ?>";
+    const TICKET_NUMBER = parseInt("<?= TICKET_NUMBER ?>");
+    const BASE_URL = "<?= BASE_URL ?>";
+    const USERNAME = "<?= USERNAME ?>";
+
+    function getAirportCode (str) {
+      const regex = /\(([^)]+)\)/;
+      return str.match(regex)[1];
+    }
+  </script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/booking/bookingMain.js"></script>
 </body>
 
