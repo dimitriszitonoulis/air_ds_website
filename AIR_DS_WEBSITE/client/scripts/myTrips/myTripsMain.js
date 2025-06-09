@@ -8,7 +8,6 @@ import { cancelTrip } from "./cancelTrip.js";
 // const USERNAME = "giog";    // the username must be taken from the session variable
 const USERNAME = "Dim";
 
-
 await main()
 
 /**
@@ -29,10 +28,12 @@ async function main() {
     const values = {"username": USERNAME};
     let selectedTrip = null;
     let selectedDiv = null;
+
     // button to cancel the flight
     const cancelBtn = document.createElement('button');
     cancelBtn.id = "delete-btn";
     cancelBtn.innerText = "Cancel trip";
+
     // div that shows  message in case the flight is not cancelled
     const errorMessageDiv = document.createElement('div');
     errorMessageDiv.className = "error-message";
@@ -55,26 +56,35 @@ async function main() {
     
     tripDivs.forEach(div => {
         div.addEventListener('click', async() => {
-            //save the previously selected div
+            
+             //save the previously selected div
             const previousSelectedDiv = selectedDiv;
 
             selectedDiv = div;
             div.style.backgroundColor = "royalblue";
             selectedTrip = {
-                "dep_code": div.querySelector(".dep-code").innerText,
-                "dest_code": div.querySelector(".dest-code").innerText,
-                "dep_date": div.querySelector(".dep-date").innerText,
-                "username": USERNAME
+                "dep_code":     div.querySelector(".dep-code").innerText,
+                "dest_code":    div.querySelector(".dest-code").innerText,
+                "dep_date":     div.querySelector(".dep-date").innerText,
+                "username":     USERNAME
             }
             div.appendChild(cancelBtn);
             div.appendChild(errorMessageDiv);           
-
 
             // if no div was chosen previously
             // happens at the beggining where no div is selected initially
             if (previousSelectedDiv === null) return;
 
             previousSelectedDiv.style.backgroundColor = "";
+
+            // if the same trip (div) is clicked twice de-select it
+           if (previousSelectedDiv === selectedDiv) {
+                selectedDiv = null;
+                previousSelectedDiv.style.backgroundColor = "";
+                div.removeChild(cancelBtn);
+                div.removeChild(errorMessageDiv);
+                return; 
+            }
 
         });
     });
@@ -176,17 +186,20 @@ async function addTripTables(trips, mainElement) {
         
         addTripRowHeaders(tripRowHeader);
         addTripRowValues(tripRow, depAirport, destAirport, date, fee, flightCost)
-        
         addPassengerRowHeaders(passengerRowHeader);
+
+        // append to table (do not add passenger values just yet)
         table.appendChild(tripRowHeader);
         table.appendChild(tripRow);
         table.appendChild(passengerRowHeader);
         
+        // after everything is set, one byu one append ecah passenger to the table
         for (const passenger of passengers) {
             passengerRow = document.createElement('tr');
             addPassengerRowValues(passengerRow, passenger, fee, flightCost);
             table.appendChild(passengerRow);
         }
+
         tripDiv.appendChild(table)
         mainElement.appendChild(tripDiv);
         tripDivs.push(tripDiv);
@@ -337,7 +350,6 @@ function getTableHeader(text) {
     th.innerText = text;
     return th;
 }
-
 
 /**
  * @param {string} text 
