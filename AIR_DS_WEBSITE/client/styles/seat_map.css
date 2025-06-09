@@ -6,46 +6,23 @@
     width: 100%;
     margin: auto;
 
-    max-width: 800px;
-    min-width: 800px;
+    max-width: 700px;
+    min-width: 400px;
   }
   
   #plane-body {
-   
     /* spacing */
     width: 100%;
     background-color: white;
 
     /* border */
-    border-radius: 5px;
-
-    /* gap:0.5vw; */
-  }
-
-  /* doesnt really matter if seats overflow outside row
-    since it is only used to center the seats
-  */
-  .row {
-    /* alignment of seats in each row */
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-direction: row; 
+    border-radius: 8px;
   }
 
   .seat, .seat-number, .taken-seat, .rowLetter{
-    border-radius: 4px; /* must change for smaller screens */
-
-    /* width:10px; */
-
-    flex: 0 0 2vw;  
-    /*flex: 1 1 0.2vw;  /* must change for phones */
-    /* to fix gap for 1 digit numbers */
-    /* min-width: 2.3vw; */
-    /* min-width: 2em; */
-
-    /* maybe change depending in screen*/
-    font-size: 1.5vw;
+    border-radius: 4px;
+    flex: 0 0 2.5vw;
+    font-size: 2vw;
   }
  }
 
@@ -64,7 +41,6 @@
   }
   
   #plane-body {
-   
     /* spacing */
     width: 100%;
     background-color: white;
@@ -72,50 +48,23 @@
     /* border */
     border-width: 1px;
     border-radius: 5px;
-
-    /* gap:0.5vw; */
-  }
-
-  /* doesnt really matter if seats overflow outside row
-    since it is only used to center the seats
-  */
-  .row {
-    /* alignment of seats in each row */
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-direction: row; 
   }
 
   .seat, .seat-number, .taken-seat, .rowLetter{
-    border-radius: 4px; /* must change for smaller screens */
+    border-radius: 4px; 
     border-width: 1px;
 
-    /* width:10px; */
-
     flex: 0 0 2vw;  
-    /*flex: 1 1 0.2vw;  /* must change for phones */
-    /* to fix gap for 1 digit numbers */
-    /* min-width: 2.3vw; */
-    /* min-width: 2em; */
 
-    /* maybe change depending in screen*/
     font-size: 1.5vw;
   }
  }
 
 
-
 #seat-map-container {
-  /* border */
-  /* TODO REMOVE */
-  border: solid;
-  border-color: black;
-
   /* alignment of plane body*/
   /* this is turned into flex by js */
   display: flex;    
-  /* display:flex; */
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -127,7 +76,7 @@
   /* border */
   border:solid;
   border-color: white;
-
+  border-width: 1px;
 
   /* alignment of items in plane body */
   /* TODO check why only deisplay:flex was commented */
@@ -135,7 +84,6 @@
   justify-content: space-evenly;
   flex-direction: column;
 
-  /* gap:0.5vw; */
   color: black;
 }
 
@@ -155,14 +103,11 @@
   border-width: 1px;
 
   aspect-ratio: 1/1;  /* makes the div a square */
-  /* width:10px; */
 
   /* to align itemes inside seat */
-  /* text-align: center; */
   display: flex;
   justify-content: center;
   align-items: center;
 
   background-color: antiquewhite;
-
 }
