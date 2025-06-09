@@ -8,6 +8,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
 <html>
 
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1"/>
   <link rel="stylesheet" href = "<?= BASE_URL ?>client/styles/style.css">
   <link rel="stylesheet" href = "<?= BASE_URL ?>client/styles/form.css">
   <link rel="stylesheet" href="<?= BASE_URL ?>client/styles/header.css">
@@ -36,7 +37,7 @@ require_once BASE_PATH . "client\includes\start_session.php";
           <label for="surname-input">Surname</label>
           <input type="text" id="surname-input" name="surname" required>
           <div id="surname-input-error-message" class="error-message">Empty</div>
-        </div class="field">
+        </div>
 
         <!-- username field -->
         <div class="field">
