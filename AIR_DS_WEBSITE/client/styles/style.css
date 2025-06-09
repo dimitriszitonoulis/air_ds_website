@@ -40,7 +40,9 @@ main {
     display:none
     Similar to element-name.hidden = true in js
     */
-    visibility: hidden;
+    /* visibility: hidden; */
+    display:none;
+
 }
 
 
