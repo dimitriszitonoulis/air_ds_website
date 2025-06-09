@@ -1,3 +1,171 @@
+ /* For small screens */
+ @media(max-width:800px) {
+
+    form {
+        max-width: 100px;
+        min-width: 100px;
+
+        border: solid;
+        border-color: #2b2a33;
+        border-width: 2px;
+        border-radius: 5px;
+    }
+
+    /* for forms that have more than one fieldset do not show form border
+    ex 
+    in the book_tickets form every passenger has their own fieldset,
+    each fieldset has its own border, no need to show form border as well
+    */
+    form:has(fieldset:nth-of-type(2)) {
+        /* this is done because when the seat map appeared the  form size changed*/
+        max-width: 100px;
+        min-width: 100px;
+
+        border:none;
+    }
+
+    /* the form on the main page did not center correctly */
+    #purchase-tickets-form {
+        max-width: 1000px;
+        min-width: 700px;
+    }
+
+    .field {
+        padding: 1vw;
+
+        /* font-size: 1.5vw; */
+        font-size: 25px;
+    }
+
+    /* if a form has only one fieldset*/
+    fieldset:only-of-type {
+        /* border */
+        border: none;
+
+        /* contents alignment  */
+        display: flex;
+        justify-content: space-around;
+        /* align-items: center; */
+        flex-direction: column;
+
+    }
+
+    fieldset {
+        /* border */
+        border: solid;
+        border-color: #2b2a33;
+        border-width: 2px;
+        border-radius: 5px;
+    }
+
+    input, select {
+        min-width: 100px;
+        max-width: 1000px;
+        /* flex: 0 0 2vw; */
+        /* font-size: 1.5vw; */
+        font-size: 25px;
+
+        border: solid;
+        border-color: #34353b;
+        border-radius: 0.5vw;
+    }
+
+    /* in the book_flight.php
+    in order to center the button */
+    #choose-seats-div {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: column;
+    }
+ }
+
+ /* For big screens */
+ @media(min-width: 992px) {
+    form {
+        /* position */
+        /* margin-left: 30%;
+        margin-right: 30%; */
+        /* this is done because when the seat map appeared the  form size changed*/
+        max-width: 500px;
+        min-width: 500px;
+
+        border: solid;
+        border-color: #2b2a33;
+        border-width: 2px;
+        border-radius: 5px;
+    }
+
+    /* for forms that have more than one fieldset do not show form border
+    ex 
+    in the book_tickets form every passenger has their own fieldset,
+    each fieldset has its own border, no need to show form border as well
+    */
+    form:has(fieldset:nth-of-type(2)) {
+        /* this is done because when the seat map appeared the  form size changed*/
+        max-width: 500px;
+        min-width: 500px;
+
+        border:none;
+    }
+
+    /* the form on the main page did not center correctly */
+    #purchase-tickets-form {
+        max-width: 1000px;
+        min-width: 700px;
+    }
+
+    .field {
+        padding: 1vw;
+
+        /* font-size: 1.5vw; */
+        font-size: 25px;
+    }
+
+    /* if a form has only one fieldset*/
+    fieldset:only-of-type {
+        /* border */
+        border: none;
+
+        /* contents alignment  */
+        display: flex;
+        justify-content: space-around;
+        /* align-items: center; */
+        flex-direction: column;
+
+    }
+
+    fieldset {
+        /* border */
+        border: solid;
+        border-color: #2b2a33;
+        border-width: 2px;
+        border-radius: 5px;
+    }
+
+    input, select {
+        min-width: 100px;
+        max-width: 1000px;
+        /* flex: 0 0 2vw; */
+        /* font-size: 1.5vw; */
+        font-size: 25px;
+
+        border: solid;
+        border-color: #34353b;
+        border-radius: 0.5vw;
+    }
+
+    /* in the book_flight.php
+    in order to center the button */
+    #choose-seats-div {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: column;
+    }
+ }
+
+
 form {
     /* position */
     /* margin-left: 30%;
@@ -19,20 +187,22 @@ form {
 }
 
 /* for forms that have more than one fieldset do not show form border
-ex the bokk_tickets form */
+ex 
+in the book_tickets form every passenger has their own fieldset,
+each fieldset has its own border, no need to show form border as well
+*/
 form:has(fieldset:nth-of-type(2)) {
-
     /* this is done because when the seat map appeared the  form size changed*/
     max-width: 500px;
     min-width: 500px;
 
     box-sizing: border-box;
 
-    border:none;
-
     display: flex;
     justify-content: space-around;
     flex-direction: column;
+
+    border:none;
 }
 
 /* the form on the main page did not center correctly */
