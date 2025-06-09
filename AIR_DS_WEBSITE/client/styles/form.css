@@ -2,13 +2,11 @@
  @media(max-width:800px) {
 
     form {
-        max-width: 100px;
-        min-width: 100px;
+        max-width: 300px;
+        min-width: 300px;
 
-        border: solid;
-        border-color: #2b2a33;
         border-width: 2px;
-        border-radius: 5px;
+        border-radius: 10px;
     }
 
     /* for forms that have more than one fieldset do not show form border
@@ -18,80 +16,50 @@
     */
     form:has(fieldset:nth-of-type(2)) {
         /* this is done because when the seat map appeared the  form size changed*/
-        max-width: 100px;
-        min-width: 100px;
-
-        border:none;
+        max-width: 300px;
+        min-width: 300px;
     }
 
     /* the form on the main page did not center correctly */
-    #purchase-tickets-form {
-        max-width: 1000px;
-        min-width: 700px;
-    }
+    /* #purchase-tickets-form {
+        max-width: 500px;
+        min-width: 300px;
+    } */
+
 
     .field {
         padding: 1vw;
-
         /* font-size: 1.5vw; */
-        font-size: 25px;
-    }
-
-    /* if a form has only one fieldset*/
-    fieldset:only-of-type {
-        /* border */
-        border: none;
-
-        /* contents alignment  */
-        display: flex;
-        justify-content: space-around;
-        /* align-items: center; */
-        flex-direction: column;
-
+        font-size: 15px;
     }
 
     fieldset {
-        /* border */
-        border: solid;
-        border-color: #2b2a33;
         border-width: 2px;
-        border-radius: 5px;
+        border-radius: 10px;
     }
 
-    input, select {
-        min-width: 100px;
-        max-width: 1000px;
-        /* flex: 0 0 2vw; */
-        /* font-size: 1.5vw; */
-        font-size: 25px;
+    /* This form has differen */
+    #purchase-tickets-form {
+        max-width: 300px;
+        min-width: 300px;
+    }
 
-        border: solid;
-        border-color: #34353b;
+    input, select, option {
+        width: 100%;
+        min-width: 200px;
+        font-size: 15px;
         border-radius: 0.5vw;
     }
 
-    /* in the book_flight.php
-    in order to center the button */
-    #choose-seats-div {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-    }
  }
 
  /* For big screens */
- @media(min-width: 992px) {
+ @media(min-width: 801px) {
+
     form {
-        /* position */
-        /* margin-left: 30%;
-        margin-right: 30%; */
-        /* this is done because when the seat map appeared the  form size changed*/
         max-width: 500px;
         min-width: 500px;
 
-        border: solid;
-        border-color: #2b2a33;
         border-width: 2px;
         border-radius: 5px;
     }
@@ -105,8 +73,6 @@
         /* this is done because when the seat map appeared the  form size changed*/
         max-width: 500px;
         min-width: 500px;
-
-        border:none;
     }
 
     /* the form on the main page did not center correctly */
@@ -117,16 +83,12 @@
 
     .field {
         padding: 1vw;
-
         /* font-size: 1.5vw; */
         font-size: 25px;
     }
 
     /* if a form has only one fieldset*/
     fieldset:only-of-type {
-        /* border */
-        border: none;
-
         /* contents alignment  */
         display: flex;
         justify-content: space-around;
@@ -136,44 +98,22 @@
     }
 
     fieldset {
-        /* border */
-        border: solid;
-        border-color: #2b2a33;
         border-width: 2px;
         border-radius: 5px;
     }
 
-    input, select {
+    input, select{
         min-width: 100px;
         max-width: 1000px;
         /* flex: 0 0 2vw; */
         /* font-size: 1.5vw; */
         font-size: 25px;
-
-        border: solid;
-        border-color: #34353b;
         border-radius: 0.5vw;
     }
 
-    /* in the book_flight.php
-    in order to center the button */
-    #choose-seats-div {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-    }
  }
 
-
 form {
-    /* position */
-    /* margin-left: 30%;
-    margin-right: 30%; */
-    /* this is done because when the seat map appeared the  form size changed*/
-    max-width: 500px;
-    min-width: 500px;
-
     box-sizing: border-box;
 
     display: flex;
@@ -182,8 +122,6 @@ form {
 
     border: solid;
     border-color: #2b2a33;
-    border-width: 2px;
-    border-radius: 5px;
 }
 
 /* for forms that have more than one fieldset do not show form border
@@ -192,10 +130,6 @@ in the book_tickets form every passenger has their own fieldset,
 each fieldset has its own border, no need to show form border as well
 */
 form:has(fieldset:nth-of-type(2)) {
-    /* this is done because when the seat map appeared the  form size changed*/
-    max-width: 500px;
-    min-width: 500px;
-
     box-sizing: border-box;
 
     display: flex;
@@ -206,20 +140,12 @@ form:has(fieldset:nth-of-type(2)) {
 }
 
 /* the form on the main page did not center correctly */
-#purchase-tickets-form {
+/* #purchase-tickets-form {
     max-width: 1000px;
     min-width: 700px;
-}
+} */
 
 .field {
-    /* border */
-    /* border: solid;
-    border-color: #2b2a33;
-    border-width: 2px;
-    border-radius: 5px; */
-
-    padding: 1vw;
-
     /* contents alignment */
     display: flex;
     flex-direction: column;
@@ -227,39 +153,30 @@ form:has(fieldset:nth-of-type(2)) {
     /* align-items: center; */
     /* justify-content: center; */
     /* text-align: center; */
-
-    /* font-size: 1.5vw; */
-    font-size: 25px;
 }
 
 /* if a form has only one fieldset*/
 fieldset:only-of-type {
-
     /* border */
     border: none;
-
 
     /* contents alignment  */
     display: flex;
     justify-content: space-around;
     /* align-items: center; */
     flex-direction: column;
-
     /* text-align: center;   */
-
 }
 
 fieldset {
     /* border */
     border: solid;
     border-color: #2b2a33;
-    border-width: 2px;
-    border-radius: 5px;
-
 
     /* contents alignment  */
     display: flex;
     justify-content: space-around;
+
     /* align-items: center; */
     flex-direction: column;
 
@@ -268,18 +185,11 @@ fieldset {
 }
 
 input, select {
-    min-width: 100px;
-    max-width: 1000px;
-    /* flex: 0 0 2vw; */
-    /* font-size: 1.5vw; */
-    font-size: 25px;
-
     background-color: #28292e;
     color: white;
 
     border: solid;
     border-color: #34353b;
-    border-radius: 0.5vw;
 }
 
 /* in the book_flight.php
