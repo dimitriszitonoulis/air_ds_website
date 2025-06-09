@@ -3,20 +3,24 @@ export function showError(element, message) {
     // maybe not needed, this is done from css
     element.style.color = "red";
     element.style.visibility = "visible";
+    element.style.display = "block";
 }
 
 export function clearError(element) {
     element.style.visibility = "hidden";
+    element.style.display = "none";
 }
 
 export function showMessage(element, color, message) {
     element.innerText = message;
     element.style.color = color;
     element.style.visibility = "visible";
+    element.style.display = "block";
 }
 
 export function hideMessage(element) {
     element.style.visibility = "hidden";
+    element.style.display = "none";
 }
 
 export function appendMessage(element, messageToAppend) {
