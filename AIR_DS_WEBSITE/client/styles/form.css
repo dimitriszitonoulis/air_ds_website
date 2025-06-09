@@ -44,10 +44,19 @@
         min-width: 300px;
     }
 
-    input, select, option {
+    input, select, option, .seat-info {
         width: 100%;
         min-width: 200px;
         font-size: 15px;
+        border-radius: 0.5vw;
+    }
+
+    label, .seat-info-label {
+        min-width: 100px;
+        max-width: 1000px;
+        /* flex: 0 0 2vw; */
+        /* font-size: 1.5vw; */
+        font-size: 10px;
         border-radius: 0.5vw;
     }
 
@@ -100,7 +109,6 @@
         /* contents alignment  */
         display: flex;
         justify-content: space-around;
-        /* align-items: center; */
         flex-direction: column;
 
     }
@@ -110,12 +118,21 @@
         border-radius: 5px;
     }
 
-    input, select, option, button{
+    input, select, option, button, .seat-info {
         min-width: 100px;
         max-width: 1000px;
         /* flex: 0 0 2vw; */
         /* font-size: 1.5vw; */
         font-size: 25px;
+        border-radius: 0.5vw;
+    }
+
+    label, .seat-info-label {
+        min-width: 100px;
+        max-width: 1000px;
+        /* flex: 0 0 2vw; */
+        /* font-size: 1.5vw; */
+        font-size: 20px;
         border-radius: 0.5vw;
     }
 
