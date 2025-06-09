@@ -1,5 +1,5 @@
 import { validateSubmitTime, validateRealTime } from "../validationManager.js";
-import { clearError, showError } from "../displayMessages.js";
+import { clearError, hideMessage, showError } from "../displayMessages.js";
 import { getTrips } from "./getTrips.js";
 import { getAirportInfo } from "../booking/getBookingInfo.js";
 import { cancelTrip } from "./cancelTrip.js";
@@ -25,7 +25,7 @@ await main()
  * - append the table to main
  */
 async function main() {
-    const values = {"username": USERNAME};
+    const values = { "username": USERNAME };
     let selectedTrip = null;
     let selectedDiv = null;
 
@@ -53,13 +53,22 @@ async function main() {
 
     // adds table with the trips made by the customer
     const tripDivs = await addTripTables(trips, mainElement);
-    
+
     tripDivs.forEach(div => {
-        div.addEventListener('click', async() => {
-            
-             //save the previously selected div
+        div.addEventListener('click', async () => {
+
+            // save the previously selected div
             const previousSelectedDiv = selectedDiv;
 
+            // if a div is alredy selected de-select it
+            if (selectedDiv === div) {
+                selectedDiv = null;
+                previousSelectedDiv.style.backgroundColor = "";
+                div.removeChild(cancelBtn);
+                return;
+            }
+
+            // select div
             selectedDiv = div;
             div.style.backgroundColor = "royalblue";
             selectedTrip = {
@@ -69,29 +78,21 @@ async function main() {
                 "username":     USERNAME
             }
             div.appendChild(cancelBtn);
-            div.appendChild(errorMessageDiv);           
+            div.appendChild(errorMessageDiv);
+            // if an error message was shown in another div hide it,
+            // otherwise it will appear in the new div as well
+            clearError(errorMessageDiv);
 
             // if no div was chosen previously
             // happens at the beggining where no div is selected initially
             if (previousSelectedDiv === null) return;
 
             previousSelectedDiv.style.backgroundColor = "";
-
-            // if the same trip (div) is clicked twice de-select it
-           if (previousSelectedDiv === selectedDiv) {
-                selectedDiv = null;
-                previousSelectedDiv.style.backgroundColor = "";
-                div.removeChild(cancelBtn);
-                div.removeChild(errorMessageDiv);
-                return; 
-            }
-
         });
     });
 
-
     // if the trip is actually cancelled remove it from the tables 
-    cancelBtn.addEventListener('click', async() => {
+    cancelBtn.addEventListener('click', async () => {
         const isCancelled = await cancelTrip(selectedTrip, BASE_URL);
         const errorMessageDiv = document.getElementById("cancel-trip-error-message");
         if (isCancelled) {
@@ -100,8 +101,9 @@ async function main() {
         } else {
             showError(errorMessageDiv, "You cannot cancel a trip less than 30 days away");
         }
-    })
+    });
 }
+
 
 /**
  * 
@@ -169,8 +171,8 @@ async function addTripTables(trips, mainElement) {
         const air_info2 = airportInfo[1];
 
         // get the fee and the cost of the flight
-        const distance = getDistance(   air_info1['latitude'], air_info1['longitude'],
-                                        air_info2['latitude'], air_info2['longitude']
+        const distance = getDistance(air_info1['latitude'], air_info1['longitude'],
+            air_info2['latitude'], air_info2['longitude']
         );
         const fee = getFee(air_info1['fee'], air_info2['fee']);
         const flightCost = getFlightCost(distance);
@@ -183,7 +185,7 @@ async function addTripTables(trips, mainElement) {
         // row for the passengers header and information
         const passengerRowHeader = document.createElement('tr');
         let passengerRow = document.createElement('tr');  // contains info about the passengers
-        
+
         addTripRowHeaders(tripRowHeader);
         addTripRowValues(tripRow, depAirport, destAirport, date, fee, flightCost)
         addPassengerRowHeaders(passengerRowHeader);
@@ -192,7 +194,7 @@ async function addTripTables(trips, mainElement) {
         table.appendChild(tripRowHeader);
         table.appendChild(tripRow);
         table.appendChild(passengerRowHeader);
-        
+
         // after everything is set, one byu one append ecah passenger to the table
         for (const passenger of passengers) {
             passengerRow = document.createElement('tr');
@@ -228,7 +230,7 @@ function addTripRowHeaders(row) {
     const dateHeading = getTableHeader("Date");
     const fee = getTableHeader("Airport Fee");
     const flighCost = getTableHeader("Flight Cost");
-    
+
     row.appendChild(departureHeading);
     row.appendChild(destinationHeading);
     row.appendChild(dateHeading);
@@ -325,11 +327,11 @@ function addPassengerRowValues(row, passenger, feeValue, flightCostValue) {
     const name = getTableDataCell(passenger['name']);
     const surname = getTableDataCell(passenger['surname']);
     const seat = getTableDataCell(passenger['seat']);
-    
+
     //get the cost for the seat
     const seatCostValue = getSeatCost(passenger['seat']);
     const seatPrice = getTableDataCell(seatCostValue);
-    
+
     // set the total for the current passenger
     const costValue = feeValue + flightCostValue + parseFloat(seatCostValue);
     const cost = getTableDataCell(costValue);
@@ -355,9 +357,9 @@ function getTableHeader(text) {
  * @param {string} text 
  * @returns {HTMLTableDataCellElement} - a table data cell where innerText = the value of the input value
  */
-function getTableDataCell(text, className=null) {
+function getTableDataCell(text, className = null) {
     const td = document.createElement('td');
-    if(className) td.className = className;
+    if (className) td.className = className;
     td.innerText = text;
     return td;
 }
