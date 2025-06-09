@@ -44,7 +44,7 @@
         min-width: 300px;
     }
 
-    input, select, option {
+    input, select, option, button {
         width: 100%;
         min-width: 200px;
         font-size: 15px;
@@ -102,7 +102,7 @@
         border-radius: 5px;
     }
 
-    input, select{
+    input, select, option, button{
         min-width: 100px;
         max-width: 1000px;
         /* flex: 0 0 2vw; */
@@ -184,12 +184,23 @@ fieldset {
 
 }
 
-input, select {
+input, select, option {
     background-color: #28292e;
     color: white;
 
     border: solid;
     border-color: #34353b;
+}
+
+button {
+    background-color: #28292e;
+    color: white;
+
+    border: solid;
+    border-color: #34353b;
+}
+button:hover {
+    background-color: royalblue;
 }
 
 /* in the book_flight.php
