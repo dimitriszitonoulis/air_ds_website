@@ -23,14 +23,14 @@
 
     th, td {
         border-bottom: 1px solid #ddd;
-        font-size: 15px;
+        font-size: 10px;
     }
 
     h2 {
         font-size: 20px;
     }
     p, a {
-        font-size: 15px;
+        font-size: 10px;
     }
  }
 
@@ -67,11 +67,6 @@
     p, a {
         font-size: auto;
     }
-
-    a {
-        color: white;
-    }
-
  }
 
 
@@ -84,7 +79,6 @@ body {
     /* removes gap under the footer */
     height:100vh;
     
-    /* background-color: #2f2f2f; */
     background-color: #323339;
     color:whitesmoke;
     margin: 0;
@@ -105,7 +99,6 @@ main {
 
     margin-top: 2%;
     margin-bottom: 2%;
-    /* margin: auto; */
 
     font-family: sans-serif;
 }
@@ -136,40 +129,35 @@ table {
     border-collapse: collapse;  
     width: 100%;
     overflow-x: scroll;
-    /* border: 1px solid #ddd; */
 }
 
-tr {
-    overflow: scroll;
+tr:nth-child(even) {
+    background-color: #444;
 }
 
-th, td {
+tr:nth-child(odd) {
+background-color: #555;
+}
+td {
     border-bottom: 1px solid #ddd;
     text-align: left;
     padding: 10px 5px;
 
 }
 
-/* tr:nth-child(even) {
-    background-color: #444;
-  }
-
-  tr:nth-child(odd) {
-    background-color: #555;
-  }
-
-  th {
+th { 
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    padding: 10px 5px;
     background-color: #666;
     color: white;
-  } */
+}
 
-
-
-p, h2, a {
+p, h2 {
     text-align: center;
-    /* margin: auto; */
 }
 
 a {
+    text-align: center;
     color: white;
 }
