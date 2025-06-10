@@ -1,14 +1,5 @@
 import { getFullName } from "./getBookingInfo.js";
 
-// TODO add the variable from php
-// get the number of tickets from the home form
-// default value for now
-// const TICKET_NUMBER = 5;
-
-
-
-
-
 /**
  * Fills the name and surname for the logged in user
  * 

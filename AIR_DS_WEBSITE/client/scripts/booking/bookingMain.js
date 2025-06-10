@@ -33,8 +33,6 @@ let SELECTED_SEATS = [];
 main()
 
 async function main() {
-
-    // make the seatmap container invisible
     hideSeatMap();
     hidePricingInfo();
     hideBookTicketsBtn();
