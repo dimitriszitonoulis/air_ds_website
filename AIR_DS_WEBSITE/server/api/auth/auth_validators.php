@@ -198,12 +198,12 @@ function is_email_valid ($conn, $email, $response) {
 }
 
 function is_only_letters ($txt) {
-    $regex = "/^[a-zA-Z]+$/";
+    $regex = "/^[\p{L}]+$/u";
     return preg_match($regex, $txt) === 1;
 }
 
 function is_alphanumeric ($txt) {
-    $regex = "/^[a-zA-Z0-9]+$/";
+    $regex = "/^[\p{L}\p{N}]+$/u";
     return preg_match($regex, $txt) === 1;
 }
 

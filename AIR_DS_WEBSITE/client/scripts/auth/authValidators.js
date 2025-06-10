@@ -226,7 +226,7 @@ async function isUsernameStored(username) {
 }
 
 function isAlphanumeric(text) {
-    const regex = /^[a-zA-Z0-9]+$/;
+    const regex = /^[\p{L}\p{N}]+$/u;
     return text.match(regex) !== null;
 }
 
@@ -241,8 +241,6 @@ function containsATCharacter(text) {
 }
 
 function isOnlyLetters(text) {
-    const regex = /^[a-zA-Z]+$/;
-    // TODO see if this should be used
-    // const regex1 = /^[\p{L}]+$/u; // allows letters from all alphabets
+    const regex = /^[\p{L}]+$/u; // allows letters from all alphabets
     return text.match(regex) !== null;
 }
