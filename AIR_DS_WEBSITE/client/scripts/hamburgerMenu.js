@@ -13,6 +13,4 @@ document.addEventListener("click", (e) => {
         hamburger.style.display = "block";
         nav.style.display = "none";
     }
-
-
 })
