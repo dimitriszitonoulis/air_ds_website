@@ -1,6 +1,6 @@
 export async function bookTickets(values, BASE_URL) {
     let url = `${BASE_URL}server/api/reservation/book_tickets.php`;
-
+    
     try {
         const response = await fetch(url, {
             method: "POST",
