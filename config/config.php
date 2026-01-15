@@ -16,5 +16,5 @@ define('BASE_PATH', __DIR__ . '/../');
  * using BASE_URL every URL is built:
  *  url = <server_root>BASE_URL<relative_path_under_AIR_DS_WEBSITE
  */
-define('BASE_URL', '/WEB_ZITONOULIS_DIMITRIOS_E22054/AIR_DS_WEBSITE/');
+define('BASE_URL', '/air_ds_website/');
 ?>
