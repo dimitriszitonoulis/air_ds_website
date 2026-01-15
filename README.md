@@ -27,7 +27,7 @@ In this step a lot of entries are added in the database
 
 Everytime this URL is visited the database will drop all entries and
 initialize using the
-[initialize file](AIR_DS_WEBSITE\server\database\db_utils\db_initialize.php).
+[initialize file](./server/database/db_utils/db_initialize.php).
 
 After that you can book a flight, register login etc.
 
