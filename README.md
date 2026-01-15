@@ -2,7 +2,7 @@
 
 Website for booking airplane tickets.
 
-## How use
+## How to use
 
 Install with the following command:
 
