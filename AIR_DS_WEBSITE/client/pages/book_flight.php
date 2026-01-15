@@ -2,11 +2,10 @@
 require_once __DIR__ . "/../../config/config.php";
 require_once BASE_PATH . "client\includes\start_session.php";
 
-// TODO uncomment after testing
 // // if the user has not logged in redirect to login page
-// if (!isset($_SESSION['userId'])) {
-//     header("Location:" . BASE_URL. "client/pages/auth/login.php");
-// }    
+if (!isset($_SESSION['userId'])) {
+    header("Location:" . BASE_URL. "client/pages/auth/login.php");
+}    
 
 
 // TODO uncomment after testing is finished
