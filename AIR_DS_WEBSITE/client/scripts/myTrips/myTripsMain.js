@@ -4,10 +4,6 @@ import { getTrips } from "./getTrips.js";
 import { getAirportInfo } from "../booking/getBookingInfo.js";
 import { cancelTrip } from "./cancelTrip.js";
 
-//TODO remove later
-// const USERNAME = "giog";    // the username must be taken from the session variable
-const USERNAME = "Dim";
-
 await main()
 
 /**

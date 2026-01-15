@@ -34,6 +34,7 @@ if (!isset($_SESSION['userId'])) {
   <script src="<?= BASE_URL ?>client/scripts/hamburgerMenu.js"></script>
   
   <script> const BASE_URL = "<?= BASE_URL ?>";</script>
+  <script> const USERNAME = "<?= $_SESSION['userId'] ?>";</script>
   <script type="module" src="<?= BASE_URL ?>client/scripts/myTrips/myTripsMain.js"></script>
 </body>
 
